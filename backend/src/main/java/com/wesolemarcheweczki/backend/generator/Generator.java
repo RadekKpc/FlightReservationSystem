@@ -1,9 +1,16 @@
 package com.wesolemarcheweczki.backend.generator;
 
+import com.wesolemarcheweczki.backend.dao.*;
 import com.wesolemarcheweczki.backend.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -12,13 +19,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
 @PropertySource("classpath:backend.properties")
-public class Generator {
+@Component
+public class Generator implements ApplicationRunner {
     static final String CARRIER = "carrier";
     static final String TICKET = "ticket";
     static final String ORDER = "order";
     static final String FLIGHT = "flight";
     static final String CLIENT = "client";
     private static final Random random = new Random();
+    private static final Logger logger = LoggerFactory.getLogger(Generator.class);
 
     private final Map<String, Integer> counters = new HashMap<>();
 
@@ -28,16 +37,43 @@ public class Generator {
     List<Order> orders = new ArrayList<>();
     List<Client> clients = new ArrayList<>();
 
+    @Autowired
+    private CarrierDAO carrierDAO;
+    @Autowired
+    private OrderDAO orderDAO;
+    @Autowired
+    private ClientDAO clientDAO;
+    @Autowired
+    private FlightDAO flightDAO;
+    @Autowired
+    private TicketDAO ticketDAO;
+
     @Value("#{PropertySplitter.map('${com.wesolemarcheweczki.backend.generator}')}")
     private Map<String, Integer> instanceNumbers;
 
 
-    public void generate() {
+    @Override
+    public void run(ApplicationArguments args) {
+        logger.info("Generating sample");
+        generateObjects();
+        saveObjects();
+        logger.info("Inserted sample");
+
+    }
+
+    private void generateObjects() {
         generateCarriers();
         generateClients();
         generateFlights(); //needs carriers
         generateOrders(); //needs flights and clients
+    }
 
+    private void saveObjects() {
+        carrierDAO.saveAll(carriers);
+        clientDAO.saveAll(clients);
+        flightDAO.saveAll(flights);
+        orderDAO.saveAll(orders);
+        ticketDAO.saveAll(tickets);
     }
 
     private void generateClients() {
