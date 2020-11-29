@@ -6,21 +6,21 @@ import java.time.LocalDateTime;
 @Entity
 public class Flight {
     @Id
-    @Column(name = "FLIGHT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String flightCode;
-    @OneToOne
+
+    @ManyToOne
     private Carrier carrier;
 
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int capacity;
 
-//    private Collection<Ticket> tickets;
-    public Flight(){
+    public Flight() {
 
     }
+
     public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity) {
         this.flightCode = flightCode;
         this.carrier = carrier;

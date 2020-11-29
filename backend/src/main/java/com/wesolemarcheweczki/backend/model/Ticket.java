@@ -1,33 +1,34 @@
 package com.wesolemarcheweczki.backend.model;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 
 @Entity
 public class Ticket {
     @Id
-    @Column(name = "TICKET_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne
+    @Embedded
     private Passenger passenger;
 
-    @OneToOne
+    @ManyToOne
     private Flight flight;
+
+    @ManyToOne
+    private Order order;
 
     private int seat;
 
     private int cost;
 //    private boolean paid;
 
-    public Ticket(){
+    public Ticket() {
     }
 
-    public Ticket(Passenger passenger, Flight flight, int seat, int cost) {
+    public Ticket(Passenger passenger, Flight flight, Order order, int seat, int cost) {
         this.passenger = passenger;
         this.flight = flight;
+        this.order = order;
         this.seat = seat;
         this.cost = cost;
     }

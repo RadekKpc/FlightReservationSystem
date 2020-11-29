@@ -53,18 +53,18 @@ public class Generator {
         clients.add(client);
     }
 
-    private List<Ticket> generateTickets() {
+    private List<Ticket> generateTickets(Order order) {
         var singleOrderTickets = new ArrayList<Ticket>();
         var count = instanceNumbers.get(TICKET);
         for (int i = 0; i < count; i++) {
-            generateTicket(singleOrderTickets);
+            generateTicket(singleOrderTickets, order);
         }
         return singleOrderTickets;
     }
 
-    private void generateTicket(ArrayList<Ticket> singleOrderTickets) {
+    private void generateTicket(ArrayList<Ticket> singleOrderTickets, Order order) {
         var passenger = new Passenger(generateName("passenger"), "lastname");
-        var ticket = new Ticket(passenger, getRandomElement(flights), generateInt("seat"), 1000);
+        var ticket = new Ticket(passenger, getRandomElement(flights), order, generateInt("seat"), 1000);
         singleOrderTickets.add(ticket);
         tickets.add(ticket);
     }
@@ -77,8 +77,9 @@ public class Generator {
     }
 
     private void generateOrder() {
-        var order = new Order(getRandomElement(clients), generateTickets());
+        var order = new Order(getRandomElement(clients));
         orders.add(order);
+        generateTickets(order);
     }
 
     private void generateFlights() {

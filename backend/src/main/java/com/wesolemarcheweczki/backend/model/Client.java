@@ -1,17 +1,17 @@
 package com.wesolemarcheweczki.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Client {
     @Id
-    @Column(name = "CLIENT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String firstName;
     private String lastName;
-
-//    private Collection<Ticket> tickets
 
 
     public Client(String firstName, String lastName) {
