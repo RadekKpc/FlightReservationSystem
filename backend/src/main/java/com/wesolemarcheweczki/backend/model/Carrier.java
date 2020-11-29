@@ -1,11 +1,13 @@
 package com.wesolemarcheweczki.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Carrier {
     @Id
-    @Column(name = "CARRIER_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
