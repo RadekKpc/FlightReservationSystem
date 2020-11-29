@@ -1,0 +1,16 @@
+.navbar{
+    -fx-background-color:  #007dff;
+}
+
+.navbar-button{
+    -fx-background-color: #007dff;
+    -fx-text-fill: white;
+}
+
+.navbar-button:hover{
+    -fx-background-color: #0059b5;
+}
+
+.top-button{
+    -fx-background-color: #0059b5;
+}
