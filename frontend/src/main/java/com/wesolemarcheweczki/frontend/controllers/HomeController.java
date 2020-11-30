@@ -1,5 +1,6 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
+import com.wesolemarcheweczki.frontend.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
@@ -41,5 +42,10 @@ public class HomeController {
     @FXML
     private void exit() {
         System.exit(0);
+    }
+
+    @FXML
+    private void minimalize() {
+        Main.getPrimaryStage().setIconified(true);
     }
 }
