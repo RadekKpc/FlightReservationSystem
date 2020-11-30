@@ -20,6 +20,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation("com.google.guava:guava:30.0-jre")
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+
 }
 
 test {
