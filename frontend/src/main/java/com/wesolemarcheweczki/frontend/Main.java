@@ -9,6 +9,7 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
+    private static Stage primaryStage;
     private double xOffset = 0;
     private double yOffset = 0;
 
@@ -18,6 +19,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.setPrimaryStage(primaryStage);
         Parent root = FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -34,5 +36,13 @@ public class Main extends Application {
             primaryStage.setY(event.getY() - yOffset);
         });
         primaryStage.show();
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    private void setPrimaryStage(Stage pStage) {
+        Main.primaryStage = pStage;
     }
 }

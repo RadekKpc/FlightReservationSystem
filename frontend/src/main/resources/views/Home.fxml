@@ -44,7 +44,7 @@
                      <children>
                         <Pane prefWidth="706.0">
                            <children>
-                              <Button layoutX="640.0" mnemonicParsing="false" styleClass="top-button">
+                              <Button onAction="#minimalize" layoutX="640.0" mnemonicParsing="false" styleClass="top-button">
                                  <graphic>
                                     <FontAwesomeIconView fill="WHITE" glyphName="MINUS" />
                                  </graphic>
