@@ -9,14 +9,13 @@
 - [Karol Koptyra](https://github.com/what-ewer)
 
 - [Radosław Kopeć](https://github.com/radekkpc)
-- 
+
 ## Technologies
 
 - Java 14
 - Spring Boot
 - Spring JPA
 - JavaFX
-- Play Framework
 
 # Run
 
