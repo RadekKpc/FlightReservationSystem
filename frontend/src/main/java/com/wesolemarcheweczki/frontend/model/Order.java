@@ -1,20 +1,10 @@
 package com.wesolemarcheweczki.frontend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "Orders") //'"Order" is a keywor
 public class Order {
 
-    @Id
     private int id;
 
-    @ManyToOne
     private Client client;
-
 
     public Order(Client client) {
         this.client = client;
