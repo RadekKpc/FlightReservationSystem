@@ -23,6 +23,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         scene.getStylesheets().add("/css/Home.css");
+        scene.getStylesheets().add("/css/AddClient.css");
         root.setOnMousePressed((event) -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();

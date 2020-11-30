@@ -1,9 +1,9 @@
 .navbar{
-    -fx-background-color:  #007dff;
+    -fx-background-color:   #000c61;
 }
 
 .navbar-button{
-    -fx-background-color: #007dff;
+    -fx-background-color:  #000c61;
     -fx-text-fill: white;
 }
 
@@ -12,5 +12,5 @@
 }
 
 .top-button{
-    -fx-background-color: #0059b5;
+    -fx-background-color: #000c61;
 }

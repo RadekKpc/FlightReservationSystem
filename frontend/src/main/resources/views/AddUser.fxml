@@ -7,17 +7,62 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox prefHeight="254.0" prefWidth="448.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<VBox alignment="TOP_CENTER" prefHeight="438.0" prefWidth="719.0" spacing="20.0">
    <children>
-      <Label prefHeight="17.0" prefWidth="112.0" text="First Name" />
-      <TextField />
-      <Label prefHeight="17.0" prefWidth="117.0" text="Last Name" />
-      <TextField prefHeight="25.0" prefWidth="439.0" />
-      <Label prefHeight="17.0" prefWidth="95.0" text="Email" />
-      <TextField />
-      <Button mnemonicParsing="false" text="Confirm" />
+      <VBox prefHeight="231.0" prefWidth="519.0" spacing="30.0">
+         <children>
+            <Pane prefHeight="43.0" prefWidth="606.0">
+               <children>
+                  <TextField layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="379.0" promptText="First Name" styleClass="text-form">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <FontAwesomeIconView fill="#007dff" glyphName="USER" layoutX="6.0" layoutY="28.0" size="18.0" />
+               </children>
+            </Pane>
+            <Pane>
+               <children>
+                  <TextField layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="379.0" promptText="Last Name" styleClass="text-form">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <FontAwesomeIconView fill="#007dff" glyphName="USER" layoutX="6.0" layoutY="28.0" size="18.0" />
+               </children>
+            </Pane>
+            <Pane>
+               <children>
+                  <TextField layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="378.0" promptText="Email" styleClass="text-form">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <FontAwesomeIconView fill="#007dff" glyphName="ENVELOPE" layoutX="6.0" layoutY="28.0" size="18.0" />
+               </children>
+            </Pane>
+         </children>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+      </VBox>
+      <Pane>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+         <children>
+            <Button layoutX="215.0" layoutY="2.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="89.0" style="-fx-background-color: #007dff;" text="Confirm" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
    </children>
    <padding>
-      <Insets left="10.0" right="75.0" top="25.0" />
+      <Insets left="100.0" right="100.0" top="25.0" />
    </padding>
 </VBox>
