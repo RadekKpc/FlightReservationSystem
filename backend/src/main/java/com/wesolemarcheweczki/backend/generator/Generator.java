@@ -85,7 +85,7 @@ public class Generator implements ApplicationRunner {
 
     private void generateClient() {
         var name1 = generateName(CLIENT);
-        var client = new Client(name1, "lastname");
+        var client = new Client(name1, "lastname","sample@sample.com");
         clients.add(client);
     }
 

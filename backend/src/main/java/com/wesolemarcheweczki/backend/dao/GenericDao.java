@@ -18,5 +18,8 @@ public abstract class GenericDao<T, S> {
         repository.saveAll(object);
     }
 
+    public T getById(S id){
+        return repository.findById(id).get();
+    }
 
 }
