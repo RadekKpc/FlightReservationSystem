@@ -4,7 +4,7 @@
 ## Contributors
 - [Paweł Miziołek](https://github.com/pawel00100)
 
-- [Wiktor Kamiński]()
+- [Wiktor Kamiński](https://github.com/WikKam)
 
 - [Karol Koptyra](https://github.com/what-ewer)
 
@@ -15,8 +15,9 @@
 - Java 14
 - Spring Boot
 - Spring JPA
-- jAVAfx
+- JavaFX
 - Play Framework
 
-
 # Run
+
+
