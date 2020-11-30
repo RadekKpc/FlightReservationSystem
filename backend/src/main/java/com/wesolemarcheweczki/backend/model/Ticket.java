@@ -3,7 +3,7 @@ package com.wesolemarcheweczki.backend.model;
 import javax.persistence.*;
 
 @Entity
-public class Ticket {
+public class Ticket implements AbstractModel<Ticket> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -33,12 +33,26 @@ public class Ticket {
         this.cost = cost;
     }
 
+    @Override
+    public Ticket copy() {
+        return null;
+    }
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void setParams(Ticket object) {
+        passenger = object.passenger;
+        flight = object.flight;
+        order = object.order;
+        seat = object.seat;
+        cost = object.cost;
     }
 
     public Passenger getPassenger() {

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Flight {
+public class Flight implements AbstractModel<Flight> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -29,12 +29,26 @@ public class Flight {
         this.capacity = capacity;
     }
 
+    @Override
+    public Flight copy() {
+        return null;
+    }
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void setParams(Flight object) {
+        flightCode = object.flightCode;
+        carrier = object.carrier;
+        departure = object.departure;
+        arrival = object.arrival;
+        capacity = object.capacity;
     }
 
     public String getFlightCode() {
