@@ -1,17 +1,11 @@
 package com.wesolemarcheweczki.frontend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-@Entity
 public class Flight {
-    @Id
     private int id;
     private String flightCode;
 
-    @ManyToOne
     private Carrier carrier;
 
     private LocalDateTime departure;

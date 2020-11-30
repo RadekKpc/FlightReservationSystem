@@ -1,10 +1,7 @@
 package com.wesolemarcheweczki.frontend.model;
 
 
-import javax.persistence.Embeddable;
 
-
-@Embeddable
 public class Passenger {
 
     private String firstName;

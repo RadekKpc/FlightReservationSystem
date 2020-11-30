@@ -1,22 +1,13 @@
 package com.wesolemarcheweczki.frontend.model;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
-@Entity
 public class Ticket {
-    @Id
     private int id;
 
-    @Embedded
     private Passenger passenger;
 
-    @ManyToOne
     private Flight flight;
 
-    @ManyToOne
     private Order order;
 
     private int seat;
