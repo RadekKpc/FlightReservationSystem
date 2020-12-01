@@ -2,8 +2,6 @@ package com.wesolemarcheweczki.frontend.model;
 
 
 public class Client {
-    private int id;
-
     private String firstName;
 
     private String lastName;
@@ -15,15 +13,7 @@ public class Client {
         this.lastName = lastName;
         this.email = email;
     }
-    public Client() {
-    }
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Client() {}
 
     public String getFirstName() {
         return firstName;

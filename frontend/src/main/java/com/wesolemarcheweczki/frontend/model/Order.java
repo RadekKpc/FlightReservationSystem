@@ -2,8 +2,6 @@ package com.wesolemarcheweczki.frontend.model;
 
 public class Order {
 
-    private int id;
-
     private Client client;
 
     public Order(Client client) {
@@ -11,14 +9,6 @@ public class Order {
     }
 
     public Order() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Client getClient() {

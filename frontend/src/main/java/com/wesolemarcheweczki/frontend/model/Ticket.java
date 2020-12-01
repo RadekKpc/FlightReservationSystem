@@ -2,8 +2,6 @@ package com.wesolemarcheweczki.frontend.model;
 
 
 public class Ticket {
-    private int id;
-
     private Passenger passenger;
 
     private Flight flight;
@@ -25,15 +23,6 @@ public class Ticket {
         this.seat = seat;
         this.cost = cost;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Passenger getPassenger() {
         return passenger;
     }

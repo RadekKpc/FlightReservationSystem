@@ -3,7 +3,6 @@ package com.wesolemarcheweczki.frontend.model;
 import java.time.LocalDateTime;
 
 public class Flight {
-    private int id;
     private String flightCode;
 
     private Carrier carrier;
@@ -22,14 +21,6 @@ public class Flight {
         this.departure = departure;
         this.arrival = arrival;
         this.capacity = capacity;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFlightCode() {
