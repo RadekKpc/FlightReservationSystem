@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Carrier {
+public class Carrier implements AbstractModel<Carrier> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -14,6 +14,11 @@ public class Carrier {
     private String name;
 
     public Carrier() {
+    }
+
+    @Override
+    public Carrier copy() {
+        return null;
     }
 
     public Carrier(String name) {
@@ -30,5 +35,10 @@ public class Carrier {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void setParams(Carrier object) {
+        name = object.getName();
     }
 }
