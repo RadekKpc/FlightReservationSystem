@@ -4,12 +4,12 @@ import com.wesolemarcheweczki.frontend.model.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.regex.Pattern;
 
 public class AddUserController {
@@ -24,7 +24,7 @@ public class AddUserController {
     Text errorText;
 
     @FXML
-    private void addUser() {
+    private void addUser() throws IOException, InterruptedException {
         // get values from text labels
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -63,16 +63,23 @@ public class AddUserController {
         errorText.setStyle("-fx-fill: green;");
     }
 
-    public static boolean postClient(String firstName, String lastName, String email) {
-        Client c = new Client(firstName, lastName, email);
+    public static boolean postClient(String firstName, String lastName, String email) throws IOException, InterruptedException {
+        var mapper = new ObjectMapper();
+        var client = new Client(firstName, lastName, email);
+        var parsedClient = mapper.writeValueAsString(client);
 
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target("http://localhost:8080/api/client");
-        Response clientsResponse = target.request().post(Entity.entity(c, "application/json"));
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/client"))
+                .POST(HttpRequest.BodyPublishers.ofString(parsedClient))
+                .header("Content-Type", "application/json")
+                .build();
 
-        System.out.println("HTTP code: " + clientsResponse.getStatus());
-        int status = clientsResponse.getStatus();
-        clientsResponse.close();
-        return status == 200;
+        HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response.body());
+        return true;
+
     }
 }
