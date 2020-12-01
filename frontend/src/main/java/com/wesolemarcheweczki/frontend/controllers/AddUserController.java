@@ -37,7 +37,7 @@ public class AddUserController {
             System.out.println("Wrong email!");
         } else if (!firstName.isEmpty() && !lastName.isEmpty()) {
             //  TODO add user to database
-            if (true) { // user successfully added to database
+            if (postClient(firstName, lastName, email)) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");

@@ -36,6 +36,8 @@ dependencies {
     implementation("com.google.guava:guava:30.0-jre")
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
     implementation('org.springframework.boot:spring-boot-starter-validation')
+    compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '3.0.14.Final'
+
 
 }
 
