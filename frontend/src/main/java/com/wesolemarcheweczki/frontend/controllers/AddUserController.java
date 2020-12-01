@@ -1,15 +1,8 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
-import com.wesolemarcheweczki.frontend.model.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
 import java.util.regex.Pattern;
 
 public class AddUserController {
@@ -36,8 +29,8 @@ public class AddUserController {
             wrongEmailHandle();
             System.out.println("Wrong email!");
         } else if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            //  TODO add user to database
-            if (postClient(firstName, lastName, email)) { // user successfully added to database
+            // add user to database TODO
+            if (true) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");
@@ -61,18 +54,5 @@ public class AddUserController {
     private void successfullyAddedUser() { // show information that the user was successfully added to database
         errorText.setText("Added user to database!");
         errorText.setStyle("-fx-fill: green;");
-    }
-
-    public static boolean postClient(String firstName, String lastName, String email) {
-        Client c = new Client(firstName, lastName, email);
-
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target("http://localhost:8080/api/client");
-        Response clientsResponse = target.request().post(Entity.entity(c, "application/json"));
-
-        System.out.println("HTTP code: " + clientsResponse.getStatus());
-        int status = clientsResponse.getStatus();
-        clientsResponse.close();
-        return status == 200;
     }
 }
