@@ -26,15 +26,18 @@ public class Main extends Application {
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         scene.getStylesheets().add("/css/Home.css");
         scene.getStylesheets().add("/css/AddClient.css");
+
         root.setOnMousePressed((event) -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
         });
 
         root.setOnMouseDragged((event) -> {
-            primaryStage.setX(event.getX() - xOffset);
-            primaryStage.setY(event.getY() - yOffset);
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
         });
+
+
         primaryStage.show();
     }
 
