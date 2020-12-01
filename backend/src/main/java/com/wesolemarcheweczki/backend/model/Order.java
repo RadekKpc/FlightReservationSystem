@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Orders") //'"Order" is a keywor
-public class Order {
+public class Order implements AbstractModel<Order> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,12 +22,22 @@ public class Order {
     public Order() {
     }
 
+    @Override
+    public Order copy() {
+        return null;
+    }
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void setParams(Order object) {
+        client = object.client;
     }
 
     public Client getClient() {

@@ -69,11 +69,11 @@ public class Generator implements ApplicationRunner {
     }
 
     private void saveObjects() {
-        carrierDAO.saveAll(carriers);
-        clientDAO.saveAll(clients);
-        flightDAO.saveAll(flights);
-        orderDAO.saveAll(orders);
-        ticketDAO.saveAll(tickets);
+        carrierDAO.addAll(carriers);
+        clientDAO.addAll(clients);
+        flightDAO.addAll(flights);
+        orderDAO.addAll(orders);
+        ticketDAO.addAll(tickets);
     }
 
     private void generateClients() {

@@ -4,7 +4,7 @@ import com.wesolemarcheweczki.backend.model.Flight;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FlightDAO extends GenericDao<Flight, Integer> {
+public class FlightDAO extends GenericDao<Flight> {
 
 
 }
