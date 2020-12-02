@@ -78,8 +78,8 @@ public class AddUserController {
         HttpResponse<String> response = httpClient.send(request,
                 HttpResponse.BodyHandlers.ofString());
 
-        System.out.println(response.body());
-        return true;
+
+        return response.statusCode() == 200;
 
     }
 }
