@@ -20,7 +20,6 @@ public class AddCarrierController {
     private void addCarrier() throws IOException, InterruptedException {
         String carrier = carrierName.getText();
         errorText.setText("");
-        // TODO add to database
         if (!carrier.isEmpty() && client.postObject(new Carrier(carrier), "/carrier"))
             addedCarrier();
         else couldntAddCarrier();
