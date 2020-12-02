@@ -1,6 +1,6 @@
 package com.wesolemarcheweczki.backend.model;
 
-public interface AbstractModel<T extends AbstractModel> {
+public interface AbstractModel<T extends AbstractModel<T>> {
 
     T copy();
 
