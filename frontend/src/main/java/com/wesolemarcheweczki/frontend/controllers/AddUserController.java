@@ -1,8 +1,16 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
+import com.wesolemarcheweczki.frontend.model.Client;
+import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.regex.Pattern;
 
 public class AddUserController {
@@ -16,8 +24,10 @@ public class AddUserController {
     @FXML
     Text errorText;
 
+    private final RestClient client = new RestClient();
+
     @FXML
-    private void addUser() {
+    private void addUser() throws IOException, InterruptedException {
         // get values from text labels
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -30,7 +40,7 @@ public class AddUserController {
             System.out.println("Wrong email!");
         } else if (!firstName.isEmpty() && !lastName.isEmpty()) {
             // add user to database TODO
-            if (true) { // user successfully added to database
+            if (client.postObject(new Client(firstName, lastName, email), "/client")) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");
