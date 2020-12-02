@@ -1,8 +1,12 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
+import com.wesolemarcheweczki.frontend.model.Carrier;
+import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 public class AddCarrierController {
     @FXML
@@ -10,12 +14,14 @@ public class AddCarrierController {
     @FXML
     private Text errorText;
 
+    private RestClient client = new RestClient();
+
     @FXML
-    private void addCarrier() {
+    private void addCarrier() throws IOException, InterruptedException {
         String carrier = carrierName.getText();
         errorText.setText("");
         // TODO add to database
-        if (!carrier.isEmpty())
+        if (!carrier.isEmpty() && client.postObject(new Carrier(carrier), "/carrier"))
             addedCarrier();
         else couldntAddCarrier();
     }

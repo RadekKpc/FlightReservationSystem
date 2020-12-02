@@ -1,6 +1,7 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
 import com.wesolemarcheweczki.frontend.model.Client;
+import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -23,6 +24,8 @@ public class AddUserController {
     @FXML
     Text errorText;
 
+    private final RestClient client = new RestClient();
+
     @FXML
     private void addUser() throws IOException, InterruptedException {
         // get values from text labels
@@ -37,7 +40,7 @@ public class AddUserController {
             System.out.println("Wrong email!");
         } else if (!firstName.isEmpty() && !lastName.isEmpty()) {
             // add user to database TODO
-            if (postClient(firstName, lastName, email)) { // user successfully added to database
+            if (client.postObject(new Client(firstName, lastName, email), "/client")) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");
@@ -61,25 +64,5 @@ public class AddUserController {
     private void successfullyAddedUser() { // show information that the user was successfully added to database
         errorText.setText("Added user to database!");
         errorText.setStyle("-fx-fill: green;");
-    }
-
-    public static boolean postClient(String firstName, String lastName, String email) throws IOException, InterruptedException {
-        var mapper = new ObjectMapper();
-        var client = new Client(firstName, lastName, email);
-        var parsedClient = mapper.writeValueAsString(client);
-
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/client"))
-                .POST(HttpRequest.BodyPublishers.ofString(parsedClient))
-                .header("Content-Type", "application/json")
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request,
-                HttpResponse.BodyHandlers.ofString());
-
-
-        return response.statusCode() == 200;
-
     }
 }
