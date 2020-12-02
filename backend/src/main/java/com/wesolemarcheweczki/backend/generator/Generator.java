@@ -27,6 +27,7 @@ public class Generator implements ApplicationRunner {
     static final String FLIGHT = "flight";
     static final String CLIENT = "client";
     static final String LOCATION = "location";
+
     private static final Random random = new Random();
     private static final Logger logger = LoggerFactory.getLogger(Generator.class);
 
@@ -38,6 +39,7 @@ public class Generator implements ApplicationRunner {
     List<Order> orders = new ArrayList<>();
     List<Client> clients = new ArrayList<>();
     List<Location> locations = new ArrayList<>();
+
     @Autowired
     private CarrierDAO carrierDAO;
     @Autowired
@@ -154,9 +156,9 @@ public class Generator implements ApplicationRunner {
 
     private void generateLocation() {
         var airportId = generateName(LOCATION);
-        var city = generateName(LOCATION);
-        var country = generateName(LOCATION);
-        locations.add(new Location(airportId,city,country));
+        var city = generateName("city");
+        var country = generateName("country");
+        locations.add(new Location(airportId, city, country));
     }
 
     private void generateCarrier() {
