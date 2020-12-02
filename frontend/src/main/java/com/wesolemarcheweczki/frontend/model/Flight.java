@@ -10,19 +10,39 @@ public class Flight {
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int capacity;
+    private Location destination;
+    private Location source;
 
     public Flight() {
 
     }
 
-    public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity) {
+    public Location getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Location destination) {
+        this.destination = destination;
+    }
+
+    public Location getSource() {
+        return source;
+    }
+
+    public void setSource(Location source) {
+        this.source = source;
+    }
+
+    public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, Location destination, Location source) {
         this.flightCode = flightCode;
         this.carrier = carrier;
         this.departure = departure;
         this.arrival = arrival;
         this.capacity = capacity;
+        this.destination = destination;
+        this.source = source;
     }
-
+    
     public String getFlightCode() {
         return flightCode;
     }
