@@ -16,6 +16,7 @@ public class Flight implements AbstractModel<Flight> {
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int capacity;
+    private int baseCost;
 
     @ManyToOne
     private Location destination;
@@ -26,12 +27,13 @@ public class Flight implements AbstractModel<Flight> {
 
     }
 
-    public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, Location destination, Location source) {
+    public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, int baseCost, Location destination, Location source) {
         this.flightCode = flightCode;
         this.carrier = carrier;
         this.departure = departure;
         this.arrival = arrival;
         this.capacity = capacity;
+        this.baseCost = baseCost;
         this.destination = destination;
         this.source = source;
     }
@@ -72,6 +74,7 @@ public class Flight implements AbstractModel<Flight> {
         departure = object.departure;
         arrival = object.arrival;
         capacity = object.capacity;
+        baseCost = object.baseCost;
         destination = object.getDestination();
         source = object.getSource();
     }

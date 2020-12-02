@@ -107,7 +107,7 @@ public class Generator implements ApplicationRunner {
 
     private void generateTicket(ArrayList<Ticket> singleOrderTickets, Order order) {
         var passenger = new Passenger(generateName("passenger"), "lastname");
-        var ticket = new Ticket(passenger, getRandomElement(flights), order, generateInt("seat"), 1000);
+        var ticket = new Ticket(passenger, getRandomElement(flights), order, generateInt("seat"), 800);
         singleOrderTickets.add(ticket);
         tickets.add(ticket);
     }
@@ -136,7 +136,7 @@ public class Generator implements ApplicationRunner {
         var name = generateName(FLIGHT);
         var start = generateRandomDate();
         var end = generateRandomDate().plusHours(8);
-        var flight = new Flight(name, getRandomElement(carriers), start, end, 200,getRandomElement(locations),getRandomElement(locations));
+        var flight = new Flight(name, getRandomElement(carriers), start, end, 200, 1000, getRandomElement(locations), getRandomElement(locations));
         flights.add(flight);
     }
 
