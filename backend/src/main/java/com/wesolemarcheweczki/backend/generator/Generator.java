@@ -26,6 +26,7 @@ public class Generator implements ApplicationRunner {
     static final String ORDER = "order";
     static final String FLIGHT = "flight";
     static final String CLIENT = "client";
+    static final String LOCATION = "location";
     private static final Random random = new Random();
     private static final Logger logger = LoggerFactory.getLogger(Generator.class);
 
@@ -36,7 +37,7 @@ public class Generator implements ApplicationRunner {
     List<Ticket> tickets = new ArrayList<>();
     List<Order> orders = new ArrayList<>();
     List<Client> clients = new ArrayList<>();
-
+    List<Location> locations = new ArrayList<>();
     @Autowired
     private CarrierDAO carrierDAO;
     @Autowired
@@ -47,6 +48,8 @@ public class Generator implements ApplicationRunner {
     private FlightDAO flightDAO;
     @Autowired
     private TicketDAO ticketDAO;
+    @Autowired
+    private LocationDAO locationDAO;
 
     @Value("#{PropertySplitter.map('${com.wesolemarcheweczki.backend.generator}')}")
     private Map<String, Integer> instanceNumbers;
@@ -62,6 +65,7 @@ public class Generator implements ApplicationRunner {
     }
 
     private void generateObjects() {
+        generateLocations();
         generateCarriers();
         generateClients();
         generateFlights(); //needs carriers
@@ -69,6 +73,7 @@ public class Generator implements ApplicationRunner {
     }
 
     private void saveObjects() {
+        locationDAO.addAll(locations);
         carrierDAO.addAll(carriers);
         clientDAO.addAll(clients);
         flightDAO.addAll(flights);
@@ -85,7 +90,7 @@ public class Generator implements ApplicationRunner {
 
     private void generateClient() {
         var name1 = generateName(CLIENT);
-        var client = new Client(name1, "lastname","sample@sample.com");
+        var client = new Client(name1, "lastname", "sample@sample.com");
         clients.add(client);
     }
 
@@ -129,7 +134,7 @@ public class Generator implements ApplicationRunner {
         var name = generateName(FLIGHT);
         var start = generateRandomDate();
         var end = generateRandomDate().plusHours(8);
-        var flight = new Flight(name, getRandomElement(carriers), start, end, 200);
+        var flight = new Flight(name, getRandomElement(carriers), start, end, 200,getRandomElement(locations),getRandomElement(locations));
         flights.add(flight);
     }
 
@@ -138,6 +143,20 @@ public class Generator implements ApplicationRunner {
         for (int i = 0; i < count; i++) {
             generateCarrier();
         }
+    }
+
+    private void generateLocations() {
+        var count = instanceNumbers.get(LOCATION);
+        for (int i = 0; i < count; i++) {
+            generateLocation();
+        }
+    }
+
+    private void generateLocation() {
+        var airportId = generateName(LOCATION);
+        var city = generateName(LOCATION);
+        var country = generateName(LOCATION);
+        locations.add(new Location(airportId,city,country));
     }
 
     private void generateCarrier() {
