@@ -34,3 +34,4 @@
 Software is split into separate applications. Backend based on Spring that publishes REST endpoints, and frontend with UI that consumes API.
 
 ## Run
+ - Open Command line in /backend and type gradle bootRun, then in /frontend type gradle run
