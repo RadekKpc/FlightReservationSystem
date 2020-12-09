@@ -41,7 +41,9 @@ Software is split into separate applications. Backend based on Spring that publi
 User interface currently includes main page, add carrier page and add user page -> they are supposed to be for superuser(admin) only, but currently logging in is not implemented in m1
 
 ### Main page
+
 ![mainPage](https://i.imgur.com/ooC5wJp.png)
+
 On the left side we can see logo and buttons to access multiple other panels.
 
 Clicking the button opens panel on the right side, left side stays intact.
@@ -49,15 +51,20 @@ Clicking the button opens panel on the right side, left side stays intact.
 ### Add Uer
 
 The add user panel allows us to add users to database, before sending request to database it checks wheter first and last names are empty and checks regex for email.
+
 ![addUserWrongEmail](https://i.imgur.com/as5FOBy.png)
+
 For example we can see that the email input is wrong.
 
 ![addUserPositive](https://i.imgur.com/aSOAKIm.png)
+
 If everything is okay the request to database is sent.
 
 ### Add Carrier
 The add carrier panel allows us to add carriers to database.
+
 ![addCarrierPositive](https://i.imgur.com/Wg5DWmm.png)
+
 As we can see above - the carrier was successfully added to database.
 
 ## Design patterns used
