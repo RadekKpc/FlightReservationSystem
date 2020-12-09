@@ -68,9 +68,11 @@ The add carrier panel allows us to add carriers to database.
 As we can see above - the carrier was successfully added to database.
 
 ## Design patterns used
-* **MVC** - it is not completed in m1 yet(we do not yet have property mapping and binding to data model), we want to seperate representation of information from the way it is presented and accepted from the user in view part(gui)
-* **DAO** - 
-* #TODO
+* **MVC** - it is not completed in m1 yet(we do not yet have property mapping and binding to data model), we want to
+  seperate representation of information from the way it is presented and accepted from the user in view part(gui)
+* **DAO** - uses Spring Repository class methods and transforms them into more practical methods used in endpoint code
+* **IOC** - provided by Spring, used for most classes
+* # TODO
 
 ## Task distribution
 We distributed tasks among ourselves using JIRA so that we could keep track on our progress and try to distribute them more evenly 
