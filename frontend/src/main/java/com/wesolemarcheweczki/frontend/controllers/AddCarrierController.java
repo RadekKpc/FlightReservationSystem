@@ -16,7 +16,7 @@ public class AddCarrierController {
 
     private RestClient client = new RestClient();
 
-    private Carrier carrier;
+    private Carrier carrier = new Carrier();
 
     @FXML
     private void addCarrier() throws IOException, InterruptedException {

@@ -24,7 +24,7 @@ public class AddUserController {
     @FXML
     Text errorText;
 
-    private Client client;
+    private Client client = new Client();
 
     private final RestClient restClient = new RestClient();
 
