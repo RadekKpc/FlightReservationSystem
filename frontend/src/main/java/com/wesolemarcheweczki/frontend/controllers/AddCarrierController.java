@@ -16,11 +16,13 @@ public class AddCarrierController {
 
     private RestClient client = new RestClient();
 
+    private Carrier carrier;
+
     @FXML
     private void addCarrier() throws IOException, InterruptedException {
-        String carrier = carrierName.getText();
+        this.updateModel();
         errorText.setText("");
-        if (!carrier.isEmpty() && client.postObject(new Carrier(carrier), "/carrier"))
+        if (!carrier.getName().isEmpty() && client.postObject(this.carrier, "/carrier"))
             addedCarrier();
         else couldntAddCarrier();
     }
@@ -33,5 +35,10 @@ public class AddCarrierController {
     private void addedCarrier() {
         errorText.setText("Carrier added to database!");
         errorText.setStyle("-fx-fill: green;");
+    }
+
+    private void updateModel() {
+        String nameOfCarrier = carrierName.getText();
+        this.carrier.setName(nameOfCarrier);
     }
 }
