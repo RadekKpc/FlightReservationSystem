@@ -1,0 +1,26 @@
+.navbar{
+    -fx-background-color:   #27436E;
+}
+
+.navbar-button{
+    -fx-background-color:  #27436E;
+    -fx-text-fill: white;
+}
+
+.navbar-button:hover{
+    -fx-background-color: #E9E7D8;
+}
+
+.top-button{
+    -fx-background-color: #E9E7D8;
+}
+
+.background{
+    -fx-background-image: url("../images/bg.jpeg");
+    -fx-background-position: top top;
+}
+
+@font-face {
+    font-family: 'Frutiger';
+    src: url('../fonts/Frutiger.ttf');
+}

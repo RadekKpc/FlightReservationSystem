@@ -3,6 +3,7 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.wesolemarcheweczki.frontend.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -22,9 +23,6 @@ public class HomeController {
     @FXML
     private void handleAddUser() throws IOException {
         // change the view of the scene to include AddUser
-        viewContent.getChildren().clear();
-        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/AddUser.fxml"));
-        viewContent.getChildren().add(newLoadedPane);
         viewIcon.setIcon(FontAwesomeIcon.USERS);
         viewTitle.setText("Add User");
     }
@@ -47,5 +45,32 @@ public class HomeController {
     @FXML
     private void minimalize() {
         Main.getPrimaryStage().setIconified(true);
+    }
+
+    public void handleTickets(ActionEvent actionEvent) {
+    }
+
+    public void handleLocations(ActionEvent actionEvent) {
+    }
+
+    public void handleCustomers(ActionEvent actionEvent) throws IOException {
+        viewContent.getChildren().clear();
+        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/AddUser.fxml"));
+        viewContent.getChildren().add(newLoadedPane);
+    }
+
+    public void handleFlights(ActionEvent actionEvent) throws IOException {
+        viewContent.getChildren().clear();
+        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/Flights.fxml"));
+        viewContent.getChildren().add(newLoadedPane);
+    }
+
+    public void handleCarriers(ActionEvent actionEvent) throws IOException {
+        viewContent.getChildren().clear();
+        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/AddCarrier.fxml"));
+        viewContent.getChildren().add(newLoadedPane);
+    }
+
+    public void handleOverview(ActionEvent actionEvent) {
     }
 }
