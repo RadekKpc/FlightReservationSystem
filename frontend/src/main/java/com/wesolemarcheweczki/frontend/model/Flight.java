@@ -1,54 +1,20 @@
-package com.wesolemarcheweczki.backend.model;
+package com.wesolemarcheweczki.frontend.model;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-public class Flight implements AbstractModel<Flight> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Flight {
     private String flightCode;
 
-    @ManyToOne
     private Carrier carrier;
 
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int capacity;
-    private int baseCost;
-
-    @ManyToOne
     private Location destination;
-    @ManyToOne
     private Location source;
 
     public Flight() {
 
-    }
-
-    public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, int baseCost, Location destination, Location source) {
-        this.flightCode = flightCode;
-        this.carrier = carrier;
-        this.departure = departure;
-        this.arrival = arrival;
-        this.capacity = capacity;
-        this.baseCost = baseCost;
-        this.destination = destination;
-        this.source = source;
-    }
-
-    @Override
-    public Flight copy() {
-        return null;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Location getDestination() {
@@ -67,18 +33,16 @@ public class Flight implements AbstractModel<Flight> {
         this.source = source;
     }
 
-    @Override
-    public void setParams(Flight object) {
-        flightCode = object.flightCode;
-        carrier = object.carrier;
-        departure = object.departure;
-        arrival = object.arrival;
-        capacity = object.capacity;
-        baseCost = object.baseCost;
-        destination = object.getDestination();
-        source = object.getSource();
+    public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, Location destination, Location source) {
+        this.flightCode = flightCode;
+        this.carrier = carrier;
+        this.departure = departure;
+        this.arrival = arrival;
+        this.capacity = capacity;
+        this.destination = destination;
+        this.source = source;
     }
-
+    
     public String getFlightCode() {
         return flightCode;
     }

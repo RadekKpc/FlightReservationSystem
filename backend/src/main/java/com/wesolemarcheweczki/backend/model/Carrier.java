@@ -16,13 +16,17 @@ public class Carrier implements AbstractModel<Carrier> {
     public Carrier() {
     }
 
-    @Override
-    public Carrier copy() {
-        return null;
-    }
-
     public Carrier(String name) {
         this.name = name;
+    }
+
+    public Carrier(Carrier carrier) {
+        this(carrier.name);
+    }
+
+    @Override
+    public Carrier copy() {
+        return new Carrier(this);
     }
 
     public String getName() {

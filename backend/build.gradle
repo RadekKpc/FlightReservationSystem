@@ -22,6 +22,10 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
     implementation('org.springframework.boot:spring-boot-starter-validation')
 
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
+    implementation("com.github.gwenn:sqlite-dialect:0.1.0")
+
+
 }
 
 test {
