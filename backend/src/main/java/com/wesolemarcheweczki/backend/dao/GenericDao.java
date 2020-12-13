@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 // I believe this class could be used via composition instead of inheritance, but I failed to fix failing IOC for repository field
@@ -18,12 +19,22 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
     @Autowired
     private JpaRepository<T, Integer> repository;
 
-    public void add(T object) {
-        repository.save(object);
+    public boolean add(T object) {
+        try {
+            repository.save(object);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
-    public void addAll(Iterable<T> objects) { //for some reason List here breaks app launch, worth investigating
-        repository.saveAll(objects);
+    public boolean addAll(Iterable<T> objects) { //for some reason List here breaks app launch, worth investigating
+        try {
+            repository.saveAll(objects);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public boolean update(T object) {
@@ -41,9 +52,13 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
     }
 
     public boolean updateAll(Iterable<T> objects) {
-        return StreamSupport.stream(objects.spliterator(), false)
+        return getStream(objects)
                 .map(this::update)
                 .reduce(true, (a, b) -> a && b); //will return false if any fails
+    }
+
+    protected Stream<T> getStream(Iterable<T> objects) {
+        return StreamSupport.stream(objects.spliterator(), false);
     }
 
     public Optional<T> getById(Integer id) {

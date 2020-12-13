@@ -35,8 +35,10 @@ public abstract class AbstractRestController<T extends AbstractModel<T>> {
 
     public ResponseEntity<Void> create(@Valid @RequestBody T received) {
         try {
-            DAO.add(received.copy());
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (DAO.add(received.copy())) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -47,7 +49,7 @@ public abstract class AbstractRestController<T extends AbstractModel<T>> {
             if (DAO.update(received)) {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

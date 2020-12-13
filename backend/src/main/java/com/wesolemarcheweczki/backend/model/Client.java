@@ -1,5 +1,7 @@
 package com.wesolemarcheweczki.backend.model;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class Client implements AbstractModel<Client> {
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -23,14 +27,26 @@ public class Client implements AbstractModel<Client> {
     @Email(message = "Not appropriate email")
     private String email;
 
+    @NotNull
+    private String password;
+
+
     public Client(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = "test";
+    }
+
+    public Client(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = encoder.encode(password);
     }
 
     public Client(Client client) {
-        this(client.firstName, client.lastName, client.email);
+        this(client.firstName, client.lastName, client.email, client.password);
     }
 
     public Client() {
@@ -56,6 +72,7 @@ public class Client implements AbstractModel<Client> {
         firstName = object.firstName;
         lastName = object.lastName;
         email = object.email;
+        password = object.password;
     }
 
     public String getFirstName() {
@@ -72,5 +89,13 @@ public class Client implements AbstractModel<Client> {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = encoder.encode(password);
     }
 }

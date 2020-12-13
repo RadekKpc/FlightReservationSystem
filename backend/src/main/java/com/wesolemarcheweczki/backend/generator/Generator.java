@@ -26,10 +26,13 @@ public class Generator implements ApplicationRunner {
     static final String ORDER = "order";
     static final String FLIGHT = "flight";
     static final String CLIENT = "client";
+    static final String CLIENT_EMAIL = "client_email";
+    static final String CLIENT_PWD = "client_pwd";
     static final String LOCATION = "location";
 
     private static final Random random = new Random();
     private static final Logger logger = LoggerFactory.getLogger(Generator.class);
+
 
     private final Map<String, Integer> counters = new HashMap<>();
 
@@ -92,7 +95,10 @@ public class Generator implements ApplicationRunner {
 
     private void generateClient() {
         var name1 = generateName(CLIENT);
-        var client = new Client(name1, "lastname", "sample@sample.com");
+        var email = generateName(CLIENT_EMAIL);
+        var pwd = name1 + "pwd";
+
+        var client = new Client(name1, "lastname", email + "@sample.com", pwd);
         clients.add(client);
     }
 
