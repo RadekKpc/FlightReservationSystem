@@ -24,22 +24,22 @@ public class AddUserController {
     @FXML
     Text errorText;
 
-    private final RestClient client = new RestClient();
+    private Client client = new Client();
+
+    private final RestClient restClient = new RestClient();
 
     @FXML
     private void addUser() throws IOException, InterruptedException {
         // get values from text labels
-        String firstName = firstNameTextField.getText();
-        String lastName = lastNameTextField.getText();
-        String email = emailTextField.getText();
+        this.updateModel();
         errorText.setText("");
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        if (!Pattern.matches(emailRegex, email)){
+        if (!Pattern.matches(emailRegex, this.client.getEmail())){
             // email provided doesnt match regex
             wrongEmailHandle();
             System.out.println("Wrong email!");
-        } else if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            if (client.postObject(new Client(firstName, lastName, email), "/client")) { // user successfully added to database
+        } else if (!this.client.getFirstName().isEmpty() && !this.client.getLastName().isEmpty()) {
+            if (restClient.postObject(this.client, "/client")) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");
@@ -63,5 +63,14 @@ public class AddUserController {
     private void successfullyAddedUser() { // show information that the user was successfully added to database
         errorText.setText("Added user to database!");
         errorText.setStyle("-fx-fill: green;");
+    }
+
+    private void updateModel() {
+        String firstName = firstNameTextField.getText();
+        String lastName = lastNameTextField.getText();
+        String email = emailTextField.getText();
+        this.client.setEmail(email);
+        this.client.setFirstName(firstName);
+        this.client.setLastName(lastName);
     }
 }
