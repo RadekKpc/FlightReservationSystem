@@ -60,24 +60,29 @@
     <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="753.0" stylesheets="@../css/style.css">
         <content>
             <VBox id="item-container" fx:id="flightContainer" prefHeight="318.0" prefWidth="753.0" spacing="5.0" style="-fx-background-color: #EBE8F9;">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </padding>
+                <children>
+                </children>
             </VBox>
         </content>
     </ScrollPane>
     <FontAwesomeIconView fill="#b7c3d7" glyphName="SEARCH" layoutX="752.0" layoutY="65.0" />
          <Pane layoutX="14.0" layoutY="164.0" prefHeight="51.0" prefWidth="753.0" style="-fx-background-color: #EBE8F9; -fx-border-color: #a9a9a9;">
             <children>
-               <HBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="-12.0" prefHeight="77.0" prefWidth="753.0" spacing="20.0">
+               <HBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="-12.0" prefHeight="77.0" prefWidth="753.0" spacing="15.0">
                   <children>
-                     <Label text="Carrier Name" />
+                     <Label text="Carrier" />
                      <Label text="From" />
                      <Label text="To" />
-                     <Label text="Departure Airport" />
-                     <Label text="Arrival airport" />
-                     <Label text="Departure" />
-                     <Label text="Arrival" />
+                     <Label text="Start" />
+                     <Label text="Destination" />
+                     <Label text="Departure Time" />
+                     <Label text="Arrival Time" />
                      <Label text="Price" />
                      <Label text="Booked Places" />
-                     <Label text="Free Palces" />
+                     <Label text="Free Places" />
                   </children>
                   <padding>
                      <Insets left="20.0" />
