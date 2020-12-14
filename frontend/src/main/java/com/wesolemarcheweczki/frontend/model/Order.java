@@ -2,6 +2,7 @@ package com.wesolemarcheweczki.frontend.model;
 
 public class Order {
 
+    private int id;
     private Client client;
 
     public Order(Client client) {
@@ -17,6 +18,13 @@ public class Order {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }
 

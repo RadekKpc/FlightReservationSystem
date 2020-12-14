@@ -2,6 +2,7 @@ package com.wesolemarcheweczki.frontend.model;
 
 public class Location {
 
+    private int id;
     private String airportId;
     private String city;
     private String country;
@@ -36,5 +37,12 @@ public class Location {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -12,6 +12,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.PasswordField?>
 <Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wesolemarcheweczki.frontend.controllers.AddUserController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0" style="-fx-background-color: #EBE8F9;">
@@ -46,6 +47,16 @@
                            </font>
                         </TextField>
                         <FontAwesomeIconView fill="#6b6e6f" glyphName="ENVELOPE" layoutX="6.0" layoutY="28.0" size="18.0" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="43.0" prefWidth="155.0">
+                     <children>
+                        <PasswordField fx:id="passwordField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="188.0" promptText="Password" styleClass="text-form">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </PasswordField>
+                        <FontAwesomeIconView fill="#6b6e6f" glyphName="KEY" layoutX="6.0" layoutY="28.0" size="18.0" />
                      </children>
                   </Pane>
                </children>

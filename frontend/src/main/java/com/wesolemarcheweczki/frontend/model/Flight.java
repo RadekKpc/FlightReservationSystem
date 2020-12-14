@@ -3,10 +3,10 @@ package com.wesolemarcheweczki.frontend.model;
 import java.time.LocalDateTime;
 
 public class Flight {
+
+    private int id;
     private String flightCode;
-
     private Carrier carrier;
-
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int capacity;
@@ -34,6 +34,17 @@ public class Flight {
     }
 
     public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, Location destination, Location source) {
+        this.flightCode = flightCode;
+        this.carrier = carrier;
+        this.departure = departure;
+        this.arrival = arrival;
+        this.capacity = capacity;
+        this.destination = destination;
+        this.source = source;
+    }
+
+    public Flight(int id, String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, Location destination, Location source) {
+        this.id = id;
         this.flightCode = flightCode;
         this.carrier = carrier;
         this.departure = departure;
@@ -81,5 +92,13 @@ public class Flight {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

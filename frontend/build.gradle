@@ -27,6 +27,7 @@ dependencies {
     compile 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'
     compile 'de.jensd:fontawesomefx-octicons:4.3.0-9.1.2'
     compile 'de.jensd:fontawesomefx-weathericons:2.0.10-9.1.2'
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.4")
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,6 +37,8 @@ dependencies {
     implementation("com.google.guava:guava:30.0-jre")
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
     implementation('org.springframework.boot:spring-boot-starter-validation')
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
     compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '3.0.14.Final'
 
 

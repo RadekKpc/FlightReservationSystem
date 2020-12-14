@@ -4,6 +4,7 @@ package com.wesolemarcheweczki.frontend.model;
 
 public class Passenger {
 
+    private int id;
     private String firstName;
     private String lastName;
 
@@ -30,5 +31,12 @@ public class Passenger {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

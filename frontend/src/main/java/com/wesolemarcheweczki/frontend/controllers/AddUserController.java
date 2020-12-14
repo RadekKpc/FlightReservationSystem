@@ -3,14 +3,10 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.regex.Pattern;
 
 public class AddUserController {
@@ -22,19 +18,23 @@ public class AddUserController {
     @FXML
     private TextField emailTextField;
     @FXML
+    private PasswordField passwordField;
+
+    @FXML
     Text errorText;
 
     private Client client = new Client();
 
     private final RestClient restClient = new RestClient();
 
+    public static String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
     @FXML
     private void addUser() throws IOException, InterruptedException {
         // get values from text labels
         this.updateModel();
         errorText.setText("");
-        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        if (!Pattern.matches(emailRegex, this.client.getEmail())){
+        if (!Pattern.matches(AddUserController.emailRegex, this.client.getEmail())){
             // email provided doesnt match regex
             wrongEmailHandle();
             System.out.println("Wrong email!");
@@ -43,6 +43,7 @@ public class AddUserController {
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");
+                passwordField.setText("");
                 successfullyAddedUser();
             } else {
                 couldntAddUser();
@@ -69,8 +70,10 @@ public class AddUserController {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
+        String pwd = passwordField.getText();
         this.client.setEmail(email);
         this.client.setFirstName(firstName);
         this.client.setLastName(lastName);
+        this.client.setPassword(pwd);
     }
 }

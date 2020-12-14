@@ -8,7 +8,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<Pane>
+<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.wesolemarcheweczki.frontend.controllers.FlightsController">
 <Pane prefHeight="200.0" prefWidth="200.0" />
 <Pane prefHeight="200.0" prefWidth="200.0" />
 <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -91,7 +91,7 @@
     </HBox>
     <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="753.0" stylesheets="@../css/style.css">
         <content>
-            <VBox id="item-container" prefHeight="318.0" prefWidth="753.0" spacing="5.0" style="-fx-background-color: #EBE8F9;">
+            <VBox fx:id="flightContainer"  id="item-container" prefHeight="318.0" prefWidth="753.0" spacing="5.0" style="-fx-background-color: #EBE8F9;">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                 </padding>

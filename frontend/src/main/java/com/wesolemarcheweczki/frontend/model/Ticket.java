@@ -11,6 +11,7 @@ public class Ticket {
     private int seat;
 
     private int cost;
+    private int id;
 //    private boolean paid;
 
     public Ticket() {
@@ -53,5 +54,12 @@ public class Ticket {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -1,7 +1,6 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
 import com.wesolemarcheweczki.frontend.Main;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,22 +19,7 @@ public class HomeController {
     @FXML
     private Pane viewContent;
 
-    @FXML
-    private void handleAddUser() throws IOException {
-        // change the view of the scene to include AddUser
-        viewIcon.setIcon(FontAwesomeIcon.USERS);
-        viewTitle.setText("Add User");
-    }
-
-    @FXML
-    private void handleAddCarrier() throws IOException {
-        // change the view of the scene to include AddUser
-        viewContent.getChildren().clear();
-        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/AddCarrier.fxml"));
-        viewContent.getChildren().add(newLoadedPane);
-        viewIcon.setIcon(FontAwesomeIcon.PLANE);
-        viewTitle.setText("Add Carrier");
-    }
+    private FlightsController flightsController = new FlightsController();
 
     @FXML
     private void exit() {
@@ -47,30 +31,39 @@ public class HomeController {
         Main.getPrimaryStage().setIconified(true);
     }
 
+    @FXML
     public void handleTickets(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void handleLocations(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void handleCustomers(ActionEvent actionEvent) throws IOException {
-        viewContent.getChildren().clear();
-        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/AddUser.fxml"));
-        viewContent.getChildren().add(newLoadedPane);
+        loadPane("/views/AddUser.fxml");
     }
 
-    public void handleFlights(ActionEvent actionEvent) throws IOException {
-        viewContent.getChildren().clear();
-        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/Flights.fxml"));
-        viewContent.getChildren().add(newLoadedPane);
+    @FXML
+    public void handleFlights(ActionEvent actionEvent) throws IOException, InterruptedException {
+        loadPane("/views/Flights.fxml");
+        flightsController.loadFlights();
     }
 
+    @FXML
     public void handleCarriers(ActionEvent actionEvent) throws IOException {
-        viewContent.getChildren().clear();
-        Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/views/AddCarrier.fxml"));
-        viewContent.getChildren().add(newLoadedPane);
+        loadPane("/views/AddCarrier.fxml");
     }
 
+    @FXML
     public void handleOverview(ActionEvent actionEvent) {
+    }
+
+    public void loadPane(String resource) throws IOException {
+        // load pane on the right side from fxml view
+        viewContent.getChildren().clear();
+        Pane newLoadedPane = FXMLLoader.load(getClass().getResource(resource));
+        viewContent.getChildren().add(newLoadedPane);
+
     }
 }
