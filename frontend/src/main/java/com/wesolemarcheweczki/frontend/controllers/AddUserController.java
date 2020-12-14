@@ -27,7 +27,7 @@ public class AddUserController {
 
     private final RestClient restClient = new RestClient();
 
-    public static String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private static String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
     @FXML
     private void addUser() throws IOException, InterruptedException {

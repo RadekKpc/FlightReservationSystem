@@ -10,6 +10,7 @@ public class Flight {
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int capacity;
+    private int baseCost;
     private Location destination;
     private Location source;
 
@@ -100,5 +101,13 @@ public class Flight {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setBaseCost(int baseCost) {
+        this.baseCost = baseCost;
+    }
+
+    public int getBaseCost() {
+        return baseCost;
     }
 }
