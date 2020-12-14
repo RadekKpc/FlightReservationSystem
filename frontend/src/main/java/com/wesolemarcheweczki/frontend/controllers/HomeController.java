@@ -19,8 +19,6 @@ public class HomeController {
     @FXML
     private Pane viewContent;
 
-    private FlightsController flightsController = new FlightsController();
-
     @FXML
     private void exit() {
         System.exit(0);
@@ -45,9 +43,8 @@ public class HomeController {
     }
 
     @FXML
-    public void handleFlights(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void handleFlights(ActionEvent actionEvent) throws IOException {
         loadPane("/views/Flights.fxml");
-        flightsController.loadFlights();
     }
 
     @FXML
@@ -59,8 +56,7 @@ public class HomeController {
     public void handleOverview(ActionEvent actionEvent) {
     }
 
-    public void loadPane(String resource) throws IOException {
-        // load pane on the right side from fxml view
+    public void loadPane(String resource) throws IOException { // load pane on the right side from fxml view
         viewContent.getChildren().clear();
         Pane newLoadedPane = FXMLLoader.load(getClass().getResource(resource));
         viewContent.getChildren().add(newLoadedPane);
