@@ -1,14 +1,16 @@
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.wesolemarcheweczki.frontend.controllers.FlightsController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wesolemarcheweczki.frontend.controllers.FlightsController">
 <Pane prefHeight="200.0" prefWidth="200.0" />
 <Pane prefHeight="200.0" prefWidth="200.0" />
 <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -55,52 +57,37 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
         </children>
     </HBox>
-    <HBox alignment="CENTER_LEFT" fillHeight="false" layoutX="14.0" layoutY="178.0" prefHeight="42.0" prefWidth="753.0" spacing="10.0" style="-fx-background-color: #EBE8F9; -fx-border-color: #B7C3D7;">
-        <children>
-            <Label text="Carrier Name">
-                <HBox.margin>
-                    <Insets left="50.0" />
-                </HBox.margin>
-            </Label>
-            <Label text="From" />
-            <Label text="To" />
-            <Label text="Departure Airport">
-                <HBox.margin>
-                    <Insets />
-                </HBox.margin>
-            </Label>
-            <Label text="Arrival Airport" />
-            <Label text="Departure">
-                <HBox.margin>
-                    <Insets />
-                </HBox.margin>
-            </Label>
-            <Label text="Arrival">
-                <HBox.margin>
-                    <Insets />
-                </HBox.margin>
-            </Label>
-            <Label text="Price">
-                <HBox.margin>
-                    <Insets />
-                </HBox.margin>
-            </Label>
-            <Label text="Booked Places" />
-            <Label text="Free Places" />
-        </children>
-    </HBox>
     <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="753.0" stylesheets="@../css/style.css">
         <content>
-            <VBox fx:id="flightContainer"  id="item-container" prefHeight="318.0" prefWidth="753.0" spacing="5.0" style="-fx-background-color: #EBE8F9;">
-                <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                </padding>
-                <children>
-                </children>
+            <VBox id="item-container" fx:id="flightContainer" prefHeight="318.0" prefWidth="753.0" spacing="5.0" style="-fx-background-color: #EBE8F9;">
             </VBox>
         </content>
     </ScrollPane>
     <FontAwesomeIconView fill="#b7c3d7" glyphName="SEARCH" layoutX="752.0" layoutY="65.0" />
+         <Pane layoutX="14.0" layoutY="164.0" prefHeight="51.0" prefWidth="753.0" style="-fx-background-color: #EBE8F9; -fx-border-color: #a9a9a9;">
+            <children>
+               <HBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="-12.0" prefHeight="77.0" prefWidth="753.0" spacing="20.0">
+                  <children>
+                     <Label text="Carrier Name" />
+                     <Label text="From" />
+                     <Label text="To" />
+                     <Label text="Departure Airport" />
+                     <Label text="Arrival airport" />
+                     <Label text="Departure" />
+                     <Label text="Arrival" />
+                     <Label text="Price" />
+                     <Label text="Booked Places" />
+                     <Label text="Free Palces" />
+                  </children>
+                  <padding>
+                     <Insets left="20.0" />
+                  </padding>
+               </HBox>
+            </children>
+         </Pane>
 </children>
+      <padding>
+         <Insets left="20.0" />
+      </padding>
 </Pane>
 </Pane>
