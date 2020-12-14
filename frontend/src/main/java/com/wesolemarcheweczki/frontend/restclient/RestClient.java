@@ -14,13 +14,13 @@ import java.util.List;
 
 
 public class RestClient {
+    private static HttpClient httpClient = HttpClient.newHttpClient();
     private String url = "http://localhost:8080/api";
     private ObjectMapper mapper = new ObjectMapper();
 
     public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
         var parsedObject = mapper.writeValueAsString(obj);
 
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
                 .POST(HttpRequest.BodyPublishers.ofString(parsedObject))
@@ -41,7 +41,6 @@ public class RestClient {
                 auth.getBytes(StandardCharsets.ISO_8859_1));
         String authHeader = "Basic " + new String(encodedAuth);
 
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
                 .GET()
