@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
@@ -10,45 +9,62 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
-<VBox alignment="TOP_CENTER" prefHeight="438.0" prefWidth="719.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wesolemarcheweczki.frontend.controllers.AddCarrierController">
+<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.wesolemarcheweczki.frontend.controllers.AddCarrierController">
     <children>
-        <VBox prefHeight="231.0" prefWidth="519.0" spacing="30.0">
+        <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0" style="-fx-background-color: #EBE8F9;">
             <children>
-                <Pane prefHeight="43.0" prefWidth="606.0">
+                <VBox prefHeight="201.0" prefWidth="375.0" spacing="30.0">
                     <children>
-                        <TextField fx:id="carrierName" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="379.0" promptText="Name" styleClass="text-form">
+                        <Pane prefHeight="43.0" prefWidth="171.0">
+                            <children>
+                                <TextField fx:id="carrierName" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="187.0" promptText="Name" styleClass="text-form">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </TextField>
+                                <FontAwesomeIconView fill="#6b6e6f" glyphName="USER" layoutX="6.0" layoutY="28.0" size="18.0" />
+                            </children>
+                        </Pane>
+
+                    </children>
+                    <padding>
+                        <Insets left="50.0" right="50.0" top="20.0" />
+                    </padding>
+                </VBox>
+                <Pane prefHeight="76.0" prefWidth="479.0">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                    <children>
+                        <Button fx:id="addCarrierButton" onAction="#addCarrier" layoutX="133.0" layoutY="-10.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: white; -fx-border-color: #6B6E6F; -fx-border-radius: 5;" text="Confirm">
                             <font>
                                 <Font size="18.0" />
                             </font>
-                        </TextField>
-                        <FontAwesomeIconView fill="#007dff" glyphName="USER" layoutX="6.0" layoutY="28.0" size="18.0" />
+                        </Button>
+                        <Text fx:id="errorText" layoutX="100.0" layoutY="80.0" style="-fx-background-color: #007dff;" text="">>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Text>
                     </children>
                 </Pane>
             </children>
-            <padding>
-                <Insets left="50.0" right="50.0" />
-            </padding>
         </VBox>
-        <Pane>
-            <VBox.margin>
-                <Insets top="10.0" />
-            </VBox.margin>
+        <Label layoutX="57.0" layoutY="25.0" text="Add Carrier">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Pane layoutX="504.0" layoutY="51.0" prefHeight="484.0" prefWidth="266.0" style="-fx-background-color: #EBE8F9;">
             <children>
-                <Button onAction="#addCarrier" layoutX="215.0" layoutY="2.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="89.0" style="-fx-background-color: #007dff;" text="Confirm" textFill="WHITE">
+                <Label layoutX="41.0" layoutY="37.0" text="Info">
                     <font>
-                        <Font size="18.0" />
+                        <Font size="24.0" />
                     </font>
-                </Button>
-                <Text fx:id="errorText" layoutX="215.0" layoutY="80.0" style="-fx-background-color: #007dff;" text="">>
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Text>
+                </Label>
             </children>
         </Pane>
     </children>
-    <padding>
-        <Insets left="100.0" right="100.0" top="25.0" />
-    </padding>
-</VBox>
+</Pane>

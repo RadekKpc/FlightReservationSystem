@@ -1,0 +1,51 @@
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.effect.DropShadow?>
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="53.0" prefWidth="729.0" spacing="5.0"
+      style="-fx-background-color: #ffffff; -fx-background-radius: 5; -fx-background-insets: 0;" >
+    <children>
+        <Label text="KeepToo" />
+        <Label text="Poland" />
+        <Label text="Brasil" />
+        <Label text="AIRPORT12" />
+        <Label text="AIRPORT33" />
+        <Label text="JFK">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Label>
+        <Label prefHeight="17.0" prefWidth="142.0" text="10/11/2018 12:48 GMT+1">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Label>
+        <Label prefHeight="17.0" prefWidth="140.0" text="10/11/2018 12:48 GMT+1">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Label>
+        <Label text="\$200" />
+        <Label text="98" />
+        <Label text="100" />
+        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="19.0">
+            <graphic>
+                <FontAwesomeIconView glyphName="EDIT" />
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false">
+            <graphic>
+                <FontAwesomeIconView glyphName="CLOSE" />
+            </graphic>
+        </Button>
+    </children>
+    <effect>
+        <DropShadow blurType="GAUSSIAN" height="5.0" radius="2.0" width="5.0" />
+    </effect>
+    <padding>
+        <Insets left="10.0" />
+    </padding>
+</HBox>
