@@ -11,7 +11,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
-<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" >
+<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.wesolemarcheweczki.frontend.controllers.AddCarrierController">
     <children>
         <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0" style="-fx-background-color: #EBE8F9;">
             <children>
@@ -19,7 +19,7 @@
                     <children>
                         <Pane prefHeight="43.0" prefWidth="171.0">
                             <children>
-                                <TextField fx:id="carrierNameTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="187.0" promptText="Name" styleClass="text-form">
+                                <TextField fx:id="carrierName" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="187.0" promptText="Name" styleClass="text-form">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
@@ -38,12 +38,12 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                     <children>
-                        <Button fx:id="addUserButton" layoutX="133.0" layoutY="-10.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: white; -fx-border-color: #6B6E6F; -fx-border-radius: 5;" text="Confirm">
+                        <Button fx:id="addCarrierButton" onAction="#addCarrier" layoutX="133.0" layoutY="-10.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: white; -fx-border-color: #6B6E6F; -fx-border-radius: 5;" text="Confirm">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Button>
-                        <Text fx:id="errorText" layoutX="215.0" layoutY="80.0" style="-fx-background-color: #007dff;" text="">>
+                        <Text fx:id="errorText" layoutX="100.0" layoutY="80.0" style="-fx-background-color: #007dff;" text="">>
                             <font>
                                 <Font size="18.0" />
                             </font>
