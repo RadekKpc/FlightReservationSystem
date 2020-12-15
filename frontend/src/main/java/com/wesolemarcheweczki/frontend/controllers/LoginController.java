@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 public class LoginController {
 
     @FXML
+    private Text loginErrorText;
+    @FXML
     private Text errorText;
     @FXML
     private PasswordField registerConfirmPassword;
@@ -42,9 +44,19 @@ public class LoginController {
     private void login() throws IOException, InterruptedException {
         String email = loginEmail.getText();
         String pwd = loginPassword.getText();
+        if (!Pattern.matches(emailRegex, email)) {
+            couldntLogin("Wrong email!");
+            return;
+        }
+        if (pwd.isEmpty()) {
+            couldntLogin("Password cannot be empty");
+            return;
+        }
         client.setEmail(email);
         if (restClient.authorizeLogin(email,pwd)) {
             loadHomePage(client.getEmail());
+        } else {
+            couldntLogin("Not authorized!");
         }
     }
 
@@ -53,12 +65,16 @@ public class LoginController {
         updateModelRegister();
         String pass1 = registerPassword.getText();
         String pass2 = registerConfirmPassword.getText();
+        if (pass1.isEmpty()) {
+            couldntRegister("Password cannot be empty");
+            return;
+        }
         if (!pass1.equals(pass2)) {
-            passwordsDontMatchHandle();
+            couldntRegister("Passwords don't match");
             return;
         }
         if (!Pattern.matches(emailRegex, this.client.getEmail())) {
-            wrongEmailHandle();
+            couldntRegister("Wrong email!");
             return;
         }
         if (restClient.postObject(this.client, "/client")) { // user successfully added to database
@@ -69,21 +85,10 @@ public class LoginController {
             registerEmail.setText("");
             loadHomePage(client.getEmail());
         } else {
-            couldntRegister();
+            couldntRegister("Couldn't register");
         }
 
     }
-
-    private void passwordsDontMatchHandle() { // if passwords don't match in register
-        errorText.setText("Passwords don't match!");
-        errorText.setStyle("-fx-fill: red;");
-    }
-
-    private void wrongEmailHandle() { // show error message that the email provided is wrong
-        errorText.setText("Wrong email!");
-        errorText.setStyle("-fx-fill: red;");
-    }
-
     private void updateModelRegister() {
         String firstName = registerFirstName.getText();
         String lastName = registerLastName.getText();
@@ -95,11 +100,6 @@ public class LoginController {
         this.client.setPassword(pwd);
     }
 
-    private void couldntRegister() { // show error message that the user could not get added to database
-        errorText.setText("Could not register!");
-        errorText.setStyle("-fx-fill: red;");
-    }
-
     private void loadHomePage(String email) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
         Parent root = loader.load();
@@ -107,5 +107,15 @@ public class LoginController {
         Main.setScene(scene);
         HomeController hc = loader.getController();
         hc.setCurrentlyLoggedInClient(email);
+    }
+
+    private void couldntLogin(String problem) { // show error message
+        loginErrorText.setText(problem);
+        loginErrorText.setStyle("-fx-fill: red;");
+    }
+
+    private void couldntRegister(String problem) { // show error message that the user could not get added to database
+        errorText.setText(problem);
+        errorText.setStyle("-fx-fill: red;");
     }
 }
