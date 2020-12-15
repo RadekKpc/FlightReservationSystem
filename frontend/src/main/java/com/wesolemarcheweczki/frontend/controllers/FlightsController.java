@@ -3,6 +3,7 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.model.Flight;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
@@ -19,9 +20,12 @@ public class FlightsController {
 
     private final RestClient restClient = new RestClient();
 
-    public void loadData() throws IOException, InterruptedException {
+    private Client client;
+
+    public void loadData(String email, String pwd) throws IOException, InterruptedException {
         flightContainer.getChildren().clear();
-        String response = restClient.getObject("/flight");
+        System.out.println(email + pwd);
+        String response = restClient.getObject(email,pwd,"/flight");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         List<Flight> valuesList = mapper.readValue(response, new TypeReference<>(){});

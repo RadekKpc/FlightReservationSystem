@@ -22,7 +22,7 @@ public class HomeController {
     @FXML
     private Pane viewContent;
 
-    private Client currentlyLoggedInClient = new Client();
+    private final Client client = new Client();
 
     @FXML
     private void exit() {
@@ -51,7 +51,7 @@ public class HomeController {
     public void handleFlights(ActionEvent actionEvent) throws IOException, InterruptedException {
         FXMLLoader loader = loadPane("/views/Flights.fxml");
         FlightsController fc = loader.getController();
-        fc.loadData();
+        fc.loadData(client.getEmail(), client.getPassword());
     }
 
     @FXML
@@ -71,8 +71,9 @@ public class HomeController {
         return loader;
     }
 
-    public void setCurrentlyLoggedInClient(String email){
-        currentlyLoggedInClient.setEmail(email);
+    public void updateLoggedClient(String email, String pwd){
+        client.setEmail(email);
+        client.setPasswordWithoutEncoding(pwd);
         loggedInLabel.setText("Logged in as " + email);
     }
 }

@@ -61,4 +61,6 @@ public class Client {
     public int getId() {
         return id;
     }
+
+    public void setPasswordWithoutEncoding(String password) {this.password = password;}
 }

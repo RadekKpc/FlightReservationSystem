@@ -37,8 +37,8 @@ public class LoginController {
 
     private final RestClient restClient = new RestClient();
 
-    private static String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-    private Client client = new Client();
+    private static final String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private final Client client = new Client();
 
     @FXML
     private void login() throws IOException, InterruptedException {
@@ -53,8 +53,9 @@ public class LoginController {
             return;
         }
         client.setEmail(email);
+        client.setPasswordWithoutEncoding(pwd);
         if (restClient.authorizeLogin(email,pwd)) {
-            loadHomePage(client.getEmail());
+            loadHomePage(client.getEmail(), client.getPassword());
         } else {
             couldntLogin("Not authorized!");
         }
@@ -83,7 +84,7 @@ public class LoginController {
             registerLastName.setText("");
             registerFirstName.setText("");
             registerEmail.setText("");
-            loadHomePage(client.getEmail());
+            loadHomePage(client.getEmail(), client.getPassword());
         } else {
             couldntRegister("Couldn't register");
         }
@@ -97,16 +98,16 @@ public class LoginController {
         this.client.setEmail(email);
         this.client.setFirstName(firstName);
         this.client.setLastName(lastName);
-        this.client.setPassword(pwd);
+        this.client.setPasswordWithoutEncoding(pwd);
     }
 
-    private void loadHomePage(String email) throws IOException {
+    private void loadHomePage(String email, String pwd) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Main.setScene(scene);
         HomeController hc = loader.getController();
-        hc.setCurrentlyLoggedInClient(email);
+        hc.updateLoggedClient(email, pwd);
     }
 
     private void couldntLogin(String problem) { // show error message
