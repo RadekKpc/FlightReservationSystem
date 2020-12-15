@@ -58,4 +58,23 @@ public class RestClient {
         }
     }
 
+    public boolean authorizeLogin(String login, String pwd) throws IOException, InterruptedException {
+        String auth = login + ":" + pwd;
+        byte[] encodedAuth = Base64.encodeBase64(
+                auth.getBytes(StandardCharsets.ISO_8859_1));
+        String authHeader = "Basic " + new String(encodedAuth);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/check"))
+                .GET()
+                .header("Authorization", authHeader)
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        return response.statusCode() == 200;
+    }
+
 }
