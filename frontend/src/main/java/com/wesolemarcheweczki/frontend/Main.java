@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.setPrimaryStage(primaryStage);
-        Parent root = FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoginRegister.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.DECORATED);
@@ -45,7 +45,11 @@ public class Main extends Application {
         return primaryStage;
     }
 
-    private void setPrimaryStage(Stage pStage) {
+    public void setPrimaryStage(Stage pStage) {
         Main.primaryStage = pStage;
+    }
+
+    public static void setScene(Scene scene) {
+        Main.primaryStage.setScene(scene);
     }
 }
