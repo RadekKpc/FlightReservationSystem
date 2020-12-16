@@ -2,6 +2,7 @@ package com.wesolemarcheweczki.frontend.restclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,6 +17,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,19 +28,29 @@ public class RestClient<T> {
     private String url = "http://localhost:8080/api";
     private ObjectMapper mapper = new ObjectMapper();
 
+
     public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
+        String auth = "client_email1@sample.com" + ":" + "client1pwd";
+        byte[] encodedAuth = Base64.encodeBase64(
+                auth.getBytes(StandardCharsets.ISO_8859_1));
+            String authHeader = "Basic " + new String(encodedAuth);
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
         var parsedObject = mapper.writeValueAsString(obj);
+        System.out.println(parsedObject);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
                 .POST(HttpRequest.BodyPublishers.ofString(parsedObject))
+                .header("Authorization", authHeader)
                 .header("Content-Type", "application/json")
                 .build();
 
         HttpResponse<String> response = httpClient.send(request,
                 HttpResponse.BodyHandlers.ofString());
 
-
+        System.out.println(response.statusCode());
         return response.statusCode() == 200;
     }
 

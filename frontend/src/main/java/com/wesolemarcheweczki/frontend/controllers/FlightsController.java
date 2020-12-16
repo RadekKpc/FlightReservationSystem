@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -66,6 +67,13 @@ public class FlightsController implements Initializable {
 
     private final Task<List<Location>> getLocation = restClient.createGetTask("/location", Location.class);
 
+    private List<Flight> flightList;
+    private List<Carrier> carrierList;
+    private List<Location> locationList;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+
     public void addFlightToList(Flight f) throws IOException { // add flight to VBox list
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Item.fxml"));
         Parent root = loader.load();
@@ -85,12 +93,72 @@ public class FlightsController implements Initializable {
         fromColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSource().getCity()));
         toColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDestination().getCity()));
         carrierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCarrier().getName()));
-        priceColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Flight, String> t) ->
-                        ( t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setBaseCost(Integer.parseInt(t.getNewValue()))
-        );
+        priceColumn.setOnEditCommit(this::updateFlightCost);
+        carrierColumn.setOnEditCommit(this::updateFlightCarrier);
+        arrivalColumn.setOnEditCommit(this::updateArrivalTime);
+        departureColumn.setOnEditCommit(this::updateDepartureTime);
+    }
+
+    private void updateFlightCost(TableColumn.CellEditEvent<Flight, String> t) {
+        int cost = Integer.parseInt(t.getNewValue());
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setBaseCost(cost);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setBaseCost(cost);
+        postFlightChange(f);
+    }
+
+    private void updateDepartureTime(TableColumn.CellEditEvent<Flight, String> t) {
+        LocalDateTime time = LocalDateTime.parse(t.getNewValue(), formatter);
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setDeparture(time);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setDeparture(time);
+        postFlightChange(f);
+    }
+
+    private void updateArrivalTime(TableColumn.CellEditEvent<Flight, String> t) {
+        LocalDateTime time = LocalDateTime.parse(t.getNewValue(), formatter);
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setArrival(time);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setArrival(time);
+        postFlightChange(f);
+    }
+
+    private void updateFlightCarrier(TableColumn.CellEditEvent<Flight, String> t) {
+        String carrierName = t.getNewValue();
+        Carrier c = findCarrierByName(carrierName);
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setCarrier(c);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setCarrier(c);
+        f.setDeparture(f.getDeparture());
+        f.setArrival(f.getArrival());
+        System.out.println(f.getDeparture() + "\n" + f.getCarrier());
+        postFlightChange(f);
+    }
+
+    private Carrier findCarrierByName(String carrierName) {
+        for (Carrier c : carrierList) {
+            if (c.getName().equals(carrierName)) return c;
+        }
+        return null;
+    }
+
+    private void postFlightChange(Flight f) {
+        try {
+            restClient.postObject(f, "/flight");
+        } catch (IOException | InterruptedException ignored) {
+        }
     }
 
     @Override
@@ -109,6 +177,7 @@ public class FlightsController implements Initializable {
         });
         getCarriers.setOnSucceeded(event -> {
             var carrierList = getCarriers.getValue();
+            this.carrierList =  getCarriers.getValue();
             System.out.println(carrierList);
             listOfCarriers.addAll(carrierList);
             carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
@@ -123,6 +192,7 @@ public class FlightsController implements Initializable {
         getLocation.setOnSucceeded(event -> {
             System.out.println("location success");
             var locationsList = getLocation.getValue();
+            this.locationList = locationsList;
             System.out.println("locations " + locationsList);
             listOfLocations.addAll(locationsList);
             fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
