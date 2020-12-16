@@ -49,9 +49,7 @@ public class HomeController {
 
     @FXML
     public void handleFlights(ActionEvent actionEvent) throws IOException, InterruptedException {
-        FXMLLoader loader = loadPane("/views/Flights.fxml");
-        FlightsController fc = loader.getController();
-        fc.loadData(client.getEmail(), client.getPassword());
+        loadPane("/views/Flights.fxml");
     }
 
     @FXML

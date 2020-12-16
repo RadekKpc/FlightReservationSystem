@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.wesolemarcheweczki.frontend.model.Flight;
+import com.wesolemarcheweczki.frontend.util.AuthManager;
 import javafx.concurrent.Task;
 import org.apache.commons.codec.binary.Base64;
 import org.yaml.snakeyaml.events.CollectionStartEvent;
@@ -81,19 +82,8 @@ public class RestClient<T> {
         return response.statusCode() == 200;
     }
 
-
-    public String getObject(String endpoint) throws IOException, InterruptedException {
-        String authHeader = getAuthHeader();
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + endpoint))
-                .GET()
-                .header("Authorization", authHeader)
-                .header("Content-Type", "application/json")
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request,
-                HttpResponse.BodyHandlers.ofString());
+    public String getObject(String email, String pwd, String endpoint) throws IOException, InterruptedException {
+        HttpResponse<String> response = getResponse(email, pwd, endpoint);
 
         if (response.statusCode() == 200) {
             return response.body();
@@ -102,12 +92,32 @@ public class RestClient<T> {
         }
     }
 
+    public boolean authorizeLogin(String login, String pwd) throws IOException, InterruptedException {
+        return getResponse(login, pwd, "/check").statusCode() == 200;
+    }
+
+    public HttpResponse<String> getResponse(String login, String pwd, String endpoint) throws IOException, InterruptedException {
+        String auth = login + ":" + pwd;
+        byte[] encodedAuth = Base64.encodeBase64(
+                auth.getBytes(StandardCharsets.ISO_8859_1));
+        String authHeader = "Basic " + new String(encodedAuth);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + endpoint))
+                .GET()
+                .header("Authorization", authHeader)
+                .header("Content-Type", "application/json")
+                .build();
+
+        return httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+    }
+
     public Task<List<T>> createGetTask(String endpoint, Class<T> className){
         return new Task<List<T>>() {
 
             @Override
             protected List<T> call() throws Exception {
-                String response = getObject(endpoint);
+                String response = getObject(AuthManager.email, AuthManager.pwd, endpoint);
                 System.out.println(response);
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());

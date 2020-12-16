@@ -84,13 +84,15 @@ public class FlightsController implements Initializable {
         arrivalColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         departureColumn.setCellValueFactory(cellData ->  new SimpleStringProperty(cellData.getValue().getDeparture().toString()));
         departureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        fromColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSource().getCity()));
-        toColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDestination().getCity()));
+        fromColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSource().getAirportId()));
+        toColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDestination().getAirportId()));
         carrierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCarrier().getName()));
         priceColumn.setOnEditCommit(this::updateFlightCost);
         carrierColumn.setOnEditCommit(this::updateFlightCarrier);
         arrivalColumn.setOnEditCommit(this::updateArrivalTime);
         departureColumn.setOnEditCommit(this::updateDepartureTime);
+        fromColumn.setOnEditCommit(this::updateFrom);
+        toColumn.setOnEditCommit(this::updateTo);
     }
 
     private void updateFlightCost(TableColumn.CellEditEvent<Flight, String> t) {
@@ -101,6 +103,28 @@ public class FlightsController implements Initializable {
                 .setBaseCost(cost);
         Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
         f.setBaseCost(cost);
+        putFlightChange(f);
+    }
+
+    private void updateFrom(TableColumn.CellEditEvent<Flight, String> t) {
+        Location l = findLocationByName(t.getNewValue());
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setSource(l);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setSource(l);
+        putFlightChange(f);
+    }
+
+    private void updateTo(TableColumn.CellEditEvent<Flight, String> t) {
+        Location l = findLocationByName(t.getNewValue());
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setDestination(l);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setDestination(l);
         putFlightChange(f);
     }
 
@@ -153,6 +177,13 @@ public class FlightsController implements Initializable {
             restClient.putObject(f, "/flight");
         } catch (IOException | InterruptedException ignored) {
         }
+    }
+
+    private Location findLocationByName(String id){
+        for (Location c : locationList) {
+            if (c.getAirportId().equals(id)) return c;
+        }
+        return null;
     }
 
     @Override
