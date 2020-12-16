@@ -36,15 +36,15 @@ public class FlightsController implements Initializable {
     private ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
     private ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
 
-    public TableColumn freeColumn;
-    public TableColumn bookedColumn;
-    public TableColumn<Flight, String> priceColumn;
-    public TableColumn<Flight, String> arrivalColumn;
-    public TableColumn<Flight, String> departureColumn;
-    public TableColumn<Flight, String> fromColumn;
-    public TableColumn <Flight, String> toColumn;
-    public TableColumn<Flight, String> carrierColumn;
-    public TableView<Flight> dataTable;
+    private TableColumn freeColumn;
+    private TableColumn bookedColumn;
+    private TableColumn<Flight, String> priceColumn;
+    private TableColumn<Flight, String> arrivalColumn;
+    private TableColumn<Flight, String> departureColumn;
+    private TableColumn<Flight, String> fromColumn;
+    private TableColumn <Flight, String> toColumn;
+    private TableColumn<Flight, String> carrierColumn;
+    private TableView<Flight> dataTable;
     @FXML
     private VBox flightContainer;
 
@@ -61,7 +61,6 @@ public class FlightsController implements Initializable {
 
     private final Task<List<Location>> getLocation = restClient.createGetTask("/location", Location.class);
 
-    private List<Flight> flightList;
     private List<Carrier> carrierList;
     private List<Location> locationList;
 
@@ -161,7 +160,6 @@ public class FlightsController implements Initializable {
         f.setCarrier(c);
         f.setDeparture(f.getDeparture());
         f.setArrival(f.getArrival());
-        System.out.println(f.getDeparture() + "\n" + f.getCarrier());
         putFlightChange(f);
     }
 
@@ -175,7 +173,8 @@ public class FlightsController implements Initializable {
     private void putFlightChange(Flight f) {
         try {
             restClient.putObject(f, "/flight");
-        } catch (IOException | InterruptedException ignored) {
+        } catch (IOException | InterruptedException err) {
+            err.printStackTrace();
         }
     }
 
@@ -194,17 +193,15 @@ public class FlightsController implements Initializable {
         getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                System.out.println("succeeded");
                 var flightList = getFlights.getValue();
                 listOfFlights = FXCollections.observableArrayList(flightList);
                 dataTable.setItems(listOfFlights);
             }
         });
         getCarriers.setOnSucceeded(event -> {
-            var carrierList = getCarriers.getValue();
+            var carriers = getCarriers.getValue();
             this.carrierList =  getCarriers.getValue();
-            System.out.println(carrierList);
-            listOfCarriers.addAll(carrierList);
+            listOfCarriers.addAll(carriers);
             carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
                     FXCollections
                             .observableArrayList(
@@ -215,10 +212,8 @@ public class FlightsController implements Initializable {
         });
 
         getLocation.setOnSucceeded(event -> {
-            System.out.println("location success");
             var locationsList = getLocation.getValue();
             this.locationList = locationsList;
-            System.out.println("locations " + locationsList);
             listOfLocations.addAll(locationsList);
             fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
                     FXCollections
