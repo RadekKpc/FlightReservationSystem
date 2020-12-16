@@ -1,13 +1,9 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.wesolemarcheweczki.frontend.model.Carrier;
 import com.wesolemarcheweczki.frontend.model.Flight;
 import com.wesolemarcheweczki.frontend.model.Location;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
-import javafx.beans.property.SimpleSetProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +18,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -30,7 +25,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -107,7 +101,7 @@ public class FlightsController implements Initializable {
                 .setBaseCost(cost);
         Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
         f.setBaseCost(cost);
-        postFlightChange(f);
+        putFlightChange(f);
     }
 
     private void updateDepartureTime(TableColumn.CellEditEvent<Flight, String> t) {
@@ -118,7 +112,7 @@ public class FlightsController implements Initializable {
                 .setDeparture(time);
         Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
         f.setDeparture(time);
-        postFlightChange(f);
+        putFlightChange(f);
     }
 
     private void updateArrivalTime(TableColumn.CellEditEvent<Flight, String> t) {
@@ -129,7 +123,7 @@ public class FlightsController implements Initializable {
                 .setArrival(time);
         Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
         f.setArrival(time);
-        postFlightChange(f);
+        putFlightChange(f);
     }
 
     private void updateFlightCarrier(TableColumn.CellEditEvent<Flight, String> t) {
@@ -144,7 +138,7 @@ public class FlightsController implements Initializable {
         f.setDeparture(f.getDeparture());
         f.setArrival(f.getArrival());
         System.out.println(f.getDeparture() + "\n" + f.getCarrier());
-        postFlightChange(f);
+        putFlightChange(f);
     }
 
     private Carrier findCarrierByName(String carrierName) {
@@ -154,9 +148,9 @@ public class FlightsController implements Initializable {
         return null;
     }
 
-    private void postFlightChange(Flight f) {
+    private void putFlightChange(Flight f) {
         try {
-            restClient.postObject(f, "/flight");
+            restClient.putObject(f, "/flight");
         } catch (IOException | InterruptedException ignored) {
         }
     }

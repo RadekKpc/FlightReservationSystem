@@ -1,5 +1,6 @@
 package com.wesolemarcheweczki.frontend.restclient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -28,12 +29,38 @@ public class RestClient<T> {
     private String url = "http://localhost:8080/api";
     private ObjectMapper mapper = new ObjectMapper();
 
-
-    public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
+    private String getAuthHeader(){
         String auth = "client_email1@sample.com" + ":" + "client1pwd";
         byte[] encodedAuth = Base64.encodeBase64(
                 auth.getBytes(StandardCharsets.ISO_8859_1));
-            String authHeader = "Basic " + new String(encodedAuth);
+        return "Basic " + new String(encodedAuth);
+    }
+
+
+    public boolean putObject(Object obj, String endpoint) throws IOException, InterruptedException {
+        String authHeader = getAuthHeader();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        var parsedObject = mapper.writeValueAsString(obj);
+        System.out.println(parsedObject);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + endpoint))
+                .PUT(HttpRequest.BodyPublishers.ofString(parsedObject))
+                .header("Authorization", authHeader)
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response.statusCode());
+        return response.statusCode() == 200;
+    }
+
+    public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
+        String authHeader = getAuthHeader();
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
@@ -56,10 +83,7 @@ public class RestClient<T> {
 
 
     public String getObject(String endpoint) throws IOException, InterruptedException {
-        String auth = "client_email1@sample.com" + ":" + "client1pwd";
-        byte[] encodedAuth = Base64.encodeBase64(
-                auth.getBytes(StandardCharsets.ISO_8859_1));
-        String authHeader = "Basic " + new String(encodedAuth);
+        String authHeader = getAuthHeader();
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
