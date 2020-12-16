@@ -14,9 +14,9 @@ import java.util.List;
 
 
 public class RestClient {
-    private static HttpClient httpClient = HttpClient.newHttpClient();
-    private String url = "http://localhost:8080/api";
-    private ObjectMapper mapper = new ObjectMapper();
+    private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String url = "http://localhost:8080/api";
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
         var parsedObject = mapper.writeValueAsString(obj);
@@ -35,8 +35,22 @@ public class RestClient {
     }
 
 
-    public String getObject(String endpoint) throws IOException, InterruptedException {
-        String auth = "client_email1@sample.com" + ":" + "client1pwd";
+    public String getObject(String email, String pwd, String endpoint) throws IOException, InterruptedException {
+        HttpResponse<String> response = getResponse(email, pwd, endpoint);
+
+        if (response.statusCode() == 200) {
+            return response.body();
+        } else {
+            return null;
+        }
+    }
+
+    public boolean authorizeLogin(String login, String pwd) throws IOException, InterruptedException {
+        return getResponse(login, pwd, "/check").statusCode() == 200;
+    }
+
+    public HttpResponse<String> getResponse(String login, String pwd, String endpoint) throws IOException, InterruptedException {
+        String auth = login + ":" + pwd;
         byte[] encodedAuth = Base64.encodeBase64(
                 auth.getBytes(StandardCharsets.ISO_8859_1));
         String authHeader = "Basic " + new String(encodedAuth);
@@ -48,14 +62,8 @@ public class RestClient {
                 .header("Content-Type", "application/json")
                 .build();
 
-        HttpResponse<String> response = httpClient.send(request,
+        return httpClient.send(request,
                 HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            return response.body();
-        } else {
-            return null;
-        }
     }
 
 }

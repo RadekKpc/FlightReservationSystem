@@ -3,30 +3,29 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.model.Flight;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class FlightsController implements Initializable {
+public class FlightsController {
 
     @FXML
     private VBox flightContainer;
 
     private final RestClient restClient = new RestClient();
 
-    public void loadFlights() throws IOException, InterruptedException {
+    private Client client;
+
+    public void loadData(String email, String pwd) throws IOException, InterruptedException {
         flightContainer.getChildren().clear();
-        String response = restClient.getObject("/flight");
+        System.out.println(email + pwd);
+        String response = restClient.getObject(email,pwd,"/flight");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         List<Flight> valuesList = mapper.readValue(response, new TypeReference<>(){});
@@ -41,17 +40,7 @@ public class FlightsController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Item.fxml"));
         Parent root = loader.load();
         SingleFlightController sfc = loader.getController();
-        sfc.setData(f);
         flightContainer.getChildren().add(root);
-    }
-
-    @Override
-    @FXML
-    public void initialize(URL location, ResourceBundle resources) {
-        try {
-            this.loadFlights();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        sfc.setData(f);
     }
 }

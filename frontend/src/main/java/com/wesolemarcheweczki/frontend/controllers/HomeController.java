@@ -1,10 +1,12 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
 import com.wesolemarcheweczki.frontend.Main;
+import com.wesolemarcheweczki.frontend.model.Client;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
@@ -16,8 +18,11 @@ public class HomeController {
     public FontAwesomeIconView viewIcon;
     @FXML
     public Label viewTitle;
+    public Label loggedInLabel;
     @FXML
     private Pane viewContent;
+
+    private final Client client = new Client();
 
     @FXML
     private void exit() {
@@ -43,8 +48,10 @@ public class HomeController {
     }
 
     @FXML
-    public void handleFlights(ActionEvent actionEvent) throws IOException {
-        loadPane("/views/Flights.fxml");
+    public void handleFlights(ActionEvent actionEvent) throws IOException, InterruptedException {
+        FXMLLoader loader = loadPane("/views/Flights.fxml");
+        FlightsController fc = loader.getController();
+        fc.loadData(client.getEmail(), client.getPassword());
     }
 
     @FXML
@@ -56,10 +63,17 @@ public class HomeController {
     public void handleOverview(ActionEvent actionEvent) {
     }
 
-    public void loadPane(String resource) throws IOException { // load pane on the right side from fxml view
+    public FXMLLoader loadPane(String resource) throws IOException { // load pane on the right side from fxml view
         viewContent.getChildren().clear();
-        Pane newLoadedPane = FXMLLoader.load(getClass().getResource(resource));
-        viewContent.getChildren().add(newLoadedPane);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Parent root = loader.load();
+        viewContent.getChildren().add(root);
+        return loader;
+    }
 
+    public void updateLoggedClient(String email, String pwd){
+        client.setEmail(email);
+        client.setPasswordWithoutEncoding(pwd);
+        loggedInLabel.setText("Logged in as " + email);
     }
 }
