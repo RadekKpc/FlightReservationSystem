@@ -14,8 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
@@ -32,25 +31,40 @@ import java.util.stream.Collectors;
 
 public class FlightsController implements Initializable {
 
+    public Button addFlightButton;
+    public TextField priceCombo;
+    public TextField departureCombo;
+    public ComboBox<Location> toCombo;
+    public TextField arrivalCombo;
+    public ComboBox<Location> fromCombo;
+    public ComboBox<Carrier> addCarrierCombo;
+    public TextField placesCombo;
+    public Button deleteButton;
     private ObservableList<Flight> listOfFlights;
     private ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
     private ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
-
+    @FXML
     private TableColumn freeColumn;
-    private TableColumn bookedColumn;
+    @FXML
+    private TableColumn<Flight, String> placesColumn;
+    @FXML
     private TableColumn<Flight, String> priceColumn;
+    @FXML
     private TableColumn<Flight, String> arrivalColumn;
+    @FXML
     private TableColumn<Flight, String> departureColumn;
-    private TableColumn<Flight, String> fromColumn;
-    private TableColumn <Flight, String> toColumn;
-    private TableColumn<Flight, String> carrierColumn;
+    @FXML
+    private TableColumn<Flight, Location> fromColumn;
+    @FXML
+    private TableColumn <Flight, Location> toColumn;
+    @FXML
+    private TableColumn<Flight, Carrier> carrierColumn;
+    @FXML
     private TableView<Flight> dataTable;
     @FXML
     private VBox flightContainer;
 
     @FXML
-    
-    
     private final RestClient restClient = new RestClient();
 
     private final ExecutorService executorService = Executors.newCachedThreadPool();
@@ -77,21 +91,65 @@ public class FlightsController implements Initializable {
 
     private void initColumns(){
         dataTable.setEditable(true);
+        deleteButton.setOnAction(event -> {
+            Flight f = dataTable.getSelectionModel().getSelectedItem();
+            listOfFlights.remove(f);
+            //restClient.deleteObject("/flight", f);
+        });
+        addFlightButton.setOnAction(event -> {
+            int baseCost = Integer.parseInt(priceCombo.getText());
+            int capacity = Integer.parseInt(placesCombo.getText());
+            int flightCode = listOfFlights.stream().map(Flight::getId).max((a, b) -> a - b).orElse(0);
+            Flight f = new Flight(flightCode,"flight" + flightCode,
+                    addCarrierCombo.getValue(),
+                    LocalDateTime.parse(departureCombo.getText(), formatter),
+                    LocalDateTime.parse(arrivalCombo.getText(), formatter),
+                    capacity, fromCombo.getValue(), toCombo.getValue(), baseCost);
+            try {
+                restClient.postObject(f, "/flight");
+                listOfFlights.add(f);
+                priceCombo.setText("");
+                placesCombo.setText("");
+                addCarrierCombo.setValue(null);
+                departureCombo.setText("");
+                arrivalCombo.setText("");
+                fromCombo.setValue(null);
+                toCombo.setValue(null);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+
         priceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getBaseCost())));
         priceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrival().toString()));
         arrivalColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         departureColumn.setCellValueFactory(cellData ->  new SimpleStringProperty(cellData.getValue().getDeparture().toString()));
         departureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        fromColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSource().getAirportId()));
-        toColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDestination().getAirportId()));
-        carrierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCarrier().getName()));
+        fromColumn.setCellValueFactory(cellData -> cellData.getValue().sourceProperty());
+        toColumn.setCellValueFactory(cellData -> cellData.getValue().destinationProperty());
+        carrierColumn.setCellValueFactory(cellData -> cellData.getValue().carrierProperty());
+        placesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCapacity())));
+        placesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         priceColumn.setOnEditCommit(this::updateFlightCost);
         carrierColumn.setOnEditCommit(this::updateFlightCarrier);
         arrivalColumn.setOnEditCommit(this::updateArrivalTime);
         departureColumn.setOnEditCommit(this::updateDepartureTime);
         fromColumn.setOnEditCommit(this::updateFrom);
         toColumn.setOnEditCommit(this::updateTo);
+        placesColumn.setOnEditCommit(this::updateFlightPlaces);
+    }
+
+    private void updateFlightPlaces(TableColumn.CellEditEvent<Flight, String> t){
+        int cap = Integer.parseInt(t.getNewValue());
+        t.getTableView()
+                .getItems()
+                .get(t.getTablePosition().getRow())
+                .setCapacity(cap);
+        Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
+        f.setBaseCost(cap);
+        putFlightChange(f);
     }
 
     private void updateFlightCost(TableColumn.CellEditEvent<Flight, String> t) {
@@ -105,8 +163,8 @@ public class FlightsController implements Initializable {
         putFlightChange(f);
     }
 
-    private void updateFrom(TableColumn.CellEditEvent<Flight, String> t) {
-        Location l = findLocationByName(t.getNewValue());
+    private void updateFrom(TableColumn.CellEditEvent<Flight, Location> t) {
+        Location l = t.getNewValue();
         t.getTableView()
                 .getItems()
                 .get(t.getTablePosition().getRow())
@@ -116,8 +174,8 @@ public class FlightsController implements Initializable {
         putFlightChange(f);
     }
 
-    private void updateTo(TableColumn.CellEditEvent<Flight, String> t) {
-        Location l = findLocationByName(t.getNewValue());
+    private void updateTo(TableColumn.CellEditEvent<Flight, Location> t) {
+        Location l = t.getNewValue();
         t.getTableView()
                 .getItems()
                 .get(t.getTablePosition().getRow())
@@ -149,17 +207,14 @@ public class FlightsController implements Initializable {
         putFlightChange(f);
     }
 
-    private void updateFlightCarrier(TableColumn.CellEditEvent<Flight, String> t) {
-        String carrierName = t.getNewValue();
-        Carrier c = findCarrierByName(carrierName);
+    private void updateFlightCarrier(TableColumn.CellEditEvent<Flight, Carrier> t) {
+        Carrier c = t.getNewValue();
         t.getTableView()
                 .getItems()
                 .get(t.getTablePosition().getRow())
                 .setCarrier(c);
         Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
         f.setCarrier(c);
-        f.setDeparture(f.getDeparture());
-        f.setArrival(f.getArrival());
         putFlightChange(f);
     }
 
@@ -202,35 +257,21 @@ public class FlightsController implements Initializable {
             var carriers = getCarriers.getValue();
             this.carrierList =  getCarriers.getValue();
             listOfCarriers.addAll(carriers);
-            carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
-                    FXCollections
-                            .observableArrayList(
-                                    listOfCarriers
-                                            .stream()
-                                            .map(Carrier::getName)
-                                            .collect(Collectors.toList()))));
+            carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfCarriers));
+
+            addCarrierCombo.setItems(listOfCarriers);
         });
 
         getLocation.setOnSucceeded(event -> {
             var locationsList = getLocation.getValue();
             this.locationList = locationsList;
             listOfLocations.addAll(locationsList);
-            fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
-                    FXCollections
-                            .observableArrayList(
-                                    listOfLocations
-                                            .stream()
-                                            .map(Location::getAirportId)
-                                            .collect(Collectors.toList()))));
+            fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
 
-            toColumn.setCellFactory(ComboBoxTableCell.forTableColumn(
-                    FXCollections
-                            .observableArrayList(
-                                    listOfLocations
-                                            .stream()
-                                            .map(Location::getAirportId)
-                                            .collect(Collectors.toList()))));
+            toColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
 
+            fromCombo.setItems(listOfLocations);
+            toCombo.setItems(listOfLocations);
         });
         executorService.submit(getCarriers);
         executorService.submit(getFlights);

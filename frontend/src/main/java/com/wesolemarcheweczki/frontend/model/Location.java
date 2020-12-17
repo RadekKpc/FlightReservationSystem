@@ -18,6 +18,10 @@ public class Location {
         return id;
     }
 
+    public String toString(){
+        return getAirportId();
+    }
+
     public void setId(int id) {
         this.id = id;
     }

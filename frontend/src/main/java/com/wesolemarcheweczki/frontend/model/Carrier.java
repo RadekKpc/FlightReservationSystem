@@ -11,6 +11,10 @@ public class Carrier {
     private int id;
     private StringProperty name;
 
+    public String toString(){
+        return getName();
+    }
+
     @JsonCreator
     public Carrier(@JsonProperty("name") String name, @JsonProperty("id") int id) {
         this.name = new SimpleStringProperty(name);
