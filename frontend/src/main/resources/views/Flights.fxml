@@ -3,7 +3,8 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -57,39 +58,19 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
         </children>
     </HBox>
-    <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="753.0" stylesheets="@../css/style.css">
-        <content>
-            <VBox id="item-container" fx:id="flightContainer" prefHeight="318.0" prefWidth="753.0" spacing="5.0" style="-fx-background-color: #EBE8F9;">
-                <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                </padding>
-                <children>
-                </children>
-            </VBox>
-        </content>
-    </ScrollPane>
     <FontAwesomeIconView fill="#b7c3d7" glyphName="SEARCH" layoutX="752.0" layoutY="65.0" />
-         <Pane layoutX="14.0" layoutY="164.0" prefHeight="51.0" prefWidth="753.0" style="-fx-background-color: #EBE8F9; -fx-border-color: #a9a9a9;">
-            <children>
-               <HBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="-12.0" prefHeight="77.0" prefWidth="753.0" spacing="15.0">
-                  <children>
-                     <Label text="Carrier" />
-                     <Label text="From" />
-                     <Label text="To" />
-                     <Label text="Start" />
-                     <Label text="Destination" />
-                     <Label text="Departure Time" />
-                     <Label text="Arrival Time" />
-                     <Label text="Price" />
-                     <Label text="Booked Places" />
-                     <Label text="Free Places" />
-                  </children>
-                  <padding>
-                     <Insets left="20.0" />
-                  </padding>
-               </HBox>
-            </children>
-         </Pane>
+         <TableView fx:id="dataTable" layoutX="15.0" layoutY="162.0" prefHeight="327.0" prefWidth="753.0">
+           <columns>
+             <TableColumn fx:id="carrierColumn" prefWidth="75.0" text="Carrier" />
+             <TableColumn fx:id="fromColumn" prefWidth="75.0" text="From" />
+               <TableColumn fx:id="toColumn" prefWidth="85.0" text="To" />
+               <TableColumn fx:id="departureColumn" prefWidth="118.0" text="Departure" />
+               <TableColumn fx:id="arrivalColumn" minWidth="3.0" prefWidth="84.0" text="Arrival" />
+               <TableColumn fx:id="priceColumn" minWidth="0.0" prefWidth="93.0" text="Price" />
+               <TableColumn fx:id="bookedColumn" minWidth="0.0" prefWidth="111.0" text="Booked " />
+               <TableColumn fx:id="freeColumn" prefWidth="111.0" text="Free" />
+           </columns>
+         </TableView>
 </children>
       <padding>
          <Insets left="20.0" />

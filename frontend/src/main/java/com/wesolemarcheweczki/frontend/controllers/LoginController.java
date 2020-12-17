@@ -3,6 +3,7 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.wesolemarcheweczki.frontend.Main;
 import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
+import com.wesolemarcheweczki.frontend.util.AuthManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,6 +57,8 @@ public class LoginController {
         client.setPasswordWithoutEncoding(pwd);
         if (restClient.authorizeLogin(email,pwd)) {
             loadHomePage(client.getEmail(), client.getPassword());
+            AuthManager.setEmail(client.getEmail());
+            AuthManager.setPwd(client.getPassword());
         } else {
             couldntLogin("Not authorized!");
         }

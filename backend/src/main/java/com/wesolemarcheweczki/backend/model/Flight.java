@@ -115,6 +115,14 @@ public class Flight implements AbstractModel<Flight> {
         return capacity;
     }
 
+    public int getBaseCost() {
+        return baseCost;
+    }
+
+    public void setBaseCost(int baseCost) {
+        this.baseCost = baseCost;
+    }
+
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
