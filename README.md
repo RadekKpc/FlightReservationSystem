@@ -40,32 +40,40 @@ Software is split into separate applications. Backend based on Spring that publi
 
 User interface currently includes main page, add carrier page and add user page -> they are supposed to be for superuser(admin) only, but currently logging in is not implemented in m1
 
+### Login page
+![loginPage](https://imgur.com/CU6Gwdd.png)
+
+Page so client can login/register to access app
+
 ### Main page
 
-![mainPage](https://i.imgur.com/ooC5wJp.png)
+![mainPage](https://imgur.com/omJZbfC.png)
 
-On the left side we can see logo and buttons to access multiple other panels.
+On the left side we can see logo and buttons to access multiple other panels. (some of the functionalities weren't implemented yet)
 
 Clicking the button opens panel on the right side, left side stays intact.
 
 ### Add Uer
 
-The add user panel allows us to add users to database, before sending request to database it checks wheter first and last names are empty and checks regex for email.
+The add user panel allows admin to add users to database, before sending request to database it checks wheter first and last names are empty and checks regex for email.
 
-![addUserWrongEmail](https://i.imgur.com/as5FOBy.png)
+![addAccount](https://imgur.com/E8D6hJi.png)
 
-For example we can see that the email input is wrong.
-
-![addUserPositive](https://i.imgur.com/aSOAKIm.png)
-
-If everything is okay the request to database is sent.
+We can see that the email input is wrong. If everything is okay the request to database is sent.
 
 ### Add Carrier
 The add carrier panel allows us to add carriers to database.
 
-![addCarrierPositive](https://i.imgur.com/Wg5DWmm.png)
+![addCarrier](https://imgur.com/S5bi7Gx.png)
 
 As we can see above - the carrier was successfully added to database.
+
+### Flights Panel
+The flights panel allows us to see all the flights and allows us to add flight to the database
+
+![flightsPanel](https://imgur.com/dcWuyPQ.png)
+
+As we can see we could add flight with the new Carrier we have added above
 
 ## Design patterns used
 * **MVC** - it is not completed in m1 yet(we do not yet have property mapping and binding to data model), we want to
@@ -86,6 +94,11 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **AddCarrierController** - Karol Koptyra
 * **AddUserComponent** - Karol Koptyra
 * **generified REST client** - Wiktor Kamiński
+* **login/register page** - Karol Koptyra
+* **listing all flights** - Karol Koptyra, Wiktor Kamiński
+* **adding flights** - Wiktor Kamiński
+* **REST controller has authentication** - Karol Koptyra, Wiktor Kamiński
+* **new layout** - Wiktor Kamiński
 
 ### Backend
 * **start of backend project** - Paweł Miziołek
@@ -100,6 +113,8 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **adding services** - Paweł Miziołek
 * **generify endpoint code** - Paweł Miziołek
 * **implementation of SQLite** - Paweł Miziołek
+* **user authentication simpleauth** - Paweł Miziołek
+* **carrier endpoint** - Paweł Miziołek
 
 ### Documentation
 

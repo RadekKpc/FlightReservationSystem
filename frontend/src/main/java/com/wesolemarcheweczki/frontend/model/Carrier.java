@@ -26,7 +26,7 @@ public class Carrier {
     }
 
     public Carrier() {
-
+        this.name = new SimpleStringProperty("");
     }
 
     public int getId() {

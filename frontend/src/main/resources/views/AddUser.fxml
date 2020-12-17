@@ -83,7 +83,7 @@
             </Pane>
          </children>
       </VBox>
-      <Label layoutX="57.0" layoutY="25.0" text="Sign Up">
+      <Label layoutX="57.0" layoutY="25.0" text="Add account">
          <font>
             <Font size="24.0" />
          </font>
