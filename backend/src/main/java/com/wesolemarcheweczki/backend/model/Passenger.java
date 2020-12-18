@@ -34,4 +34,24 @@ public class Passenger implements AbstractModel<Passenger> {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @Override
+    public Passenger copy() {
+        return null;
+    }
+
+    @Override
+    public int getId() {
+        return 0;
+    }
+
+    @Override
+    public void setId(int id) {
+
+    }
+
+    @Override
+    public void setParams(Passenger object) {
+
+    }
 }
