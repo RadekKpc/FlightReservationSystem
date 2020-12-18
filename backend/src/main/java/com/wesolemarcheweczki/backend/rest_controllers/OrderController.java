@@ -42,4 +42,24 @@ public class OrderController extends AbstractRestController<Order> {
         }
     }
 
+    @GetMapping(path = "/client/email/{email}")
+    public ResponseEntity<List<Order>> getForClient(@PathVariable("email") String email) {
+        var dao = (OrderDAO) DAO;
+        try {
+            return new ResponseEntity<>(dao.getForClient(email), HttpStatus.OK);
+        } catch (Exception e) {
+            return internalServerError();
+        }
+    }
+
+    @GetMapping(path = "/client/email", consumes = "text/plain")
+    public ResponseEntity<List<Order>> getForClientWithEmailBody(@RequestBody String email) {
+        var dao = (OrderDAO) DAO;
+        try {
+            return new ResponseEntity<>(dao.getForClient(email), HttpStatus.OK);
+        } catch (Exception e) {
+            return internalServerError();
+        }
+    }
+
 }
