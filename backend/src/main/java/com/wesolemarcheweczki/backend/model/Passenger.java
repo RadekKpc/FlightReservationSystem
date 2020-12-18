@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 
 
 @Embeddable
-public class Passenger {
+public class Passenger implements AbstractModel<Passenger> {
 
     private String firstName;
     private String lastName;
