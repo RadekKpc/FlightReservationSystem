@@ -2,6 +2,7 @@ package com.wesolemarcheweczki.frontend.controllers;
 
 import com.wesolemarcheweczki.frontend.Main;
 import com.wesolemarcheweczki.frontend.model.Client;
+import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,6 +62,11 @@ public class HomeController {
     public void handleOverview(ActionEvent actionEvent) {
     }
 
+    public void logout() {
+        RestClient.setLoggedClient(new Client());
+        exit();
+    }
+
     public FXMLLoader loadPane(String resource) throws IOException { // load pane on the right side from fxml view
         viewContent.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
@@ -72,6 +78,7 @@ public class HomeController {
     public void updateLoggedClient(String email, String pwd){
         client.setEmail(email);
         client.setPasswordWithoutEncoding(pwd);
+        RestClient.setLoggedClient(client);
         loggedInLabel.setText("Logged in as " + email);
     }
 }

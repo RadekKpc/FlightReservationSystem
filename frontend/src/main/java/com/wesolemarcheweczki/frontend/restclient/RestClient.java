@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.model.Flight;
 import com.wesolemarcheweczki.frontend.util.AuthManager;
 import javafx.concurrent.Task;
 import org.apache.commons.codec.binary.Base64;
-import org.yaml.snakeyaml.events.CollectionStartEvent;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,19 +19,19 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.List;
 
 
 public class RestClient<T> {
     private static HttpClient httpClient = HttpClient.newHttpClient();
+    private static Client loggedClient;
     private String url = "http://localhost:8080/api";
     private ObjectMapper mapper = new ObjectMapper();
 
     private String getAuthHeader(){
-        String auth = "client_email1@sample.com" + ":" + "client1pwd";
+        String email = RestClient.loggedClient.getEmail();
+        String pwd = RestClient.loggedClient.getPassword();
+        String auth = email + ":" + pwd;
         byte[] encodedAuth = Base64.encodeBase64(
                 auth.getBytes(StandardCharsets.ISO_8859_1));
         return "Basic " + new String(encodedAuth);
@@ -128,5 +128,9 @@ public class RestClient<T> {
                 return valueList;
             }
         };
+    }
+
+    public static void setLoggedClient(Client client) {
+        RestClient.loggedClient = client;
     }
 }
