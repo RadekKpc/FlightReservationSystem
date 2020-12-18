@@ -16,4 +16,8 @@ public class OrderDAO extends GenericDao<Order> {
     public List<Order> getForClient(Integer id) {
         return getFiltered(o -> o.getClient().getId() == id);
     }
+
+    public List<Order> getForClient(String email) {
+        return getFiltered(o -> o.getClient().getEmail().equals(email));
+    }
 }
