@@ -84,6 +84,7 @@ public class Generator implements ApplicationRunner {
         flightDAO.addAll(flights);
         orderDAO.addAll(orders);
         ticketDAO.addAll(tickets);
+        clientDAO.addAll(generateDefaultClients());
     }
 
     private void generateClients() {
@@ -171,6 +172,13 @@ public class Generator implements ApplicationRunner {
         var name = generateName(CARRIER);
         var carrier = new Carrier(name);
         carriers.add(carrier);
+    }
+
+    private List<Client> generateDefaultClients() {
+        var list = new ArrayList<Client>();
+        list.add(new Client("test", "test", "test@test.com", "test"));
+        list.add(new Client("aa", "bb", "aa@aa.aa", "aa"));
+        return list;
     }
 
     private String generateName(String name) {

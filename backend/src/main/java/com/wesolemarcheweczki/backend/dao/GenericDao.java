@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -57,8 +59,22 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
                 .reduce(true, (a, b) -> a && b); //will return false if any fails
     }
 
-    protected Stream<T> getStream(Iterable<T> objects) {
-        return StreamSupport.stream(objects.spliterator(), false);
+    public boolean delete(T object) {
+        try {
+            repository.delete(object);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public boolean delete(Integer id) {
+        try {
+            repository.deleteById(id);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public Optional<T> getById(Integer id) {
@@ -67,6 +83,14 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
 
     public List<T> getAll() {
         return repository.findAll();
+    }
+
+    protected Stream<T> getStream(Iterable<T> objects) {
+        return StreamSupport.stream(objects.spliterator(), false);
+    }
+
+    protected List<T> getFiltered(Predicate<T> predicate) {
+        return getAll().stream().filter(predicate).collect(Collectors.toList());
     }
 
 }

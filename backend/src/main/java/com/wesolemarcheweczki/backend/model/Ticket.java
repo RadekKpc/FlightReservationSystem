@@ -86,4 +86,12 @@ public class Ticket implements AbstractModel<Ticket> {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
