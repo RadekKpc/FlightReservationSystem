@@ -22,6 +22,7 @@ public class Main extends Application {
         this.setPrimaryStage(primaryStage);
         Parent root = FXMLLoader.load(getClass().getResource("/views/LoginRegister.fxml"));
         Scene scene = new Scene(root);
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.DECORATED);
         scene.getStylesheets().add("/css/Home.css");
