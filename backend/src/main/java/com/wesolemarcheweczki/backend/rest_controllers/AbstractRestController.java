@@ -5,64 +5,87 @@ import com.wesolemarcheweczki.backend.model.AbstractModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.wesolemarcheweczki.backend.rest_controllers.helpers.Responses.*;
+
 public abstract class AbstractRestController<T extends AbstractModel<T>> {
 
     @Autowired
-    GenericDao<T> DAO;
+    protected GenericDao<T> DAO;
 
-
+    @GetMapping(path = "/{id}")
     public ResponseEntity<T> get(@PathVariable("id") Integer id) {
         var dbResult = DAO.getById(id);
         if (dbResult.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return badRequest();
         }
         return new ResponseEntity<>(dbResult.get(), HttpStatus.OK);
     }
 
+    @GetMapping()
     public ResponseEntity<List<T>> getAll() {
         try {
             return new ResponseEntity<>(DAO.getAll(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return internalServerError();
         }
     }
 
+    @PostMapping(consumes = "application/json") //This one always creates new instance
     public ResponseEntity<Void> create(@Valid @RequestBody T received) {
         try {
             if (DAO.add(received.copy())) {
-                return new ResponseEntity<>(HttpStatus.OK);
+                return ok();
             }
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return forbidden();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return badRequest();
         }
     }
 
+    @PutMapping(consumes = "application/json")
     public ResponseEntity<Void> update(@Valid @RequestBody T received) {
         try {
             if (DAO.update(received)) {
-                return new ResponseEntity<>(HttpStatus.OK);
+                return ok();
             }
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return forbidden();
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return badRequest();
         }
     }
 
-    public ResponseEntity<T> updateToID(@Valid @RequestBody T received, @PathVariable("id") Integer id) {
+    @PutMapping(path = "/{id}", consumes = "application/json") //This one takes id from URI
+    public ResponseEntity<Void> updateToID(@Valid @RequestBody T received, @PathVariable("id") Integer id) {
         try {
             DAO.update(received, id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ok();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return badRequest();
         }
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Void> delete(@Valid @RequestBody T object) {
+        boolean success = DAO.delete(object);
+        if (success) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return badRequest();
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteID(@PathVariable("id") Integer id) {
+        boolean success = DAO.delete(id);
+        if (success) {
+            return ok();
+        }
+        return badRequest();
     }
 
 

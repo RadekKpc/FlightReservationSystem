@@ -1,49 +1,45 @@
 package com.wesolemarcheweczki.backend.rest_controllers;
 
-import com.wesolemarcheweczki.backend.model.Carrier;
-import com.wesolemarcheweczki.backend.model.Flight;
+import com.wesolemarcheweczki.backend.dao.OrderDAO;
+import com.wesolemarcheweczki.backend.model.Client;
 import com.wesolemarcheweczki.backend.model.Order;
-import com.wesolemarcheweczki.backend.model.Ticket;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.wesolemarcheweczki.backend.rest_controllers.helpers.Responses.internalServerError;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/order")
 public class OrderController extends AbstractRestController<Order> {
 
-    @Override
-    @GetMapping(path = "/order/{id}")
-    public ResponseEntity<Order> get(@PathVariable("id") Integer id) {
-        return super.get(id);
+    @Autowired
+    public OrderController() {
+        super();
     }
 
-    @Override
-    @GetMapping(path = "/order")
-    public ResponseEntity<List<Order>> getAll() {
-        return super.getAll();
+    @GetMapping(path = "/client", consumes = "application/json")
+    public ResponseEntity<List<Order>> getForClient(@Valid @RequestBody Client received) {
+        var dao = (OrderDAO) DAO;
+        try {
+            return new ResponseEntity<>(dao.getForClient(received), HttpStatus.OK);
+        } catch (Exception e) {
+            return internalServerError();
+        }
     }
 
-    @Override
-    @PostMapping(path = "/order", consumes = "application/json") //This one always creates new instance
-    public ResponseEntity<Void> create(@Valid @RequestBody Order order) {
-        return super.create(order);
+    @GetMapping(path = "/client/{id}")
+    public ResponseEntity<List<Order>> getForClient(@PathVariable("id") Integer id) {
+        var dao = (OrderDAO) DAO;
+        try {
+            return new ResponseEntity<>(dao.getForClient(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return internalServerError();
+        }
     }
-
-    @Override
-    @PutMapping(path = "/order", consumes = "application/json")
-    //This one takes id from body, so breaks REST rules by a bit
-    public ResponseEntity<Void> update(@Valid @RequestBody Order order) {
-        return super.update(order);
-    }
-
-    @Override
-    @PutMapping(path = "/order/{id}", consumes = "application/json") //This one takes id from URI
-    public ResponseEntity<Order> updateToID(@Valid @RequestBody Order received, @PathVariable("id") Integer id) {
-        return super.updateToID(received, id);
-    }
-
 
 }
