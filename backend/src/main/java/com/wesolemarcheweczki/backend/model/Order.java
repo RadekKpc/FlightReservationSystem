@@ -22,9 +22,13 @@ public class Order implements AbstractModel<Order> {
     public Order() {
     }
 
+    public Order(Order order) {
+        this(order.client);
+    }
+
     @Override
     public Order copy() {
-        return null;
+        return new Order(this);
     }
 
     public int getId() {

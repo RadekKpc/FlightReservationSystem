@@ -23,8 +23,8 @@ public class Flight implements AbstractModel<Flight> {
     @ManyToOne
     private Location source;
 
-    public Flight() {
-
+    public Flight(Flight flight) {
+        this(flight.flightCode, flight.carrier, flight.departure, flight.arrival, flight.capacity, flight.baseCost, flight.destination, flight.source);
     }
 
     public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, int baseCost, Location destination, Location source) {
@@ -38,9 +38,13 @@ public class Flight implements AbstractModel<Flight> {
         this.source = source;
     }
 
+    public Flight() {
+
+    }
+
     @Override
     public Flight copy() {
-        return null;
+        return new Flight(this);
     }
 
     public int getId() {

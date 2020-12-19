@@ -12,7 +12,19 @@ public class Location {
     private StringProperty city;
     private StringProperty country;
 
-    public Location(){}
+    public Location() {
+        this.airportId = new SimpleStringProperty("");
+        this.city =  new SimpleStringProperty("");
+        this.country =  new SimpleStringProperty("");
+    }
+
+    @JsonCreator
+    public Location(@JsonProperty("airportId") String airportId, @JsonProperty("city") String city, @JsonProperty("country") String country, @JsonProperty("id") int id) {
+        this.airportId = new SimpleStringProperty(airportId);
+        this.city = new SimpleStringProperty(city);
+        this.country = new SimpleStringProperty(country);
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -60,13 +72,6 @@ public class Location {
 
     public void setCountry(String country) {
         this.country.set(country);
-    }
-
-    @JsonCreator
-    public Location(@JsonProperty("airportId") String airportId, @JsonProperty("city") String city, @JsonProperty("country") String country) {
-        this.airportId = new SimpleStringProperty(airportId);
-        this.city = new SimpleStringProperty(city);
-        this.country = new SimpleStringProperty(country);
     }
 
 }
