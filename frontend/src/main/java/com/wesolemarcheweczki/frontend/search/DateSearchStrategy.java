@@ -2,7 +2,9 @@ package com.wesolemarcheweczki.frontend.search;
 
 import com.wesolemarcheweczki.frontend.model.Flight;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateSearchStrategy implements ISearchStrategy{
@@ -11,11 +13,12 @@ public class DateSearchStrategy implements ISearchStrategy{
     private LocalDateTime toDate;
     private boolean departure;
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T''HH:mm:ss");
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public DateSearchStrategy(String fromDate, String toDate, boolean departure) {
-        this.toDate = LocalDateTime.parse(toDate, formatter);
-        this.fromDate = LocalDateTime.parse(fromDate, formatter);
+    public DateSearchStrategy(LocalDate fromDate, LocalDate toDate, boolean departure) {
+        LocalDate date = null;
+        this.toDate = LocalDate.parse(toDate.toString(), formatter).atTime(23,59);
+        this.fromDate =  LocalDate.parse(fromDate.toString(), formatter).atStartOfDay();
         this.departure = departure;
     }
 

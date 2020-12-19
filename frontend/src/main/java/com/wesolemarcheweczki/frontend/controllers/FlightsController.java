@@ -14,10 +14,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,7 +65,14 @@ public class FlightsController implements Initializable {
     private TableView<Flight> dataTable;
     @FXML
     private VBox flightContainer;
+    @FXML
+    private Label flightsLabel;
+    @FXML
+    private Label bookedLabel;
+    @FXML
+    private Label freeLabel;
 
+    private Stage searchStage;
     @FXML
     private final RestClient restClient = new RestClient();
 
@@ -75,6 +84,8 @@ public class FlightsController implements Initializable {
 
     private final Task<List<Location>> getLocation = restClient.createGetTask("/location", Location.class);
 
+    public List<Flight> flightsList;
+    public List<Flight> currFlights;
     private List<Carrier> carrierList;
     private List<Location> locationList;
 
@@ -107,7 +118,10 @@ public class FlightsController implements Initializable {
                     capacity, fromCombo.getValue(), toCombo.getValue(), baseCost);
             try {
                 restClient.postObject(f, "/flight");
-                listOfFlights.add(f);
+                flightsList.add(f);
+                currFlights = flightsList;
+                listOfFlights = FXCollections.observableArrayList(flightsList);
+                dataTable.setItems(listOfFlights);
                 priceCombo.setText("");
                 placesCombo.setText("");
                 addCarrierCombo.setValue(null);
@@ -115,6 +129,8 @@ public class FlightsController implements Initializable {
                 arrivalCombo.setText("");
                 fromCombo.setValue(null);
                 toCombo.setValue(null);
+                this.dataTable.setItems(FXCollections.observableArrayList(flightsList));
+                updateLabels();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -150,6 +166,7 @@ public class FlightsController implements Initializable {
         Flight f = t.getTableView().getItems().get(t.getTablePosition().getRow());
         f.setBaseCost(cap);
         putFlightChange(f);
+        updateLabels();
     }
 
     private void updateFlightCost(TableColumn.CellEditEvent<Flight, String> t) {
@@ -240,6 +257,25 @@ public class FlightsController implements Initializable {
         return null;
     }
 
+    @FXML
+    public void search() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/searchFlights.fxml"));
+        Parent root = loader.load();
+        SearchController sc = loader.getController();
+        sc.setFlightsController(this);
+        searchStage = new Stage();
+//        Parent root = FXMLLoader.load(getClass().getResource("/views/searchFlights.fxml"));
+        Scene scene = new Scene(root);
+        searchStage.setResizable(false);
+        searchStage.setScene(scene);
+        searchStage.show();
+    }
+
+    public void updateFlights() {
+        this.dataTable.setItems(FXCollections.observableArrayList(currFlights));
+        updateLabels();
+    }
+
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -251,6 +287,9 @@ public class FlightsController implements Initializable {
                 var flightList = getFlights.getValue();
                 listOfFlights = FXCollections.observableArrayList(flightList);
                 dataTable.setItems(listOfFlights);
+                flightsList = flightList;
+                currFlights = flightList;
+                updateLabels();
             }
         });
         getCarriers.setOnSucceeded(event -> {
@@ -276,6 +315,14 @@ public class FlightsController implements Initializable {
         executorService.submit(getCarriers);
         executorService.submit(getFlights);
         executorService.submit(getLocation);
+    }
+
+    private void updateLabels() {
+        bookedLabel.setText("0");
+        int freePlaces = 0;
+        for (Flight f : currFlights) freePlaces += f.getCapacity();
+        freeLabel.setText(String.valueOf(freePlaces));
+        flightsLabel.setText(String.valueOf(currFlights.size()));
     }
 
 }
