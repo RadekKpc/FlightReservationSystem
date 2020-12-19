@@ -40,7 +40,8 @@ public class HomeController {
     }
 
     @FXML
-    public void handleLocations(ActionEvent actionEvent) {
+    public void handleLocations(ActionEvent actionEvent) throws IOException  {
+        loadPane("/views/AddLocation.fxml");
     }
 
     @FXML
