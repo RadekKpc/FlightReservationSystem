@@ -33,9 +33,13 @@ public class Ticket implements AbstractModel<Ticket> {
         this.cost = cost;
     }
 
+    public Ticket(Ticket ticket) {
+        this(ticket.passenger, ticket.flight, ticket.order, ticket.seat, ticket.cost);
+    }
+
     @Override
     public Ticket copy() {
-        return null;
+        return new Ticket(this);
     }
 
     public int getId() {

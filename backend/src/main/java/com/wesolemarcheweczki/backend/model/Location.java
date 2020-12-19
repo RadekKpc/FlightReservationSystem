@@ -16,8 +16,12 @@ public class Location implements AbstractModel<Location>{
     private String city;
     private String country;
 
-    public Location(){
+    public Location() {
 
+    }
+
+    public Location(Location location) {
+        this(location.airportId, location.city, location.country);
     }
 
     public Location(String airportId, String city, String country) {
@@ -28,7 +32,7 @@ public class Location implements AbstractModel<Location>{
 
     @Override
     public Location copy() {
-        return null;
+        return new Location(this);
     }
 
     public int getId() {

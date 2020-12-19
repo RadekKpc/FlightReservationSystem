@@ -19,6 +19,10 @@ public class Passenger implements AbstractModel<Passenger> {
         this.lastName = lastName;
     }
 
+    public Passenger(Passenger passenger) {
+        this(passenger.firstName, passenger.lastName);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -37,7 +41,7 @@ public class Passenger implements AbstractModel<Passenger> {
 
     @Override
     public Passenger copy() {
-        return null;
+        return new Passenger(this);
     }
 
     @Override
