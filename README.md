@@ -68,12 +68,29 @@ The add carrier panel allows us to add carriers to database.
 
 As we can see above - the carrier was successfully added to database.
 
+
+### Add location
+
+![addLocation](https://imgur.com/viY9wYh.png)
+
+Ability to add the location to database
+
+
 ### Flights Panel
 The flights panel allows us to see all the flights and allows us to add flight to the database
 
-![flightsPanel](https://imgur.com/dcWuyPQ.png)
+![flightsPanel](https://imgur.com/cTHf21Q.png)
 
 As we can see we could add flight with the new Carrier we have added above
+
+### Search flights panel
+![searchFlight](https://imgur.com/mA24aYv.png)
+
+We can search flights based on departure and arrival location and time and also on price
+
+![exampleSearched](https://imgur.com/nHXkFN7.png)
+
+After search we can see the changes
 
 ## Design patterns used
 * **MVC** - it is not completed in m1 yet(we do not yet have property mapping and binding to data model), we want to
@@ -99,6 +116,9 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **adding flights** - Wiktor Kamiński
 * **REST controller has authentication** - Karol Koptyra, Wiktor Kamiński
 * **new layout** - Wiktor Kamiński
+* **search flights panel** - Karol Koptyra
+* **search flights logic** - Karol Koptyra
+* **add location controller** - Karol Koptyra
 
 ### Backend
 * **start of backend project** - Paweł Miziołek
@@ -115,6 +135,7 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **implementation of SQLite** - Paweł Miziołek
 * **user authentication simpleauth** - Paweł Miziołek
 * **carrier endpoint** - Paweł Miziołek
+* **generify REST + add remaining endpoints** - Paweł Miziołek
 
 ### Documentation
 
