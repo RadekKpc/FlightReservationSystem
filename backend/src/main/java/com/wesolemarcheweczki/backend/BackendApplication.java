@@ -19,31 +19,6 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Configuration
-    @EnableWebSecurity // (1)
-    public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        ClientDetailsService detailsService;
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(detailsService).passwordEncoder(new BCryptPasswordEncoder());
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/client").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .csrf().disable();
-
-        }
-    }
 }
 
 
