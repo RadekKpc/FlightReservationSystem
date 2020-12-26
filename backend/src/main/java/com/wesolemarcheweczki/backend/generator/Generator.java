@@ -178,6 +178,7 @@ public class Generator implements ApplicationRunner {
         var list = new ArrayList<Client>();
         list.add(new Client("test", "test", "test@test.com", "test"));
         list.add(new Client("aa", "bb", "aa@aa.aa", "aa"));
+        list.add(new Client("admin", "admin", "admin@admin.com", "admin","ROLE_ADMIN"));
         return list;
     }
 

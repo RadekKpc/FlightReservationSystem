@@ -13,13 +13,16 @@ public class Client {
     private String email;
 
     private String password;
+
+    private String role = "ROLE_USER";
     private int id;
 
-    public Client(String firstName, String lastName, String email, String password) {
+    public Client(String firstName, String lastName, String email, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = encoder.encode(password);
+        this.password = password;
+        this.role = role;
     }
 
     public Client() {}
@@ -63,4 +66,12 @@ public class Client {
     }
 
     public void setPasswordWithoutEncoding(String password) {this.password = password;}
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

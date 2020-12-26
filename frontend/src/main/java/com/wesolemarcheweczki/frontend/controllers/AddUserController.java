@@ -3,6 +3,7 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -19,7 +20,8 @@ public class AddUserController {
     private TextField emailTextField;
     @FXML
     private PasswordField passwordField;
-
+    @FXML
+    private ComboBox<String> roleField;
     @FXML
     Text errorText;
 
@@ -39,7 +41,7 @@ public class AddUserController {
             wrongEmailHandle();
             System.out.println("Wrong email!");
         } else if (!this.client.getFirstName().isEmpty() && !this.client.getLastName().isEmpty()) {
-            if (restClient.postObject(this.client, "/client")) { // user successfully added to database
+            if (restClient.postObject(this.client, "/client/admin")) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");
@@ -71,9 +73,12 @@ public class AddUserController {
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
         String pwd = passwordField.getText();
+        String role = "ROLE_" + roleField.getValue();
+
         this.client.setEmail(email);
         this.client.setFirstName(firstName);
         this.client.setLastName(lastName);
         this.client.setPassword(pwd);
+        this.client.setRole(role);
     }
 }

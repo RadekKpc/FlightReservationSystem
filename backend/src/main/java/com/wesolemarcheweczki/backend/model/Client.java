@@ -30,6 +30,9 @@ public class Client implements AbstractModel<Client> {
     @NotNull
     private String password;
 
+    @NotNull
+    private String role = "ROLE_USER";
+
 
     public Client(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -45,8 +48,16 @@ public class Client implements AbstractModel<Client> {
         this.password = encoder.encode(password);
     }
 
+    public Client( String firstName, String lastName, String email, String password, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public Client(Client client) {
-        this(client.firstName, client.lastName, client.email, client.password);
+        this(client.firstName, client.lastName, client.email, client.password,client.role);
     }
 
     public Client() {
@@ -97,5 +108,13 @@ public class Client implements AbstractModel<Client> {
 
     public void setPassword(String password) {
         this.password = encoder.encode(password);
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

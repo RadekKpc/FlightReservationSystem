@@ -1,14 +1,18 @@
 package com.wesolemarcheweczki.backend.security;
 
 import com.wesolemarcheweczki.backend.model.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public class ClientDetails implements UserDetails {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientDetails.class);
 
     private final transient Client client;
 
@@ -18,9 +22,10 @@ public class ClientDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(client.getRole());
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("Client");
-        return Arrays.asList(authority);
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(client.getRole());
+        logger.info(client.getRole());
+        logger.info(Collections.singletonList(authority).toString());
+        return Collections.singletonList(authority);
     }
 
     @Override
