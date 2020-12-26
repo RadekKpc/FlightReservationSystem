@@ -26,6 +26,9 @@ public class ClientDAO extends GenericDao<Client> {
         return super.addAll(objects);
     }
 
+    public String getRole(String email){
+        return getByEmail(email).getRole();
+    }
     private boolean clientExists(Client object) {
         return getByEmail(object.getEmail()) != null;
     }

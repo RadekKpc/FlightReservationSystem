@@ -28,6 +28,7 @@ public class RestClient<T> {
     private String url = "http://localhost:8080/api";
     private ObjectMapper mapper = new ObjectMapper();
 
+
     private String getAuthHeader(){
         String email = RestClient.loggedClient.getEmail();
         String pwd = RestClient.loggedClient.getPassword();
@@ -124,6 +125,7 @@ public class RestClient<T> {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
                 .GET()
+                .header("email",login)
                 .header("Authorization", authHeader)
                 .header("Content-Type", "application/json")
                 .build();

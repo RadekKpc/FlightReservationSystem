@@ -23,8 +23,8 @@ public class ClientDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(client.getRole());
-        logger.info(client.getRole());
-        logger.info(Collections.singletonList(authority).toString());
+//        logger.info(client.getRole());
+//        logger.info(Collections.singletonList(authority).toString());
         return Collections.singletonList(authority);
     }
 

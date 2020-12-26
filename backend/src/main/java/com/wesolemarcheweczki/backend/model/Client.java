@@ -52,7 +52,7 @@ public class Client implements AbstractModel<Client> {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.password = encoder.encode(password);
         this.role = role;
     }
 

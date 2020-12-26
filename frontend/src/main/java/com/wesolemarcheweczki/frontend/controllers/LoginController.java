@@ -57,8 +57,11 @@ public class LoginController {
         client.setPasswordWithoutEncoding(pwd);
         if (restClient.authorizeLogin(email,pwd)) {
             loadHomePage(client.getEmail(), client.getPassword());
+            String role = restClient.getObject(client.getEmail(),client.getPassword(),"/client/role");
+            AuthManager.setRole(role);
             AuthManager.setEmail(client.getEmail());
             AuthManager.setPwd(client.getPassword());
+            System.out.println(AuthManager.role);
         } else {
             couldntLogin("Not authorized!");
         }
