@@ -27,4 +27,8 @@ public class AuthManager {
             AuthManager.role = USER;
         }
     }
+
+    public static boolean isAdmin(){
+        return role == ADMIN;
+    }
 }

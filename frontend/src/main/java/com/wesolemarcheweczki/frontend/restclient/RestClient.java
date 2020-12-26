@@ -88,7 +88,7 @@ public class RestClient<T> {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         var parsedObject = mapper.writeValueAsString(obj);
-        System.out.println(parsedObject);
+        System.out.println("passedObject: " + parsedObject);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
