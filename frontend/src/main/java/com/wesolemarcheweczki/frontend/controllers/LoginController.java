@@ -81,7 +81,7 @@ public class LoginController {
             couldntRegister("Wrong email!");
             return;
         }
-        if (restClient.postObject(this.client, "/client")) { // user successfully added to database
+        if (restClient.postObjectWithoutAuth(this.client, "/client")) { // user successfully added to database
             registerPassword.setText("");
             registerConfirmPassword.setText("");
             registerLastName.setText("");
