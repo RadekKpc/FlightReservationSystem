@@ -193,5 +193,5 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 
 * **documentation in readme** - Karol Koptyra 
 * **fixes in documentation** - everyone in team 
-* **add authorisation decoumentation** - Radosław Kopeć
+* **add authorisation,authentication and registration endpoints documentation** - Radosław Kopeć
 
