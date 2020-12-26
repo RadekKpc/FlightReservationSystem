@@ -4,6 +4,7 @@ import com.wesolemarcheweczki.frontend.Main;
 import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import com.wesolemarcheweczki.frontend.util.AuthManager;
+import com.wesolemarcheweczki.frontend.util.Role;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,9 +57,11 @@ public class LoginController {
         client.setEmail(email);
         client.setPasswordWithoutEncoding(pwd);
         if (restClient.authorizeLogin(email,pwd)) {
-            loadHomePage(client.getEmail(), client.getPassword());
+            String role = restClient.getObject(client.getEmail(),client.getPassword(),"/client/role");
+            AuthManager.setRole(role);
             AuthManager.setEmail(client.getEmail());
             AuthManager.setPwd(client.getPassword());
+            loadHomePage(client.getEmail(), client.getPassword(),AuthManager.role);
         } else {
             couldntLogin("Not authorized!");
         }
@@ -87,7 +90,7 @@ public class LoginController {
             registerLastName.setText("");
             registerFirstName.setText("");
             registerEmail.setText("");
-            loadHomePage(client.getEmail(), client.getPassword());
+            loadHomePage(client.getEmail(), client.getPassword(), Role.USER);
         } else {
             couldntRegister("Couldn't register");
         }
@@ -104,13 +107,13 @@ public class LoginController {
         this.client.setPasswordWithoutEncoding(pwd);
     }
 
-    private void loadHomePage(String email, String pwd) throws IOException {
+    private void loadHomePage(String email, String pwd, Role role) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Main.setScene(scene);
         HomeController hc = loader.getController();
-        hc.updateLoggedClient(email, pwd);
+        hc.updateLoggedClient(email, pwd, role);
     }
 
     private void couldntLogin(String problem) { // show error message

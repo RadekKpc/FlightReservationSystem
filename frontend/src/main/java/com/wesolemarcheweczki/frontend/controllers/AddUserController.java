@@ -78,7 +78,7 @@ public class AddUserController {
         this.client.setEmail(email);
         this.client.setFirstName(firstName);
         this.client.setLastName(lastName);
-        this.client.setPassword(pwd);
+        this.client.setPasswordWithoutEncoding(pwd);
         this.client.setRole(role);
     }
 }

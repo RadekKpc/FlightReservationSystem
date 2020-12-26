@@ -45,7 +45,7 @@ public class Client implements AbstractModel<Client> {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = encoder.encode(password);
+        this.password = password;
     }
 
     public Client( String firstName, String lastName, String email, String password, String role) {
@@ -107,6 +107,7 @@ public class Client implements AbstractModel<Client> {
     }
 
     public void setPassword(String password) {
+//        Do not change
         this.password = encoder.encode(password);
     }
 
@@ -116,5 +117,16 @@ public class Client implements AbstractModel<Client> {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

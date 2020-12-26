@@ -3,13 +3,17 @@ package com.wesolemarcheweczki.frontend.controllers;
 import com.wesolemarcheweczki.frontend.Main;
 import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
+import com.wesolemarcheweczki.frontend.util.Role;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -20,6 +24,20 @@ public class HomeController {
     @FXML
     public Label viewTitle;
     public Label loggedInLabel;
+
+    @FXML
+    public VBox homeVBox;
+    @FXML
+    public Button btnCarriers;
+    @FXML
+    public Button btnCustomers;
+    @FXML
+    public Button btnLocations;
+    @FXML
+    public Button btnFlights;
+    @FXML
+    public Button btnTickets;
+
     @FXML
     private Pane viewContent;
 
@@ -63,9 +81,13 @@ public class HomeController {
     public void handleOverview(ActionEvent actionEvent) {
     }
 
-    public void logout() {
+    public void logout() throws IOException {
         RestClient.setLoggedClient(new Client());
-        exit();
+//        exit();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginRegister.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Main.setScene(scene);
     }
 
     public FXMLLoader loadPane(String resource) throws IOException { // load pane on the right side from fxml view
@@ -76,10 +98,19 @@ public class HomeController {
         return loader;
     }
 
-    public void updateLoggedClient(String email, String pwd){
+    public void updateLoggedClient(String email, String pwd, Role role){
         client.setEmail(email);
         client.setPasswordWithoutEncoding(pwd);
+        client.setRole(Role.asText(role));
         RestClient.setLoggedClient(client);
+        if(role == Role.USER){
+            homeVBox.getChildren().remove(btnCarriers);
+            homeVBox.getChildren().remove(btnLocations);
+            homeVBox.getChildren().remove(btnCustomers);
+        }
+        if(role == Role.ADMIN){
+            homeVBox.getChildren().remove(btnTickets);
+        }
         loggedInLabel.setText("Logged in as " + email);
     }
 }

@@ -1,12 +1,11 @@
 package com.wesolemarcheweczki.backend.rest_controllers;
 
+import com.wesolemarcheweczki.backend.dao.ClientDAO;
 import com.wesolemarcheweczki.backend.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,6 +30,15 @@ public class ClientController extends AbstractRestController<Client> {
                 return ok();
             }
             return forbidden();
+        } catch (Exception e) {
+            return badRequest();
+        }
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<String> checkRole(@RequestHeader("email") String email) {
+        try {
+            return new ResponseEntity<>(((ClientDAO) DAO).getRole(email), HttpStatus.OK);
         } catch (Exception e) {
             return badRequest();
         }

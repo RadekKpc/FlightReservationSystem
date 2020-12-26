@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class Generator implements ApplicationRunner {
 
     private static final Random random = new Random();
     private static final Logger logger = LoggerFactory.getLogger(Generator.class);
-
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private final Map<String, Integer> counters = new HashMap<>();
 
@@ -176,9 +177,9 @@ public class Generator implements ApplicationRunner {
 
     private List<Client> generateDefaultClients() {
         var list = new ArrayList<Client>();
-        list.add(new Client("test", "test", "test@test.com", "test"));
-        list.add(new Client("aa", "bb", "aa@aa.aa", "aa"));
-        list.add(new Client("admin", "admin", "admin@admin.com", "admin","ROLE_ADMIN"));
+        list.add(new Client("test", "test", "test@test.com", encoder.encode("test")));
+        list.add(new Client("aa", "bb", "aa@aa.aa", encoder.encode("aa")));
+        list.add(new Client("admin", "admin", "admin@admin.com", encoder.encode("admin"),"ROLE_ADMIN"));
         return list;
     }
 
