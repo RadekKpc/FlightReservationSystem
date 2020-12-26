@@ -54,7 +54,7 @@ On the left side we can see logo and buttons to access multiple other panels. (s
 
 Clicking the button opens panel on the right side, left side stays intact.
 
-### Add Uer
+### Add User
 
 The add user panel allows admin to add users to database, before sending request to database it checks wheter first and last names are empty and checks regex for email.
 
@@ -167,7 +167,7 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **add location controller** - Karol Koptyra
 * **add roles field to create admins at admin view** - Radosław Kopeć
 * **split views on admin and users parts** - Radosław Kopeć
-* **add authorisation (obtaing user role)** - Radosław Kopeć
+* **add authorisation (obtaining user role)** - Radosław Kopeć
 ### Backend
 * **start of backend project** - Paweł Miziołek
 * **data model** - Paweł Miziołek
