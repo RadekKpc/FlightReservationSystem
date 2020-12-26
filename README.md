@@ -98,7 +98,9 @@ After search we can see the changes
 We used Spring Security to implement  Authentication and Authorization. 
 Each user has role in the system (USER or ADMIN). 
 We used following piece of code in WebSecurityConfig class to check has user permission to send request at specific endpoint:
+
 ![Authentication and Authorization](readme_images/backendAuthorisation.jpg)
+
 When the new request come, Spring Security check conditions. Here we can see endpoint like "/api/client/admin" or
 "/api/flight", which need ADMIN ROLE to be obtained. ".anyRequest().authenticated()" part is used to authenticate
 user. We can also specify endpoint which not need authorisation for example: "antMatchers(HttpMethod.POST, "/api/client").permitAll()"
@@ -106,26 +108,33 @@ allow each user to register.
 To authorise user we use Basic Authorisation. We always send email and password in request header.
 From definition Rest Api need to be stateless, cannot remember the session, it is why we decided to use
 Base Auth to authorise and authenticate.
-<br>
 Very important class is ClientDetailsService which implements UserDetailsService interface. It is interface defined in 
 the Spring Sercurity Library. Interface force to implement method to get user by his name (email in our case). Spring security use this class to
 obtain user details object.
+
 ![UserDetailsService](readme_images/UserDetailsService.JPG)
-<br>
+
 ClientDetails is class which implements UserDetails (also interaface from Spring Security). This class allow
 Spring security to obtain authorisation roles as well as password, user name and another things needed for
 authorise and authenticate User.
+
 ![User Details](readme_images/userDetails.JPG)
+
 #### Registartion endpoint
 Here we have a registration endpoint in the ClientController class. After registration at the application start page,
 We set user role to ROLE_USER. To create admin we have to log in as admin and then create one. 
+
 ![registrationEndpoint](readme_images/registrationEndpoint.JPG)
+
 #### Endpoint used to create new admins
 This endpoint allows admins to create new admins and users. Admin send Client in the request body and we
 just add new one.
+
 ![adminCreateUserEndpoint](readme_images/adminCreateUserEndpoint.JPG)
+
 #### Role endpoint
 This endpoint allow to check user role. It is used to split view for admin and user parts.
+
 ![adminCreateUserEndpoint](readme_images/roleEndpoint.JPG)
 
 ## Design patterns used
