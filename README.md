@@ -110,23 +110,23 @@ Base Auth to authorise and authenticate.
 Very important class is ClientDetailsService which implements UserDetailsService interface. It is interface defined in 
 the Spring Sercurity Library. Interface force to implement method to get user by his name (email in our case). Spring security use this class to
 obtain user details object.
-![UserDetailsService](readme_images/UserDetailsService.jpg)
+![UserDetailsService](readme_images/UserDetailsService.JPG)
 <br>
 ClientDetails is class which implements UserDetails (also interaface from Spring Security). This class allow
 Spring security to obtain authorisation roles as well as password, user name and another things needed for
 authorise and authenticate User.
-![User Details](readme_images/userDetails.jpg)
+![User Details](readme_images/userDetails.JPG)
 #### Registartion endpoint
 Here we have a registration endpoint in the ClientController class. After registration at the application start page,
 We set user role to ROLE_USER. To create admin we have to log in as admin and then create one. 
-![registrationEndpoint](readme_images/registrationEndpoint.jpg)
+![registrationEndpoint](readme_images/registrationEndpoint.JPG)
 #### Endpoint used to create new admins
 This endpoint allows admins to create new admins and users. Admin send Client in the request body and we
 just add new one.
-![adminCreateUserEndpoint](readme_images/adminCreateUserEndpoint.jpg)
+![adminCreateUserEndpoint](readme_images/adminCreateUserEndpoint.JPG)
 #### Role endpoint
 This endpoint allow to check user role. It is used to split view for admin and user parts.
-![adminCreateUserEndpoint](readme_images/roleEndpoint.jpg)
+![adminCreateUserEndpoint](readme_images/roleEndpoint.JPG)
 
 ## Design patterns used
 * **MVC** - it is not completed in m1 yet(we do not yet have property mapping and binding to data model), we want to
