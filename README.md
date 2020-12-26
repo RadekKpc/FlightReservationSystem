@@ -99,7 +99,7 @@ We used Spring Security to implement  Authentication and Authorization.
 Each user has role in the system (USER or ADMIN). 
 We used following piece of code in WebSecurityConfig class to check has user permission to send request at specific endpoint:
 
-![Authentication and Authorization](readme_images/backendAuthorisation.jpg)
+![Authentication and Authorization](readme_images/backendAuthorisation.JPG)
 
 When the new request come, Spring Security check conditions. Here we can see endpoint like "/api/client/admin" or
 "/api/flight", which need ADMIN ROLE to be obtained. ".anyRequest().authenticated()" part is used to authenticate
