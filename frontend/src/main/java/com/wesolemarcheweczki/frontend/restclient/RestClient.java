@@ -82,6 +82,26 @@ public class RestClient<T> {
         return response.statusCode() == 200;
     }
 
+    public boolean postObjectWithoutAuth(Object obj, String endpoint ) throws IOException, InterruptedException {
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        var parsedObject = mapper.writeValueAsString(obj);
+        System.out.println(parsedObject);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + endpoint))
+                .POST(HttpRequest.BodyPublishers.ofString(parsedObject))
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response.statusCode());
+        return response.statusCode() == 200;
+    }
+
     public String getObject(String email, String pwd, String endpoint) throws IOException, InterruptedException {
         HttpResponse<String> response = getResponse(email, pwd, endpoint);
 
