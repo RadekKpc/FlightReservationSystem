@@ -42,7 +42,7 @@ public class FlightsController implements Initializable {
     public ComboBox<Carrier> addCarrierCombo;
     public TextField placesCombo;
     public Button deleteButton;
-    public final ObservableList<Flight> listOfFlights = FXCollections.observableArrayList();
+    private final ObservableList<Flight> listOfFlights = FXCollections.observableArrayList();
     private final ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
     private final ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
     @FXML
@@ -247,7 +247,7 @@ public class FlightsController implements Initializable {
     public void updateFlights() {
         //this.dataTable.setItems(FXCollections.observableArrayList(currFlights));
         this.listOfFlights.removeAll(this.flightsList);
-        this.flightsList.addAll(this.currFlights);
+        this.listOfFlights.addAll(this.currFlights);
         updateLabels();
     }
 
