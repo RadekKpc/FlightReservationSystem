@@ -42,9 +42,9 @@ public class FlightsController implements Initializable {
     public ComboBox<Carrier> addCarrierCombo;
     public TextField placesCombo;
     public Button deleteButton;
-    private ObservableList<Flight> listOfFlights;
-    private ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
-    private ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
+    public final ObservableList<Flight> listOfFlights = FXCollections.observableArrayList();
+    private final ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
+    private final ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
     @FXML
     private TableColumn freeColumn;
     @FXML
@@ -86,19 +86,8 @@ public class FlightsController implements Initializable {
 
     public List<Flight> flightsList;
     public List<Flight> currFlights;
-    private List<Carrier> carrierList;
-    private List<Location> locationList;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
-
-    public void addFlightToList(Flight f) throws IOException { // add flight to VBox list
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Item.fxml"));
-        Parent root = loader.load();
-        SingleFlightController sfc = loader.getController();
-        sfc.setData(f);
-        flightContainer.getChildren().add(root);
-    }
 
     private void initColumns(){
         dataTable.setEditable(true);
@@ -118,10 +107,9 @@ public class FlightsController implements Initializable {
                     capacity, fromCombo.getValue(), toCombo.getValue(), baseCost);
             try {
                 restClient.postObject(f, "/flight");
-                flightsList.add(f);
-                currFlights = flightsList;
-                listOfFlights = FXCollections.observableArrayList(flightsList);
-                dataTable.setItems(listOfFlights);
+                listOfFlights.add(f);
+                currFlights = listOfFlights;
+                //dataTable.setItems(listOfFlights);
                 priceCombo.setText("");
                 placesCombo.setText("");
                 addCarrierCombo.setValue(null);
@@ -129,7 +117,7 @@ public class FlightsController implements Initializable {
                 arrivalCombo.setText("");
                 fromCombo.setValue(null);
                 toCombo.setValue(null);
-                this.dataTable.setItems(FXCollections.observableArrayList(flightsList));
+                //this.dataTable.setItems(FXCollections.observableArrayList(flightsList));
                 updateLabels();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
@@ -235,26 +223,12 @@ public class FlightsController implements Initializable {
         putFlightChange(f);
     }
 
-    private Carrier findCarrierByName(String carrierName) {
-        for (Carrier c : carrierList) {
-            if (c.getName().equals(carrierName)) return c;
-        }
-        return null;
-    }
-
     private void putFlightChange(Flight f) {
         try {
             restClient.putObject(f, "/flight");
         } catch (IOException | InterruptedException err) {
             err.printStackTrace();
         }
-    }
-
-    private Location findLocationByName(String id){
-        for (Location c : locationList) {
-            if (c.getAirportId().equals(id)) return c;
-        }
-        return null;
     }
 
     @FXML
@@ -264,7 +238,6 @@ public class FlightsController implements Initializable {
         SearchController sc = loader.getController();
         sc.setFlightsController(this);
         searchStage = new Stage();
-//        Parent root = FXMLLoader.load(getClass().getResource("/views/searchFlights.fxml"));
         Scene scene = new Scene(root);
         searchStage.setResizable(false);
         searchStage.setScene(scene);
@@ -272,7 +245,9 @@ public class FlightsController implements Initializable {
     }
 
     public void updateFlights() {
-        this.dataTable.setItems(FXCollections.observableArrayList(currFlights));
+        //this.dataTable.setItems(FXCollections.observableArrayList(currFlights));
+        this.listOfFlights.removeAll(this.flightsList);
+        this.flightsList.addAll(this.currFlights);
         updateLabels();
     }
 
@@ -285,7 +260,7 @@ public class FlightsController implements Initializable {
             @Override
             public void handle(WorkerStateEvent event) {
                 var flightList = getFlights.getValue();
-                listOfFlights = FXCollections.observableArrayList(flightList);
+                listOfFlights.addAll(flightList);
                 dataTable.setItems(listOfFlights);
                 flightsList = flightList;
                 currFlights = flightList;
@@ -294,7 +269,6 @@ public class FlightsController implements Initializable {
         });
         getCarriers.setOnSucceeded(event -> {
             var carriers = getCarriers.getValue();
-            this.carrierList =  getCarriers.getValue();
             listOfCarriers.addAll(carriers);
             carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfCarriers));
 
@@ -303,7 +277,6 @@ public class FlightsController implements Initializable {
 
         getLocation.setOnSucceeded(event -> {
             var locationsList = getLocation.getValue();
-            this.locationList = locationsList;
             listOfLocations.addAll(locationsList);
             fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
 

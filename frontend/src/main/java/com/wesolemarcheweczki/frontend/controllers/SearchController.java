@@ -84,6 +84,6 @@ public class SearchController {
 
     public void setFlightsController(FlightsController fc) {
         this.fc = fc;
-        this.flightsList = fc.flightsList;
+        this.flightsList = fc.listOfFlights;
     }
 }
