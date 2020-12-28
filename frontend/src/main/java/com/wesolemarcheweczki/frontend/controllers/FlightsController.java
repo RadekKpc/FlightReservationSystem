@@ -125,7 +125,11 @@ public class FlightsController implements Initializable {
         deleteButton.setOnAction(event -> {
             Flight f = dataTable.getSelectionModel().getSelectedItem();
             listOfFlights.remove(f);
-            //restClient.deleteObject("/flight", f);
+            try {
+                restClient.deleteObject("/flight", f);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         });
         addFlightButton.setOnAction(event -> {
             int baseCost = Integer.parseInt(priceCombo.getText());

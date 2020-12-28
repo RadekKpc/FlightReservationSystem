@@ -155,4 +155,21 @@ public class RestClient<T> {
     public static void setLoggedClient(Client client) {
         RestClient.loggedClient = client;
     }
+
+    public boolean deleteObject(String endpoint, Object object) throws IOException, InterruptedException {
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        String authHeader = getAuthHeader();
+        var parsedObject = mapper.writeValueAsString(object);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + endpoint))
+                .method("DELETE", HttpRequest.BodyPublishers.ofString(parsedObject))
+                .header("Authorization", authHeader)
+                .header("Content-Type", "application/json")
+                .build();
+        System.out.println(request);
+        var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).statusCode() == 200;
+        System.out.println(result);
+        return result;
+    }
 }
