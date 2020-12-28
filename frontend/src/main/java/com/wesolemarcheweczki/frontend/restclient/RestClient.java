@@ -41,8 +41,6 @@ public class RestClient<T> {
 
     public boolean putObject(Object obj, String endpoint) throws IOException, InterruptedException {
         String authHeader = getAuthHeader();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         var parsedObject = mapper.writeValueAsString(obj);
         System.out.println(parsedObject);
@@ -63,8 +61,6 @@ public class RestClient<T> {
 
     public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
         String authHeader = getAuthHeader();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         var parsedObject = mapper.writeValueAsString(obj);
         System.out.println(parsedObject);
@@ -84,9 +80,6 @@ public class RestClient<T> {
     }
 
     public boolean postObjectWithoutAuth(Object obj, String endpoint ) throws IOException, InterruptedException {
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
         var parsedObject = mapper.writeValueAsString(obj);
         System.out.println("passedObject: " + parsedObject);
 
@@ -157,8 +150,6 @@ public class RestClient<T> {
     }
 
     public boolean deleteObject(String endpoint, Object object) throws IOException, InterruptedException {
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         String authHeader = getAuthHeader();
         var parsedObject = mapper.writeValueAsString(object);
         HttpRequest request = HttpRequest.newBuilder()
@@ -171,5 +162,10 @@ public class RestClient<T> {
         var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).statusCode() == 200;
         System.out.println(result);
         return result;
+    }
+
+    public RestClient(){
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 }
