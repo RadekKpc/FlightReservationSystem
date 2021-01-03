@@ -43,6 +43,8 @@ public class FlightsController implements Initializable {
     public ComboBox<Carrier> addCarrierCombo;
     public TextField placesCombo;
     public Button deleteButton;
+    public Button reserveButton;
+    public Label errorLabel;
     private final ObservableList<Flight> listOfFlights = FXCollections.observableArrayList();
     private final ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
     private final ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
@@ -158,7 +160,20 @@ public class FlightsController implements Initializable {
                 e.printStackTrace();
             }
         });
-
+        //change view dependant of user role - admin/client
+        if(RestClient.getLoggedClient().isAdmin()) {
+            reserveButton.setVisible(false);
+        } else {
+            addCarrierCombo.setVisible(false);
+            fromCombo.setVisible(false);
+            toCombo.setVisible(false);
+            departureCombo.setVisible(false);
+            arrivalCombo.setVisible(false);
+            priceCombo.setVisible(false);
+            addFlightButton.setVisible(false);
+            placesCombo.setVisible(false);
+            deleteButton.setVisible(false);
+        }
 
         priceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getBaseCost())));
         priceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -270,6 +285,18 @@ public class FlightsController implements Initializable {
         this.listOfFlights.removeAll(this.flightsList);
         this.listOfFlights.addAll(this.currFlights);
         updateLabels();
+    }
+
+    @FXML
+    public void reserveFlight() {
+        Flight f = dataTable.getSelectionModel().getSelectedItem();
+        if (f == null) {
+            errorLabel.setText("You didn't select Flight");
+        } else {
+            errorLabel.setText("");
+            // open new reservation panel
+            // check if flight is in the time of another reserved time
+        }
     }
 
     @Override

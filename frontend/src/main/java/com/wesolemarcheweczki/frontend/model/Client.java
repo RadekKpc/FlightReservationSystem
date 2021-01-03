@@ -75,6 +75,9 @@ public class Client {
         this.role = role;
     }
 
+    public boolean isAdmin() {
+        return this.role.equals("ROLE_ADMIN");
+    }
     @Override
     public String toString() {
         return "Client{" +

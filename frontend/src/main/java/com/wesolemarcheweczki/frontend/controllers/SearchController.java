@@ -50,14 +50,18 @@ public class SearchController {
             int price = Integer.parseInt(priceTextField.getText());
             css.addSearchStrategy(new PriceSearchStrategy(price));
         }
-        if(minDep.getValue() != null && maxDep.getValue() != null){
+        if(minDep.getValue() != null || maxDep.getValue() != null){
             LocalDate minDepTime = minDep.getValue();
             LocalDate maxDepTime = maxDep.getValue();
+            if(minDep.getValue() != null) maxDepTime = LocalDate.of(2100,12,31);
+            if(maxDep.getValue() != null) minDepTime = LocalDate.of(1900,12,31);
             css.addSearchStrategy(new DateSearchStrategy(minDepTime, maxDepTime, true));
         }
-        if(minArr.getValue() != null && maxArr.getValue() != null){
+        if(minArr.getValue() != null || maxArr.getValue() != null){
             LocalDate minArrTime = minArr.getValue();
             LocalDate maxArrTime = maxArr.getValue();
+            if(minArr.getValue() != null) maxArrTime = LocalDate.of(2100,12,31);
+            if(maxArr.getValue() != null) minArrTime = LocalDate.of(1900,12,31);
             css.addSearchStrategy(new DateSearchStrategy(minArrTime, maxArrTime, false));
         }
         if(!fromCountry.getText().isEmpty() && !fromCity.getText().isEmpty()){

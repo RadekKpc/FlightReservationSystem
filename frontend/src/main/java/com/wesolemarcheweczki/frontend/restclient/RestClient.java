@@ -28,6 +28,10 @@ public class RestClient<T> {
     private String url = "http://localhost:8080/api";
     private ObjectMapper mapper = new ObjectMapper();
 
+    public static Client getLoggedClient() {
+        return loggedClient;
+    }
+
 
     private String getAuthHeader(){
         String email = RestClient.loggedClient.getEmail();
