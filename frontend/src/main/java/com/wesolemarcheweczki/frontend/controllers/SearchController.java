@@ -76,7 +76,7 @@ public class SearchController {
             if(css.filter(f))
                 retFlights.add(f);
         }
-        fc.currFlights = retFlights;
+        fc.setCurrFlights(retFlights);
         fc.updateFlights();
         Stage stage = (Stage) fromCountry.getScene().getWindow();
         stage.close();
@@ -84,6 +84,6 @@ public class SearchController {
 
     public void setFlightsController(FlightsController fc) {
         this.fc = fc;
-        this.flightsList = fc.flightsList;
+        this.flightsList = fc.getFlightsList();
     }
 }
