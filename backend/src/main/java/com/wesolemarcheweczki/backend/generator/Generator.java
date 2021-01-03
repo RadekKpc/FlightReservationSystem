@@ -143,7 +143,7 @@ public class Generator implements ApplicationRunner {
     private void generateFlight() {
         var name = generateName(FLIGHT);
         var start = generateRandomDate();
-        var end = generateRandomDate().plusHours(8);
+        var end = start.plusHours(8);
         var flight = new Flight(name, getRandomElement(carriers), start, end, 200, 1000, getRandomElement(locations), getRandomElement(locations));
         flights.add(flight);
     }

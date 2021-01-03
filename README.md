@@ -19,7 +19,7 @@
 - Spring Security
 
 ## Data model
-![uml diagram](https://i.imgur.com/SFpS1G6.png)
+![uml diagram](https://imgur.com/NIWG85R.png)
  
  **Model includes classes:**
 - Flight - *information about each individual flight - contains arrival and departure times, source and destination locations, flight carrier and base flight price*

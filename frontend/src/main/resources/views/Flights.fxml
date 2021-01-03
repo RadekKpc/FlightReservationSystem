@@ -19,6 +19,14 @@
 <Pane prefHeight="200.0" prefWidth="200.0" />
 <Pane prefHeight="554.0" prefWidth="793.0">
 <children>
+
+    <HBox alignment="BOTTOM_RIGHT" layoutX="45.0" layoutY="470.0" prefHeight="100.0" prefWidth="661.0" spacing="50.0">
+        <Label fx:id="errorLabel" text="" textFill="#fa5f7e">
+
+        </Label>
+        <Button fx:id="reserveButton" layoutX="700.0" layoutY="172.0" mnemonicParsing="false" text="Reserve Selected Flight" style="-fx-background-color: green; -fx-text-fill: white;" onAction="#reserveFlight">
+        </Button>
+    </HBox>
     <Button onAction="#search" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" text="Search" style="-fx-background-color: white; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
     <Label layoutX="57.0" layoutY="25.0" text="Flights">
         <font>
@@ -29,7 +37,7 @@
         <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                 <children>
-                    <Label  fx:id="flightsLabel"  text="22000" textFill="#2a73ff">
+                    <Label  fx:id="flightsLabel"  text="0" textFill="#2a73ff">
                         <font>
                             <Font name="System Bold" size="26.0" />
                         </font>
@@ -39,7 +47,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                 <children>
-                    <Label fx:id="freeLabel"  text="1500" textFill="#26bfbc">
+                    <Label fx:id="freeLabel"  text="0" textFill="#26bfbc">
                         <font>
                             <Font name="System Bold" size="26.0" />
                         </font>
@@ -49,7 +57,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                 <children>
-                    <Label fx:id="bookedLabel" text="1000" textFill="#fa5f7e">
+                    <Label fx:id="bookedLabel" text="0" textFill="#fa5f7e">
                         <font>
                             <Font name="System Bold" size="26.0" />
                         </font>
