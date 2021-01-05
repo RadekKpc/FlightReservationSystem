@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
 public abstract class GenericDao<T extends AbstractModel<T>> {
 
     @Autowired
-    private JpaRepository<T, Integer> repository;
+    protected JpaRepository<T, Integer> repository;
 
     public boolean add(T object) {
         try {
