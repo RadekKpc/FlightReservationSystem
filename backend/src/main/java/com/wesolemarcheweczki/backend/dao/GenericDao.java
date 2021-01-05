@@ -26,6 +26,8 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
             repository.save(object);
             return true;
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -35,6 +37,8 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
             repository.saveAll(objects);
             return true;
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -64,6 +68,8 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
             repository.delete(object);
             return true;
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -73,6 +79,8 @@ public abstract class GenericDao<T extends AbstractModel<T>> {
             repository.deleteById(id);
             return true;
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
