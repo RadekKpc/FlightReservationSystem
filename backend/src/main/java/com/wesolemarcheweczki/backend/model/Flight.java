@@ -23,6 +23,12 @@ public class Flight implements AbstractModel<Flight> {
     @ManyToOne
     private Location source;
 
+//    Frontend needed parameters
+
+//    to display free places
+    @Transient
+    private int FreePlaces = 0;
+
     public Flight(Flight flight) {
         this(flight.flightCode, flight.carrier, flight.departure, flight.arrival, flight.capacity, flight.baseCost, flight.destination, flight.source);
     }
@@ -129,6 +135,15 @@ public class Flight implements AbstractModel<Flight> {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public int getFreePlaces() {
+        return FreePlaces;
+    }
+
+    @Transient
+    public void setFreePlaces(int freePlaces) {
+        FreePlaces = freePlaces;
     }
 
     @Override
