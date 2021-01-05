@@ -51,5 +51,13 @@ public class Order implements AbstractModel<Order> {
     public void setClient(Client client) {
         this.client = client;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", client=" + client +
+                '}';
+    }
 }
 

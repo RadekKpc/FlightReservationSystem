@@ -98,4 +98,16 @@ public class Ticket implements AbstractModel<Ticket> {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", passenger=" + passenger +
+                ", flight=" + flight +
+                ", order=" + order +
+                ", seat=" + seat +
+                ", cost=" + cost +
+                '}';
+    }
 }

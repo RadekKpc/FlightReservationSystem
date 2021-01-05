@@ -130,4 +130,19 @@ public class Flight implements AbstractModel<Flight> {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", flightCode='" + flightCode + '\'' +
+                ", carrier=" + carrier +
+                ", departure=" + departure +
+                ", arrival=" + arrival +
+                ", capacity=" + capacity +
+                ", baseCost=" + baseCost +
+                ", destination=" + destination +
+                ", source=" + source +
+                '}';
+    }
 }

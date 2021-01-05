@@ -58,4 +58,12 @@ public class Passenger implements AbstractModel<Passenger> {
     public void setParams(Passenger object) {
 
     }
+
+    @Override
+    public String toString() {
+        return "Passenger{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }
