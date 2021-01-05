@@ -188,6 +188,8 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **Add endpoint to create admins** - Radosław Kopeć
 * **Add permisions for the client ( on which endpoint can user send request)** - Radosław Kopeć
 * **Repair bug with double encoding while register user** - Radosław Kopeć, Karol Koptyra
+* **Add endpoint to create Order with Flight,Tickets,User and Passengers passed into json** - Radosław Kopeć
+* **Adding count of allowed places to the flight when is taking from the REST API** - Radosław Kopeć
 
 ### Documentation
 
