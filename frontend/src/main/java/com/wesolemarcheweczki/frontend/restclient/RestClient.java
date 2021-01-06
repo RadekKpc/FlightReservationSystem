@@ -120,9 +120,13 @@ public class RestClient<T> {
                 .header("Authorization", authHeader)
                 .header("Content-Type", "application/json")
                 .build();
-        var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).statusCode() == 200;
+        var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+        System.out.println("RESULT STRING");
         System.out.println(result);
-        return result;
+        System.out.println("RESULT VALUE");
+        System.out.println(Boolean.valueOf(result));
+        return Boolean.valueOf(result);
     }
 
     public boolean authorizeLogin(String login, String pwd) throws IOException, InterruptedException {
