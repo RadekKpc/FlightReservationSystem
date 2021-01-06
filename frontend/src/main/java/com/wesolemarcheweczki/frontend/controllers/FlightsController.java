@@ -303,8 +303,8 @@ public class FlightsController implements Initializable {
             public void handle(WorkerStateEvent event) {
                 var flightList = getFlights.getValue();
                 listOfFlights.addAll(flightList);
-                flightsList.addAll(flightList);
-                currFlights.addAll(flightList);
+                flightsList = flightList;
+                currFlights = flightList;
                 updateLabels();
             }
         });
@@ -367,7 +367,6 @@ public class FlightsController implements Initializable {
     }
 
     private void updateLabels() {
-        bookedLabel.setText("0");
         int freePlaces = 0;
         int bookedPlaces = 0;
         for (Flight f : currFlights) {
