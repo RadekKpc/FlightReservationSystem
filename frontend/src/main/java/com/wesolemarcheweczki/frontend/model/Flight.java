@@ -17,9 +17,10 @@ public class Flight {
     private IntegerProperty baseCost;
     private ObjectProperty<Location> destination;
     private ObjectProperty<Location> source;
+    private IntegerProperty freePlaces;
 
     @JsonCreator
-    public Flight(@JsonProperty("id") int id,@JsonProperty("flightCode") String flightCode, @JsonProperty("carrier") Carrier carrier,@JsonProperty("departure") LocalDateTime departure, @JsonProperty("arrival") LocalDateTime arrival,@JsonProperty("capacity") int capacity, @JsonProperty("destination") Location destination, @JsonProperty("source") Location source, @JsonProperty("baseCost") int baseCost) {
+    public Flight(@JsonProperty("id") int id,@JsonProperty("flightCode") String flightCode, @JsonProperty("carrier") Carrier carrier,@JsonProperty("departure") LocalDateTime departure, @JsonProperty("arrival") LocalDateTime arrival,@JsonProperty("capacity") int capacity, @JsonProperty("destination") Location destination, @JsonProperty("source") Location source, @JsonProperty("baseCost") int baseCost, @JsonProperty("freePlaces") int freePlaces) {
         this.id = id;
         this.flightCode = new SimpleStringProperty(flightCode);
         this.carrier = new SimpleObjectProperty<>(carrier);
@@ -29,6 +30,7 @@ public class Flight {
         this.baseCost = new SimpleIntegerProperty(baseCost);
         this.destination = new SimpleObjectProperty<>(destination);
         this.source = new SimpleObjectProperty<>(source);
+        this.freePlaces = new SimpleIntegerProperty(freePlaces);
     }
 
     public Flight(String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, int baseCost, Location destination, Location source) {
@@ -40,6 +42,19 @@ public class Flight {
         this.baseCost = new SimpleIntegerProperty(baseCost);
         this.destination = new SimpleObjectProperty<>(destination);
         this.source = new SimpleObjectProperty<>(source);
+    }
+
+    public Flight(int id, String flightCode, Carrier carrier, LocalDateTime departure, LocalDateTime arrival, int capacity, int baseCost, Location destination, Location source) {
+        this.id = id;
+        this.flightCode = new SimpleStringProperty(flightCode);
+        this.carrier = new SimpleObjectProperty<>(carrier);
+        this.departure = new SimpleObjectProperty<>(departure);
+        this.arrival = new SimpleObjectProperty<>(arrival);
+        this.capacity = new SimpleIntegerProperty(capacity);
+        this.baseCost = new SimpleIntegerProperty(baseCost);
+        this.destination = new SimpleObjectProperty<>(destination);
+        this.source = new SimpleObjectProperty<>(source);
+        this.freePlaces = new SimpleIntegerProperty(capacity);
     }
 
     public int getId() {
@@ -145,5 +160,19 @@ public class Flight {
     public void setSource(Location source) {
         this.source.set(source);
     }
+
+
+    public int getFreePlaces() {
+        return freePlaces.get();
+    }
+
+    public IntegerProperty freePlacesProperty() {
+        return freePlaces;
+    }
+
+    public void setFreePlaces(int freePlaces) {
+        this.freePlaces.set(freePlaces);
+    }
+
 }
 

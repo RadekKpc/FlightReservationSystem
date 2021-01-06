@@ -22,7 +22,7 @@ public class AddCarrierController {
     private void addCarrier() throws IOException, InterruptedException {
         this.updateModel();
         errorText.setText("");
-        if (!carrier.getName().isEmpty() && client.postObject(this.carrier, "/carrier"))
+        if (!carrier.getName().isEmpty() && client.postObject(this.carrier, "/carrier") == 200)
             addedCarrier();
         else couldntAddCarrier();
     }

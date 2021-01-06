@@ -41,7 +41,7 @@ public class AddUserController {
             wrongEmailHandle();
             System.out.println("Wrong email!");
         } else if (!this.client.getFirstName().isEmpty() && !this.client.getLastName().isEmpty()) {
-            if (restClient.postObject(this.client, "/client/admin")) { // user successfully added to database
+            if (restClient.postObject(this.client, "/client/admin") == 200) { // user successfully added to database
                 firstNameTextField.setText("");
                 lastNameTextField.setText("");
                 emailTextField.setText("");

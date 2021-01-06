@@ -63,7 +63,7 @@ public class RestClient<T> {
         return response.statusCode() == 200;
     }
 
-    public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
+    public int postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
         String authHeader = getAuthHeader();
 
         var parsedObject = mapper.writeValueAsString(obj);
@@ -80,7 +80,7 @@ public class RestClient<T> {
                 HttpResponse.BodyHandlers.ofString());
 
         System.out.println(response.statusCode());
-        return response.statusCode() == 200;
+        return response.statusCode();
     }
 
     public boolean postObjectWithoutAuth(Object obj, String endpoint ) throws IOException, InterruptedException {
@@ -108,6 +108,25 @@ public class RestClient<T> {
         } else {
             return null;
         }
+    }
+
+    public boolean check(String endpoint, Object body) throws IOException, InterruptedException {
+        String authHeader = getAuthHeader();
+        var parsedObject = mapper.writeValueAsString(body);
+        System.out.println(parsedObject);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + endpoint))
+                .method("GET", HttpRequest.BodyPublishers.ofString(parsedObject))
+                .header("Authorization", authHeader)
+                .header("Content-Type", "application/json")
+                .build();
+        var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+        System.out.println("RESULT STRING");
+        System.out.println(result);
+        System.out.println("RESULT VALUE");
+        System.out.println(Boolean.valueOf(result));
+        return Boolean.valueOf(result);
     }
 
     public boolean authorizeLogin(String login, String pwd) throws IOException, InterruptedException {

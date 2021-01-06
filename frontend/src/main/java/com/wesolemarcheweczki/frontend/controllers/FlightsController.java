@@ -49,7 +49,7 @@ public class FlightsController implements Initializable {
     private final ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
     private final ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
     @FXML
-    private TableColumn freeColumn;
+    private TableColumn<Flight, String> freeColumn;
     @FXML
     private TableColumn<Flight, String> placesColumn;
     @FXML
@@ -141,9 +141,10 @@ public class FlightsController implements Initializable {
                     addCarrierCombo.getValue(),
                     LocalDateTime.parse(departureCombo.getText(), formatter),
                     LocalDateTime.parse(arrivalCombo.getText(), formatter),
-                    capacity, fromCombo.getValue(), toCombo.getValue(), baseCost);
+                    capacity, baseCost, fromCombo.getValue(), toCombo.getValue());
             try {
-                restClient.postObject(f, "/flight");
+                var res = restClient.postObject(f, "/flight");
+                System.out.println(res);
                 listOfFlights.add(f);
                 currFlights = listOfFlights;
                 //dataTable.setItems(listOfFlights);
@@ -177,6 +178,8 @@ public class FlightsController implements Initializable {
 
         priceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getBaseCost())));
         priceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        freeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getFreePlaces())));
+        freeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrival().toString()));
         arrivalColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         departureColumn.setCellValueFactory(cellData ->  new SimpleStringProperty(cellData.getValue().getDeparture().toString()));
@@ -198,6 +201,7 @@ public class FlightsController implements Initializable {
         fromColumn.setOnEditCommit(this::updateFrom);
         toColumn.setOnEditCommit(this::updateTo);
         placesColumn.setOnEditCommit(this::updatePlaces);
+        freeColumn.setEditable(false);
 
         addCarrierCombo.setItems(listOfCarriers);
         fromCombo.setItems(listOfLocations);
@@ -287,13 +291,43 @@ public class FlightsController implements Initializable {
         updateLabels();
     }
 
+    public void resetFlights(){
+        listOfFlights.clear();
+        currFlights.clear();
+        flightsList.clear();
+
+        Task<List<Flight>> getFlights = restClient.createGetTask("/flight",Flight.class);
+
+        getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                var flightList = getFlights.getValue();
+                listOfFlights.addAll(flightList);
+                flightsList.addAll(flightList);
+                currFlights.addAll(flightList);
+                updateLabels();
+            }
+        });
+        executorService.submit(getFlights);
+    }
+
     @FXML
-    public void reserveFlight() {
+    public void bookFlight() throws IOException {
         Flight f = dataTable.getSelectionModel().getSelectedItem();
         if (f == null) {
             errorLabel.setText("You didn't select Flight");
         } else {
             errorLabel.setText("");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BookFlight.fxml"));
+            Parent root = loader.load();
+            var bookStage = new Stage();
+            Scene scene = new Scene(root);
+            BookFlightController bc = loader.getController();
+            bc.setFlight(f);
+            bc.setFlightsController(this);
+            bookStage.setResizable(false);
+            bookStage.setScene(scene);
+            bookStage.show();
             // open new reservation panel
             // check if flight is in the time of another reserved time
         }
@@ -302,6 +336,10 @@ public class FlightsController implements Initializable {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        reset();
+    }
+
+    public void reset(){
         //TODO: zmienić z ComboBoxTableCell.forTableColumn na coś customowego co radzi sobie z obiektami
         initColumns();
         getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

@@ -24,7 +24,7 @@
         <Label fx:id="errorLabel" text="" textFill="#fa5f7e">
 
         </Label>
-        <Button fx:id="reserveButton" layoutX="700.0" layoutY="172.0" mnemonicParsing="false" text="Reserve Selected Flight" style="-fx-background-color: green; -fx-text-fill: white;" onAction="#reserveFlight">
+        <Button fx:id="reserveButton" layoutX="700.0" layoutY="172.0" mnemonicParsing="false" text="Reserve Selected Flight" style="-fx-background-color: green; -fx-text-fill: white;" onAction="#bookFlight">
         </Button>
     </HBox>
     <Button onAction="#search" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" text="Search" style="-fx-background-color: white; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
