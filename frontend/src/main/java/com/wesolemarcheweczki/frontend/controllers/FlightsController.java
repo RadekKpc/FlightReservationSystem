@@ -369,7 +369,12 @@ public class FlightsController implements Initializable {
     private void updateLabels() {
         bookedLabel.setText("0");
         int freePlaces = 0;
-        for (Flight f : currFlights) freePlaces += f.getCapacity();
+        int bookedPlaces = 0;
+        for (Flight f : currFlights) {
+            freePlaces += f.getFreePlaces();
+            bookedPlaces += f.getCapacity() - f.getFreePlaces();
+        }
+        bookedLabel.setText(String.valueOf(bookedPlaces));
         freeLabel.setText(String.valueOf(freePlaces));
         flightsLabel.setText(String.valueOf(currFlights.size()));
     }
