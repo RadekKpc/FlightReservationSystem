@@ -110,6 +110,21 @@ public class RestClient<T> {
         }
     }
 
+    public boolean check(String endpoint, Object body) throws IOException, InterruptedException {
+        String authHeader = getAuthHeader();
+        var parsedObject = mapper.writeValueAsString(body);
+        System.out.println(parsedObject);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + endpoint))
+                .method("GET", HttpRequest.BodyPublishers.ofString(parsedObject))
+                .header("Authorization", authHeader)
+                .header("Content-Type", "application/json")
+                .build();
+        var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).statusCode() == 200;
+        System.out.println(result);
+        return result;
+    }
+
     public boolean authorizeLogin(String login, String pwd) throws IOException, InterruptedException {
         return getResponse(login, pwd, "/check").statusCode() == 200;
     }

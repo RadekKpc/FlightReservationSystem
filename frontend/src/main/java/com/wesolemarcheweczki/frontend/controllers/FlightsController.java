@@ -291,8 +291,28 @@ public class FlightsController implements Initializable {
         updateLabels();
     }
 
+    public void resetFlights(){
+        listOfFlights.clear();
+        currFlights.clear();
+        flightsList.clear();
+
+        Task<List<Flight>> getFlights = restClient.createGetTask("/flight",Flight.class);
+
+        getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                var flightList = getFlights.getValue();
+                listOfFlights.addAll(flightList);
+                flightsList.addAll(flightList);
+                currFlights.addAll(flightList);
+                updateLabels();
+            }
+        });
+        executorService.submit(getFlights);
+    }
+
     @FXML
-    public void reserveFlight() throws IOException {
+    public void bookFlight() throws IOException {
         Flight f = dataTable.getSelectionModel().getSelectedItem();
         if (f == null) {
             errorLabel.setText("You didn't select Flight");
@@ -304,6 +324,7 @@ public class FlightsController implements Initializable {
             Scene scene = new Scene(root);
             BookFlightController bc = loader.getController();
             bc.setFlight(f);
+            bc.setFlightsController(this);
             bookStage.setResizable(false);
             bookStage.setScene(scene);
             bookStage.show();
@@ -315,6 +336,10 @@ public class FlightsController implements Initializable {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        reset();
+    }
+
+    public void reset(){
         //TODO: zmienić z ComboBoxTableCell.forTableColumn na coś customowego co radzi sobie z obiektami
         initColumns();
         getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

@@ -11,11 +11,14 @@ import com.wesolemarcheweczki.frontend.util.AuthManager;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.checkerframework.checker.units.qual.C;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,7 @@ public class BookFlightController implements Initializable {
     private Order order = new Order(AuthManager.email);
     private List<Ticket> tickets = new ArrayList<>();
     private Flight flight;
+    private FlightsController flightsController;
 
     public void setFlight(Flight f){
         carrierLabel.setText(f.getCarrier().toString());
@@ -61,8 +65,34 @@ public class BookFlightController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         seat = new SimpleIntegerProperty(0);
         total = new SimpleIntegerProperty(0);
-        bookButton.setOnAction(e -> {
+        bookButton.setOnAction(event -> {
             //check flight, then create and send request
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("email", AuthManager.email);
+            map.put("flightId", flight.getId());
+            try {
+                var result = restClient.check("/flight/collision", map);
+                if(!result){
+                    System.out.println("You already have ticket for this termin!");
+                }
+                else{
+                    var code = restClient.postObject(createPostObject(), "/order/create");
+                    if(code == 200){
+                        System.out.println("Tickets booked successfully");
+                        flightsController.resetFlights();
+                        final Node source = (Node) event.getSource();
+                        final Stage stage = (Stage) source.getScene().getWindow();
+                        stage.close();
+                    }
+                    else {
+                        throw new Exception();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("something went wrong");
+                e.printStackTrace();
+            }
+
         });
 
         addAndContinueButton.setOnAction(e -> {
@@ -83,5 +113,9 @@ public class BookFlightController implements Initializable {
         obj.put("flightId", flight.getId());
         obj.put("tickets", tickets);
         return obj;
+    }
+
+    public void setFlightsController(FlightsController flightsController) {
+        this.flightsController = flightsController;
     }
 }
