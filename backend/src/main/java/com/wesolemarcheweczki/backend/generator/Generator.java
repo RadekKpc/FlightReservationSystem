@@ -78,6 +78,31 @@ public class Generator implements ApplicationRunner {
         generateOrders(); //needs flights and clients
     }
 
+    private void generateClientWithFlightCollision() {
+        LocalDateTime departure_main = LocalDateTime.of(2020, 1, 1, 0, 0);
+        LocalDateTime arrival_main = LocalDateTime.of(2020, 1, 1, 6, 0);
+
+        LocalDateTime collision_departure_1 = LocalDateTime.of(2019, 12, 31, 0, 0);
+        LocalDateTime collision_arrival_1 = LocalDateTime.of(2020, 1, 1, 7, 0);
+        LocalDateTime collision_departure_2 = LocalDateTime.of(2020, 1, 1, 5, 0);
+        LocalDateTime collision_arrival_2 = LocalDateTime.of(2020, 1, 1, 10, 0);
+
+        Client client = clientDAO.getByEmail("test@test.com");
+        Flight main = new Flight("MainFlight",getRandomElement(carriers),departure_main,arrival_main,100,999,getRandomElement(locations),getRandomElement(locations));
+        Flight collision_1 = new Flight("collision1",getRandomElement(carriers),collision_departure_1,collision_arrival_1,100,999,getRandomElement(locations),getRandomElement(locations));
+        Flight collision_2 = new Flight("collision2",getRandomElement(carriers),collision_departure_2,collision_arrival_2,100,999,getRandomElement(locations),getRandomElement(locations));
+
+        flightDAO.add(main);
+        flightDAO.add(collision_1);
+        flightDAO.add(collision_2);
+
+        Order order = new Order(client);
+        orderDAO.add(order);
+
+        Ticket ticket = new Ticket(new Passenger("Test","Collision"),main,order,33,123);
+        ticketDAO.add(ticket);
+    }
+
     private void saveObjects() {
         locationDAO.addAll(locations);
         carrierDAO.addAll(carriers);
@@ -86,6 +111,7 @@ public class Generator implements ApplicationRunner {
         orderDAO.addAll(orders);
         ticketDAO.addAll(tickets);
         clientDAO.addAll(generateDefaultClients());
+        generateClientWithFlightCollision();
     }
 
     private void generateClients() {
