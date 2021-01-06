@@ -13,7 +13,7 @@ public interface FlightRepository extends JpaRepository<Flight,Integer> {
     @Query("SELECT COUNT(*) FROM Order AS o " +
             "JOIN Ticket t on t.order = o " +
             "JOIN Flight f on t.flight = f " +
-            "WHERE o.client = ?3 AND NOT " +
-            " ( ?1 <= f.arrival OR f.departure > ?2)")
+            "WHERE o.client = ?3 AND " +
+            " ( ?1 >= f.arrival OR f.departure < ?2)")
     int getCollisionWithFlightForGivenClient(LocalDateTime departure, LocalDateTime arrival, Client client);
 }

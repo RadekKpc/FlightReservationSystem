@@ -72,7 +72,7 @@ public class BookFlightController implements Initializable {
             map.put("flightId", flight.getId());
             try {
                 var result = restClient.check("/flight/collision", map);
-                if(result){
+                if(!result){
                     System.out.println("You already have ticket for this termin!");
                 }
                 else{
