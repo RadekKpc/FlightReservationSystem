@@ -1,7 +1,9 @@
 package com.wesolemarcheweczki.backend.dao;
 
+import com.wesolemarcheweczki.backend.model.Client;
 import com.wesolemarcheweczki.backend.model.Flight;
 import com.wesolemarcheweczki.backend.model.Ticket;
+import com.wesolemarcheweczki.backend.repository.FlightRepository;
 import com.wesolemarcheweczki.backend.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +28,11 @@ public class FlightDAO extends GenericDao<Flight> {
 
     public int getFreePlaces(Flight flight){
         return flight.getCapacity() - ticketRepository.getCountOfTicketsForFlight(flight);
+    }
+
+    public boolean getCollision(Flight flight, Client client){
+        System.out.println(((FlightRepository) repository).getCollisionWithFlightForGivenClient(flight.getDeparture(),flight.getArrival(),client));
+        return ((FlightRepository) repository).getCollisionWithFlightForGivenClient(flight.getDeparture(),flight.getArrival(),client) == 0;
     }
 
 }
