@@ -63,7 +63,7 @@ public class RestClient<T> {
         return response.statusCode() == 200;
     }
 
-    public boolean postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
+    public int postObject(Object obj, String endpoint ) throws IOException, InterruptedException {
         String authHeader = getAuthHeader();
 
         var parsedObject = mapper.writeValueAsString(obj);
@@ -80,7 +80,7 @@ public class RestClient<T> {
                 HttpResponse.BodyHandlers.ofString());
 
         System.out.println(response.statusCode());
-        return response.statusCode() == 200;
+        return response.statusCode();
     }
 
     public boolean postObjectWithoutAuth(Object obj, String endpoint ) throws IOException, InterruptedException {

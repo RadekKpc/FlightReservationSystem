@@ -26,7 +26,7 @@ public class AddLocationController {
         updateModel();
         errorText.setText("");
         if (!location.getCity().isEmpty() && !location.getCountry().isEmpty() && !location.getAirportId().isEmpty()) {
-            if (restClient.postObject(location, "/location")) { // location successfully added to database
+            if (restClient.postObject(location, "/location") == 200) { // location successfully added to database
                 airportIdTextField.setText("");
                 cityTextField.setText("");
                 countryTextField.setText("");
