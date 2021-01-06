@@ -141,7 +141,7 @@ public class FlightsController implements Initializable {
                     addCarrierCombo.getValue(),
                     LocalDateTime.parse(departureCombo.getText(), formatter),
                     LocalDateTime.parse(arrivalCombo.getText(), formatter),
-                    capacity, baseCost, fromCombo.getValue(), toCombo.getValue());
+                    capacity, baseCost, toCombo.getValue(), fromCombo.getValue());
             try {
                 var res = restClient.postObject(f, "/flight");
                 System.out.println(res);
