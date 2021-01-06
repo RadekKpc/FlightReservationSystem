@@ -108,6 +108,9 @@ public class LoginController {
     }
 
     private void loadHomePage(String email, String pwd, Role role) throws IOException {
+        AuthManager.setRole(role);
+        AuthManager.setEmail(email);
+        AuthManager.setPwd(pwd);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
