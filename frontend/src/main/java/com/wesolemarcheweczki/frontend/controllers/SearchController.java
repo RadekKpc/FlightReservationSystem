@@ -71,7 +71,7 @@ public class SearchController {
         }
         if(!toCountry.getText().isEmpty() && !toCity.getText().isEmpty()){
             String city = toCity.getText();
-            String country = toCity.getText();
+            String country = toCountry.getText();
             css.addSearchStrategy(new PlaceSearchStrategy(city, country, false));
         }
 

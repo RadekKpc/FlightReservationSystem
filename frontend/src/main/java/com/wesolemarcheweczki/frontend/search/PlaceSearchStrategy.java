@@ -16,6 +16,10 @@ public class PlaceSearchStrategy implements ISearchStrategy{
 
     @Override
     public boolean filter(Flight f) {
+        System.out.println(f.getDestination().getCountry());
+        System.out.println(country);
+        System.out.println(f.getDestination().getCity());
+        System.out.println(city);
         return from
                 ? (f.getSource().getCountry().equals(this.country) && f.getSource().getCity().equals(this.city))
                 : (f.getDestination().getCountry().equals(this.country) && f.getDestination().getCity().equals(this.city));
