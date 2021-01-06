@@ -46,13 +46,19 @@ User interface currently includes main page, add carrier page and add user page 
 
 Page so client can login/register to access app
 
-### Main page
+### Main page (admin user)
 
 ![mainPage](https://imgur.com/omJZbfC.png)
 
 On the left side we can see logo and buttons to access multiple other panels. (some of the functionalities weren't implemented yet)
 
 Clicking the button opens panel on the right side, left side stays intact.
+
+### Main page (client user)
+
+![mainPage](https://imgur.com/0LLOWou.png)
+
+As we can see main page for client is very similar to admin, however it lacks functions that client doesn't need and shouldn't have like adding users, locations etc.
 
 ### Add User
 
@@ -77,19 +83,30 @@ As we can see above - the carrier was successfully added to database.
 Ability to add the location to database
 
 
-### Flights Panel
+### Flights Panel (admin)
 The flights panel allows us to see all the flights and allows us to add flight to the database
 
-![flightsPanel](https://imgur.com/cTHf21Q.png)
+![flightsPanel](https://imgur.com/YlRcTYo.png)
 
 As we can see we could add flight with the new Carrier we have added above
+
+### Flights Panel (client)
+The flights panel allows us to see all the flights and reserve a flight we want
+
+![flightsPanel](https://imgur.com/atapNqT.png)
+
+### Book Flight Panel
+Booked Flight panel allows us to reserve chosen flight for multiple people at once, if there was a reservation for us already at colliding date - we cannot reserve
+
+![bookFlightsPanel](https://imgur.com/V7beJ5Q.png)
+
 
 ### Search flights panel
 ![searchFlight](https://imgur.com/mA24aYv.png)
 
 We can search flights based on departure and arrival location and time and also on price
 
-![exampleSearched](https://imgur.com/nHXkFN7.png)
+![exampleSearched](https://imgur.com/V1j6EFB.png)
 
 After search we can see the changes
 
@@ -138,11 +155,10 @@ This endpoint allow to check user role. It is used to split view for admin and u
 ![adminCreateUserEndpoint](readme_images/roleEndpoint.JPG)
 
 ## Design patterns used
-* **MVC** - it is not completed in m1 yet(we do not yet have property mapping and binding to data model), we want to
-  seperate representation of information from the way it is presented and accepted from the user in view part(gui)
+* **MVC** - seperate representation of information from the way it is presented and accepted from the user in view part(gui)
 * **DAO** - uses Spring Repository class methods and transforms them into more practical methods used in endpoint code
 * **IOC** - provided by Spring, used for most classes
-* # TODO
+* **Composite** - used in search of flights - we have composite search strategy
 
 
 ## Task distribution
@@ -167,7 +183,10 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **add location controller** - Karol Koptyra
 * **add roles field to create admins at admin view** - Radosław Kopeć
 * **split views on admin and users parts** - Radosław Kopeć
-* **add authorisation (obtaining user role)** - Radosław Kopeć
+* **add authorization (obtaining user role)** - Radosław Kopeć
+* **fix reservation bugs(doubled flights, collision problems)** - Karol Koptyra
+* **bookFlights Panel** - Wiktor Kamiński
+* **change FlightsPanel depending on user/admin role** - Karol Koptyra
 ### Backend
 * **start of backend project** - Paweł Miziołek
 * **data model** - Paweł Miziołek
