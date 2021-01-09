@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,10 +31,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class FlightsController implements Initializable {
 
+    private final ObservableList<Flight> listOfFlights = FXCollections.observableArrayList();
+    private final ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
+    private final ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
+    @FXML
+    private final RestClient restClient = new RestClient();
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private final Task<List<Flight>> getFlights = restClient.createGetTask("/flight", Flight.class);
+    private final Task<List<Carrier>> getCarriers = restClient.createGetTask("/carrier", Carrier.class);
+    private final Task<List<Location>> getLocation = restClient.createGetTask("/location", Location.class);
     public Button addFlightButton;
     public TextField priceCombo;
     public TextField departureCombo;
@@ -45,9 +54,9 @@ public class FlightsController implements Initializable {
     public Button deleteButton;
     public Button reserveButton;
     public Label errorLabel;
-    private final ObservableList<Flight> listOfFlights = FXCollections.observableArrayList();
-    private final ObservableList<Carrier> listOfCarriers = FXCollections.observableArrayList();
-    private final ObservableList<Location> listOfLocations = FXCollections.observableArrayList();
+    public List<Flight> flightsList;
+    public List<Flight> currFlights;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     @FXML
     private TableColumn<Flight, String> freeColumn;
     @FXML
@@ -61,7 +70,7 @@ public class FlightsController implements Initializable {
     @FXML
     private TableColumn<Flight, Location> fromColumn;
     @FXML
-    private TableColumn <Flight, Location> toColumn;
+    private TableColumn<Flight, Location> toColumn;
     @FXML
     private TableColumn<Flight, Carrier> carrierColumn;
     @FXML
@@ -74,18 +83,7 @@ public class FlightsController implements Initializable {
     private Label bookedLabel;
     @FXML
     private Label freeLabel;
-
     private Stage searchStage;
-    @FXML
-    private final RestClient restClient = new RestClient();
-
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
-
-    private final Task<List<Flight>> getFlights = restClient.createGetTask("/flight",Flight.class);
-
-    private final Task<List<Carrier>> getCarriers = restClient.createGetTask("/carrier", Carrier.class);
-
-    private final Task<List<Location>> getLocation = restClient.createGetTask("/location", Location.class);
 
     public List<Flight> getFlightsList() {
         return flightsList;
@@ -101,174 +99,6 @@ public class FlightsController implements Initializable {
 
     public void setCurrFlights(List<Flight> currFlights) {
         this.currFlights = currFlights;
-    }
-
-    public List<Flight> flightsList;
-    public List<Flight> currFlights;
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
-    private void adjustToRole(){
-        var isAdmin = AuthManager.isAdmin();
-        dataTable.setEditable(isAdmin);
-        addCarrierCombo.setVisible(isAdmin);
-        toCombo.setVisible(isAdmin);
-        fromCombo.setVisible(isAdmin);
-        arrivalCombo.setVisible(isAdmin);
-        departureCombo.setVisible(isAdmin);
-        placesCombo.setVisible(isAdmin);
-        addFlightButton.setVisible(isAdmin);
-        deleteButton.setVisible(isAdmin);
-        priceCombo.setVisible(isAdmin);
-    }
-
-    private void initColumns(){
-        adjustToRole();
-        deleteButton.setOnAction(event -> {
-            Flight f = dataTable.getSelectionModel().getSelectedItem();
-            listOfFlights.remove(f);
-            try {
-                restClient.deleteObject("/flight", f);
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        addFlightButton.setOnAction(event -> {
-            int baseCost = Integer.parseInt(priceCombo.getText());
-            int capacity = Integer.parseInt(placesCombo.getText());
-            int flightCode = listOfFlights.stream().map(Flight::getId).max((a, b) -> a - b).orElse(0);
-            Flight f = new Flight(flightCode,"flight" + flightCode,
-                    addCarrierCombo.getValue(),
-                    LocalDateTime.parse(departureCombo.getText(), formatter),
-                    LocalDateTime.parse(arrivalCombo.getText(), formatter),
-                    capacity, baseCost, toCombo.getValue(), fromCombo.getValue());
-            try {
-                var res = restClient.postObject(f, "/flight");
-                System.out.println(res);
-                listOfFlights.add(f);
-                currFlights = listOfFlights;
-                //dataTable.setItems(listOfFlights);
-                priceCombo.setText("");
-                placesCombo.setText("");
-                addCarrierCombo.setValue(null);
-                departureCombo.setText("");
-                arrivalCombo.setText("");
-                fromCombo.setValue(null);
-                toCombo.setValue(null);
-                //this.dataTable.setItems(FXCollections.observableArrayList(flightsList));
-                updateLabels();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        //change view dependant of user role - admin/client
-        if(RestClient.getLoggedClient().isAdmin()) {
-            reserveButton.setVisible(false);
-        } else {
-            addCarrierCombo.setVisible(false);
-            fromCombo.setVisible(false);
-            toCombo.setVisible(false);
-            departureCombo.setVisible(false);
-            arrivalCombo.setVisible(false);
-            priceCombo.setVisible(false);
-            addFlightButton.setVisible(false);
-            placesCombo.setVisible(false);
-            deleteButton.setVisible(false);
-        }
-
-        priceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getBaseCost())));
-        priceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        freeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getFreePlaces())));
-        freeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrival().toString()));
-        arrivalColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        departureColumn.setCellValueFactory(cellData ->  new SimpleStringProperty(cellData.getValue().getDeparture().toString()));
-        departureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        fromColumn.setCellValueFactory(cellData -> cellData.getValue().sourceProperty());
-        toColumn.setCellValueFactory(cellData -> cellData.getValue().destinationProperty());
-        carrierColumn.setCellValueFactory(cellData -> cellData.getValue().carrierProperty());
-        placesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCapacity())));
-
-        placesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfCarriers));
-        fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
-        toColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
-
-        priceColumn.setOnEditCommit(this::updateFlightCost);
-        carrierColumn.setOnEditCommit(this::updateFlightCarrier);
-        arrivalColumn.setOnEditCommit(this::updateArrivalTime);
-        departureColumn.setOnEditCommit(this::updateDepartureTime);
-        fromColumn.setOnEditCommit(this::updateFrom);
-        toColumn.setOnEditCommit(this::updateTo);
-        placesColumn.setOnEditCommit(this::updatePlaces);
-        freeColumn.setEditable(false);
-
-        addCarrierCombo.setItems(listOfCarriers);
-        fromCombo.setItems(listOfLocations);
-        toCombo.setItems(listOfLocations);
-        dataTable.setItems(listOfFlights);
-
-    }
-
-    private <T> Flight getCurrentObject(TableColumn.CellEditEvent<Flight, T> t){
-        return t.getTableView().getItems().get(t.getTablePosition().getRow());
-    }
-
-    private void updatePlaces(TableColumn.CellEditEvent<Flight, String> t) {
-        int places = Integer.parseInt(t.getNewValue());
-        Flight f = getCurrentObject(t);
-        f.setCapacity(places);
-        putFlightChange(f);
-    }
-
-    private void updateFlightCost(TableColumn.CellEditEvent<Flight, String> t) {
-        int cost = Integer.parseInt(t.getNewValue());
-        Flight f = getCurrentObject(t);
-        f.setBaseCost(cost);
-        putFlightChange(f);
-    }
-
-    private void updateFrom(TableColumn.CellEditEvent<Flight, Location> t) {
-        Location l = t.getNewValue();
-        Flight f = getCurrentObject(t);;
-        f.setSource(l);
-        putFlightChange(f);
-    }
-
-    private void updateTo(TableColumn.CellEditEvent<Flight, Location> t) {
-        Location l = t.getNewValue();
-        Flight f = getCurrentObject(t);
-        f.setDestination(l);
-        putFlightChange(f);
-    }
-
-    private void updateDepartureTime(TableColumn.CellEditEvent<Flight, String> t) {
-        LocalDateTime time = LocalDateTime.parse(t.getNewValue(), formatter);
-        Flight f = getCurrentObject(t);
-        f.setDeparture(time);
-        putFlightChange(f);
-    }
-
-    private void updateArrivalTime(TableColumn.CellEditEvent<Flight, String> t) {
-        LocalDateTime time = LocalDateTime.parse(t.getNewValue(), formatter);
-        Flight f = getCurrentObject(t);
-        f.setArrival(time);
-        putFlightChange(f);
-    }
-
-    private void updateFlightCarrier(TableColumn.CellEditEvent<Flight, Carrier> t) {
-        Carrier c = t.getNewValue();
-        Flight f = getCurrentObject(t);;
-        f.setCarrier(c);
-        putFlightChange(f);
-    }
-
-    private void putFlightChange(Flight f) {
-        try {
-            restClient.putObject(f, "/flight");
-        } catch (IOException | InterruptedException err) {
-            err.printStackTrace();
-        }
     }
 
     @FXML
@@ -291,12 +121,12 @@ public class FlightsController implements Initializable {
         updateLabels();
     }
 
-    public void resetFlights(){
+    public void resetFlights() {
         listOfFlights.clear();
         currFlights.clear();
         flightsList.clear();
 
-        Task<List<Flight>> getFlights = restClient.createGetTask("/flight",Flight.class);
+        Task<List<Flight>> getFlights = restClient.createGetTask("/flight", Flight.class);
 
         getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
@@ -339,7 +169,7 @@ public class FlightsController implements Initializable {
         reset();
     }
 
-    public void reset(){
+    public void reset() {
         //TODO: zmienić z ComboBoxTableCell.forTableColumn na coś customowego co radzi sobie z obiektami
         initColumns();
         getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -366,6 +196,142 @@ public class FlightsController implements Initializable {
         executorService.submit(getLocation);
     }
 
+    private void adjustToRole() {
+        var isAdmin = AuthManager.isAdmin();
+        dataTable.setEditable(isAdmin);
+        addCarrierCombo.setVisible(isAdmin);
+        toCombo.setVisible(isAdmin);
+        fromCombo.setVisible(isAdmin);
+        arrivalCombo.setVisible(isAdmin);
+        departureCombo.setVisible(isAdmin);
+        placesCombo.setVisible(isAdmin);
+        addFlightButton.setVisible(isAdmin);
+        deleteButton.setVisible(isAdmin);
+        priceCombo.setVisible(isAdmin);
+    }
+
+    private void initColumns() {
+        adjustToRole();
+        deleteButton.setOnAction(this::deleteFlight);
+        addFlightButton.setOnAction(this::addFlight);
+        //change view dependant of user role - admin/client
+        setUIElementsForRole();
+
+        priceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getBaseCost())));
+        priceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        freeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getFreePlaces())));
+        freeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrival().toString()));
+        arrivalColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDeparture().toString()));
+        departureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        fromColumn.setCellValueFactory(cellData -> cellData.getValue().sourceProperty());
+        toColumn.setCellValueFactory(cellData -> cellData.getValue().destinationProperty());
+        carrierColumn.setCellValueFactory(cellData -> cellData.getValue().carrierProperty());
+        placesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCapacity())));
+
+        placesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        carrierColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfCarriers));
+        fromColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
+        toColumn.setCellFactory(ComboBoxTableCell.forTableColumn(listOfLocations));
+
+        priceColumn.setOnEditCommit(this::updateFlightCost);
+        carrierColumn.setOnEditCommit(this::updateFlightCarrier);
+        arrivalColumn.setOnEditCommit(this::updateArrivalTime);
+        departureColumn.setOnEditCommit(this::updateDepartureTime);
+        fromColumn.setOnEditCommit(this::updateFrom);
+        toColumn.setOnEditCommit(this::updateTo);
+        placesColumn.setOnEditCommit(this::updatePlaces);
+        freeColumn.setEditable(false);
+
+        addCarrierCombo.setItems(listOfCarriers);
+        fromCombo.setItems(listOfLocations);
+        toCombo.setItems(listOfLocations);
+        dataTable.setItems(listOfFlights);
+
+    }
+
+    private void setUIElementsForRole() {
+        if (RestClient.getLoggedClient().isAdmin()) {
+            reserveButton.setVisible(false);
+        } else {
+            setUIElementsForUser();
+        }
+    }
+
+    private void setUIElementsForUser() {
+        addCarrierCombo.setVisible(false);
+        fromCombo.setVisible(false);
+        toCombo.setVisible(false);
+        departureCombo.setVisible(false);
+        arrivalCombo.setVisible(false);
+        priceCombo.setVisible(false);
+        addFlightButton.setVisible(false);
+        placesCombo.setVisible(false);
+        deleteButton.setVisible(false);
+    }
+
+    private <T> Flight getCurrentObject(TableColumn.CellEditEvent<Flight, T> t) {
+        return t.getTableView().getItems().get(t.getTablePosition().getRow());
+    }
+
+    private void updatePlaces(TableColumn.CellEditEvent<Flight, String> t) {
+        int places = Integer.parseInt(t.getNewValue());
+        Flight f = getCurrentObject(t);
+        f.setCapacity(places);
+        putFlightChange(f);
+    }
+
+    private void updateFlightCost(TableColumn.CellEditEvent<Flight, String> t) {
+        int cost = Integer.parseInt(t.getNewValue());
+        Flight f = getCurrentObject(t);
+        f.setBaseCost(cost);
+        putFlightChange(f);
+    }
+
+    private void updateFrom(TableColumn.CellEditEvent<Flight, Location> t) {
+        Location l = t.getNewValue();
+        Flight f = getCurrentObject(t);
+        f.setSource(l);
+        putFlightChange(f);
+    }
+
+    private void updateTo(TableColumn.CellEditEvent<Flight, Location> t) {
+        Location l = t.getNewValue();
+        Flight f = getCurrentObject(t);
+        f.setDestination(l);
+        putFlightChange(f);
+    }
+
+    private void updateDepartureTime(TableColumn.CellEditEvent<Flight, String> t) {
+        LocalDateTime time = LocalDateTime.parse(t.getNewValue(), formatter);
+        Flight f = getCurrentObject(t);
+        f.setDeparture(time);
+        putFlightChange(f);
+    }
+
+    private void updateArrivalTime(TableColumn.CellEditEvent<Flight, String> t) {
+        LocalDateTime time = LocalDateTime.parse(t.getNewValue(), formatter);
+        Flight f = getCurrentObject(t);
+        f.setArrival(time);
+        putFlightChange(f);
+    }
+
+    private void updateFlightCarrier(TableColumn.CellEditEvent<Flight, Carrier> t) {
+        Carrier c = t.getNewValue();
+        Flight f = getCurrentObject(t);
+        f.setCarrier(c);
+        putFlightChange(f);
+    }
+
+    private void putFlightChange(Flight f) {
+        try {
+            restClient.putObject(f, "/flight");
+        } catch (IOException | InterruptedException err) {
+            err.printStackTrace();
+        }
+    }
+
     private void updateLabels() {
         int freePlaces = 0;
         int bookedPlaces = 0;
@@ -378,4 +344,41 @@ public class FlightsController implements Initializable {
         flightsLabel.setText(String.valueOf(currFlights.size()));
     }
 
+    private void deleteFlight(ActionEvent event) {
+        Flight f = dataTable.getSelectionModel().getSelectedItem();
+        listOfFlights.remove(f);
+        try {
+            restClient.deleteObject("/flight", f);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addFlight(ActionEvent event) {
+        int baseCost = Integer.parseInt(priceCombo.getText());
+        int capacity = Integer.parseInt(placesCombo.getText());
+        int flightCode = listOfFlights.stream().map(Flight::getId).max((a, b) -> a - b).orElse(0);
+        Flight f = new Flight(flightCode, "flight" + flightCode,
+                addCarrierCombo.getValue(),
+                LocalDateTime.parse(departureCombo.getText(), formatter),
+                LocalDateTime.parse(arrivalCombo.getText(), formatter),
+                capacity, baseCost, toCombo.getValue(), fromCombo.getValue());
+        try {
+            restClient.postObject(f, "/flight");
+            listOfFlights.add(f);
+            currFlights = listOfFlights;
+            //dataTable.setItems(listOfFlights);
+            priceCombo.setText("");
+            placesCombo.setText("");
+            addCarrierCombo.setValue(null);
+            departureCombo.setText("");
+            arrivalCombo.setText("");
+            fromCombo.setValue(null);
+            toCombo.setValue(null);
+            //this.dataTable.setItems(FXCollections.observableArrayList(flightsList));
+            updateLabels();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
