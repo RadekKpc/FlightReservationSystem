@@ -98,19 +98,27 @@ public class HomeController {
         return loader;
     }
 
-    public void updateLoggedClient(String email, String pwd, Role role){
+    public void updateLoggedClient(String email, String pwd, Role role) {
         client.setEmail(email);
         client.setPasswordWithoutEncoding(pwd);
         client.setRole(Role.asText(role));
         RestClient.setLoggedClient(client);
-        if(role == Role.USER){
-            homeVBox.getChildren().remove(btnCarriers);
-            homeVBox.getChildren().remove(btnLocations);
-            homeVBox.getChildren().remove(btnCustomers);
+        removeNotPermittedButtons(role);
+        loggedInLabel.setText("Logged in as " + email);
+    }
+
+    private void removeNotPermittedButtons(Role role) {
+        if (role == Role.USER) {
+            removeAdminButtons();
         }
-        if(role == Role.ADMIN){
+        if (role == Role.ADMIN) {
             homeVBox.getChildren().remove(btnTickets);
         }
-        loggedInLabel.setText("Logged in as " + email);
+    }
+
+    private void removeAdminButtons() {
+        homeVBox.getChildren().remove(btnCarriers);
+        homeVBox.getChildren().remove(btnLocations);
+        homeVBox.getChildren().remove(btnCustomers);
     }
 }

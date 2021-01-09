@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
 
-
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.text.Text?>
-
-<?import javafx.scene.control.PasswordField?>
-<Pane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wesolemarcheweczki.frontend.controllers.AddLocationController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171"
+      fx:controller="com.wesolemarcheweczki.frontend.controllers.add.AddLocationController">
     <children>
-        <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0" style="-fx-background-color: #EBE8F9;">
+        <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0"
+              style="-fx-background-color: #EBE8F9;">
             <children>
                 <VBox prefHeight="201.0" prefWidth="375.0" spacing="30.0">
                     <children>
                         <Pane prefHeight="43.0" prefWidth="171.0">
                             <children>
-                                <TextField fx:id="airportIdTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="187.0" promptText="airport ID" styleClass="text-form">
+                                <TextField fx:id="airportIdTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0"
+                                           prefWidth="187.0" promptText="airport ID" styleClass="text-form">
                                     <font>
-                                        <Font size="18.0" />
+                                        <Font size="18.0"/>
                                     </font>
                                 </TextField>
                                 <FontAwesomeIconView fill="#6b6e6f" glyphName="STAR" layoutX="6.0" layoutY="28.0" size="18.0" />

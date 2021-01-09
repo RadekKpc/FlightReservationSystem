@@ -57,7 +57,7 @@ public class LoginController {
         client.setEmail(email);
         client.setPasswordWithoutEncoding(pwd);
         if (restClient.authorizeLogin(email,pwd)) {
-            String role = restClient.getObject(client.getEmail(),client.getPassword(),"/client/role");
+            String role = restClient.getString(client.getEmail(), client.getPassword(), "/client/role");
             AuthManager.setRole(role);
             AuthManager.setEmail(client.getEmail());
             AuthManager.setPwd(client.getPassword());

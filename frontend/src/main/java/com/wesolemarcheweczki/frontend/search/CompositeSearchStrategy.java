@@ -5,19 +5,15 @@ import com.wesolemarcheweczki.frontend.model.Flight;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CompositeSearchStrategy implements ISearchStrategy {
-    public Collection<ISearchStrategy> strategies = new
-            ArrayList<ISearchStrategy>();
+public class CompositeSearchStrategy implements SearchStrategy {
+    public Collection<SearchStrategy> strategies = new ArrayList<>();
 
     @Override
     public boolean filter(Flight f) {
-        for (ISearchStrategy ss : strategies) {
-            if (!ss.filter(f)) return false;
-        }
-        return true;
+        return strategies.stream().allMatch(s -> s.filter(f));
     }
 
-    public void addSearchStrategy(ISearchStrategy s){
+    public void addSearchStrategy(SearchStrategy s) {
         strategies.add(s);
     }
 }

@@ -46,44 +46,55 @@ public class SearchController {
 
     @FXML
     private void search() {
-        if(!priceTextField.getText().isEmpty()){
-            int price = Integer.parseInt(priceTextField.getText());
-            css.addSearchStrategy(new PriceSearchStrategy(price));
-        }
-        if(minDep.getValue() != null || maxDep.getValue() != null){
-            LocalDate minDepTime = minDep.getValue();
-            LocalDate maxDepTime = maxDep.getValue();
-            if(minDep.getValue() != null) maxDepTime = LocalDate.of(2100,12,31);
-            if(maxDep.getValue() != null) minDepTime = LocalDate.of(1900,12,31);
-            css.addSearchStrategy(new DateSearchStrategy(minDepTime, maxDepTime, true));
-        }
-        if(minArr.getValue() != null || maxArr.getValue() != null){
-            LocalDate minArrTime = minArr.getValue();
-            LocalDate maxArrTime = maxArr.getValue();
-            if(minArr.getValue() != null) maxArrTime = LocalDate.of(2100,12,31);
-            if(maxArr.getValue() != null) minArrTime = LocalDate.of(1900,12,31);
-            css.addSearchStrategy(new DateSearchStrategy(minArrTime, maxArrTime, false));
-        }
-        if(!fromCountry.getText().isEmpty() && !fromCity.getText().isEmpty()){
-            String city = fromCity.getText();
-            String country = fromCountry.getText();
-            css.addSearchStrategy(new PlaceSearchStrategy(city, country, true));
-        }
-        if(!toCountry.getText().isEmpty() && !toCity.getText().isEmpty()){
-            String city = toCity.getText();
-            String country = toCountry.getText();
-            css.addSearchStrategy(new PlaceSearchStrategy(city, country, false));
-        }
+        priceStrategy();
+        dateStrategy(minDep, maxDep, true);
+        dateStrategy(minArr, maxArr, false);
+        placeStrategy(fromCountry, fromCity, true);
+        placeStrategy(toCountry, toCity, false);
 
         List<Flight> retFlights = new LinkedList<>();
         for (Flight f : flightsList) {
-            if(css.filter(f))
+            if (css.filter(f))
                 retFlights.add(f);
         }
+
         fc.setCurrFlights(retFlights);
         fc.updateFlights();
         Stage stage = (Stage) fromCountry.getScene().getWindow();
         stage.close();
+    }
+
+    private void priceStrategy() {
+        if (!priceTextField.getText().isEmpty()) {
+            int price = Integer.parseInt(priceTextField.getText());
+            css.addSearchStrategy(new PriceSearchStrategy(price));
+        }
+    }
+
+    private void placeStrategy(TextField fromCountry, TextField fromCity, boolean b) {
+        if (!fromCountry.getText().isEmpty() && !fromCity.getText().isEmpty()) {
+            addPlaceStrategy(fromCity, fromCountry, b);
+        }
+    }
+
+    private void dateStrategy(DatePicker minDep, DatePicker maxDep, boolean b) {
+        if (minDep.getValue() != null || maxDep.getValue() != null) {
+            addDateStrategy(minDep, maxDep, b);
+        }
+    }
+
+    private void addPlaceStrategy(TextField fromCity, TextField fromCountry, boolean b) {
+        String city = fromCity.getText();
+        String country = fromCountry.getText();
+        css.addSearchStrategy(new PlaceSearchStrategy(city, country, b));
+    }
+
+    private void addDateStrategy(DatePicker minDep, DatePicker maxDep, boolean b) {
+        LocalDate minDepTime = minDep.getValue();
+        LocalDate maxDepTime = maxDep.getValue();
+        if (minDep.getValue() != null) maxDepTime = LocalDate.of(2100, 12, 31);
+        if (maxDep.getValue() != null) minDepTime = LocalDate.of(1900, 12, 31);
+        css.addSearchStrategy(new DateSearchStrategy(minDepTime, maxDepTime, b));
     }
 
     public void setFlightsController(FlightsController fc) {
