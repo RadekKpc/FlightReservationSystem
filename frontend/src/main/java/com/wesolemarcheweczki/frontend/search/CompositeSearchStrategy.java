@@ -13,6 +13,10 @@ public class CompositeSearchStrategy implements SearchStrategy {
         return strategies.stream().allMatch(s -> s.filter(f));
     }
 
+    public boolean filterOr(Flight f) {
+        return strategies.stream().anyMatch(s -> s.filter(f));
+    }
+
     public void addSearchStrategy(SearchStrategy s) {
         strategies.add(s);
     }

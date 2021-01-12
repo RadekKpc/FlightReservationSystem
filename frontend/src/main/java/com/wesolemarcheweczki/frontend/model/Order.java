@@ -3,21 +3,21 @@ package com.wesolemarcheweczki.frontend.model;
 public class Order {
 
     private int id;
-    private String clientEmail;
+    private Client client;
 
-    public Order(String client) {
-        this.clientEmail = client;
+    public Order(Client client) {
+        this.client = client;
     }
 
     public Order() {
     }
 
-    public String getClientEmail() {
-        return clientEmail;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientEmail(Client client) {
-        this.clientEmail = clientEmail;
+    public void setClient(Client client) {
+        this.client = client;
     }
     public void setId(int id) {
         this.id = id;

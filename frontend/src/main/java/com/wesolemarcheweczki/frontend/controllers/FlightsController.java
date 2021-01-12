@@ -1,10 +1,9 @@
 package com.wesolemarcheweczki.frontend.controllers;
 
-import com.wesolemarcheweczki.frontend.model.Carrier;
-import com.wesolemarcheweczki.frontend.model.Flight;
-import com.wesolemarcheweczki.frontend.model.Location;
+import com.wesolemarcheweczki.frontend.model.*;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import com.wesolemarcheweczki.frontend.util.AuthManager;
+import com.wesolemarcheweczki.frontend.util.FlightRecommendations;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -43,6 +43,8 @@ public class FlightsController implements Initializable {
     private final Task<List<Flight>> getFlights = restClient.createGetTask("/flight", Flight.class);
     private final Task<List<Carrier>> getCarriers = restClient.createGetTask("/carrier", Carrier.class);
     private final Task<List<Location>> getLocation = restClient.createGetTask("/location", Location.class);
+    private final String endpoint = String.format("/ticket/email/%s", RestClient.getLoggedClient().getEmail());
+    private final Task<List<Ticket>> getTickets = restClient.createGetTask(endpoint, Ticket.class);
     public Button addFlightButton;
     public TextField priceCombo;
     public TextField departureCombo;
@@ -114,6 +116,18 @@ public class FlightsController implements Initializable {
         searchStage.show();
     }
 
+    public void getRecommendedFlights() {
+        getTickets.setOnSucceeded(event -> {
+            var ticketList = getTickets.getValue();
+            List<Ticket> tickets = new LinkedList<>();
+            tickets = ticketList;
+            List<Flight> recommended = FlightRecommendations.recommendedFlights(flightsList, tickets);
+            setCurrFlights(recommended);
+            updateFlights();
+        });
+        executorService.submit(getTickets);
+    }
+
     public void updateFlights() {
         //this.dataTable.setItems(FXCollections.observableArrayList(currFlights));
         this.listOfFlights.removeAll(this.flightsList);
@@ -128,15 +142,12 @@ public class FlightsController implements Initializable {
 
         Task<List<Flight>> getFlights = restClient.createGetTask("/flight", Flight.class);
 
-        getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                var flightList = getFlights.getValue();
-                listOfFlights.addAll(flightList);
-                flightsList = flightList;
-                currFlights = flightList;
-                updateLabels();
-            }
+        getFlights.setOnSucceeded(event -> {
+            var flightList = getFlights.getValue();
+            listOfFlights.addAll(flightList);
+            flightsList = flightList;
+            currFlights = flightList;
+            updateLabels();
         });
         executorService.submit(getFlights);
     }
@@ -172,15 +183,12 @@ public class FlightsController implements Initializable {
     public void reset() {
         //TODO: zmienić z ComboBoxTableCell.forTableColumn na coś customowego co radzi sobie z obiektami
         initColumns();
-        getFlights.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                var flightList = getFlights.getValue();
-                listOfFlights.addAll(flightList);
-                flightsList = flightList;
-                currFlights = flightList;
-                updateLabels();
-            }
+        getFlights.setOnSucceeded(event -> {
+            var flightList = getFlights.getValue();
+            listOfFlights.addAll(flightList);
+            flightsList = flightList;
+            currFlights = flightList;
+            updateLabels();
         });
         getCarriers.setOnSucceeded(event -> {
             var carriers = getCarriers.getValue();
