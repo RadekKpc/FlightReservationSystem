@@ -66,4 +66,8 @@ public class Passenger implements AbstractModel<Passenger> {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
+
+    public String display() {
+        return firstName + " " + lastName;
+    }
 }

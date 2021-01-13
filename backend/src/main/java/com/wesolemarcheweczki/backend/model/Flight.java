@@ -160,4 +160,13 @@ public class Flight implements AbstractModel<Flight> {
                 ", source=" + source +
                 '}';
     }
+
+    public String display() {
+        return carrier.getName() + " Flight " + flightCode +
+                "\nFrom: " + source.getCity() +
+                "\nTo: " + destination.getCity() +
+                "\nDeparture: " + departure +
+                "\nArrival: " + arrival;
+
+    }
 }
