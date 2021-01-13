@@ -24,6 +24,8 @@
         <Label fx:id="errorLabel" text="" textFill="#fa5f7e">
 
         </Label>
+        <Button fx:id="recommendedFlights" layoutX="550.0" layoutY="172.0" mnemonicParsing="false" text="Show recommended Flights" style="-fx-background-color: blue; -fx-text-fill: white;" onAction="#getRecommendedFlights">
+        </Button>
         <Button fx:id="reserveButton" layoutX="700.0" layoutY="172.0" mnemonicParsing="false" text="Reserve Selected Flight" style="-fx-background-color: green; -fx-text-fill: white;" onAction="#bookFlight">
         </Button>
     </HBox>

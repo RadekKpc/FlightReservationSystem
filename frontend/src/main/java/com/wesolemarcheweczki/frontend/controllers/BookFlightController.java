@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 public class BookFlightController implements Initializable {
 
     private final RestClient restClient = new RestClient();
-    private final Order order = new Order(AuthManager.email);
+    private final Order order = new Order(RestClient.getLoggedClient());
     private final List<Ticket> tickets = new ArrayList<>();
     public TextField nameInput;
     public TextField surnameInput;
@@ -76,7 +76,7 @@ public class BookFlightController implements Initializable {
     }
 
     private HashMap createPostObject() {
-        HashMap<String, Object> obj = createOrderMap(order.getClientEmail());
+        HashMap<String, Object> obj = createOrderMap(order.getClient().getEmail());
         obj.put("tickets", tickets);
         return obj;
     }

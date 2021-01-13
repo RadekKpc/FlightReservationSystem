@@ -17,4 +17,6 @@ public class TicketDAO extends GenericDao<Ticket> {
         return getFiltered(t -> t.getOrder().getId() == id);
     }
 
+    public List<Ticket> getForOrder(String email) { return getFiltered(t -> t.getOrder().getClient().getEmail().equals(email)); }
+
 }

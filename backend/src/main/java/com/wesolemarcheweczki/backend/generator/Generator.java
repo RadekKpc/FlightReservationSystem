@@ -126,7 +126,7 @@ public class Generator implements ApplicationRunner {
         var email = generateName(CLIENT_EMAIL);
         var pwd = name1 + "pwd";
 
-        var client = new Client(name1, "lastname", email + "@sample.com", pwd);
+        var client = new Client(name1, "lastname", email + "@sample.com", encoder.encode(pwd));
         clients.add(client);
     }
 
@@ -170,7 +170,7 @@ public class Generator implements ApplicationRunner {
         var name = generateName(FLIGHT);
         var start = generateRandomDate();
         var end = start.plusHours(8);
-        var flight = new Flight(name, getRandomElement(carriers), start, end, 200, 1000, getRandomElement(locations), getRandomElement(locations));
+        var flight = new Flight(name, getRandomElement(carriers), start, end, random.nextInt(200)+50, random.nextInt(1000)+200, getRandomElement(locations), getRandomElement(locations));
         flights.add(flight);
     }
 
@@ -228,8 +228,8 @@ public class Generator implements ApplicationRunner {
     }
 
     private LocalDateTime generateRandomDate() {
-        long min = LocalDateTime.of(2020, 1, 1, 0, 0).toEpochSecond(ZoneOffset.ofHours(0));
-        long max = LocalDateTime.of(2020, 1, 8, 23, 59).toEpochSecond(ZoneOffset.ofHours(0));
+        long min = LocalDateTime.of(2021, 1, 1, 0, 0).toEpochSecond(ZoneOffset.ofHours(0));
+        long max = LocalDateTime.of(2022, 1, 1, 0, 0).toEpochSecond(ZoneOffset.ofHours(0));
         long randomDay = ThreadLocalRandom.current().nextLong(min, max);
         return LocalDateTime.ofEpochSecond(randomDay, 0, ZoneOffset.ofHours(0));
     }

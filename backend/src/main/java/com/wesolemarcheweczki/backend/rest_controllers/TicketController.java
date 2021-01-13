@@ -1,5 +1,6 @@
 package com.wesolemarcheweczki.backend.rest_controllers;
 
+import com.wesolemarcheweczki.backend.dao.OrderDAO;
 import com.wesolemarcheweczki.backend.dao.TicketDAO;
 import com.wesolemarcheweczki.backend.model.Order;
 import com.wesolemarcheweczki.backend.model.Ticket;
@@ -37,6 +38,16 @@ public class TicketController extends AbstractRestController<Ticket> {
         var dao = (TicketDAO) DAO;
         try {
             return new ResponseEntity<>(dao.getForOrder(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return internalServerError();
+        }
+    }
+
+    @GetMapping(path = "/email/{email}")
+    public ResponseEntity<List<Ticket>> getForClientWithEmailBody(@PathVariable("email") String email) {
+        var dao = (TicketDAO) DAO;
+        try {
+            return new ResponseEntity<>(dao.getForOrder(email), HttpStatus.OK);
         } catch (Exception e) {
             return internalServerError();
         }
