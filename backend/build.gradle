@@ -27,7 +27,7 @@ dependencies {
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
     implementation("com.github.gwenn:sqlite-dialect:0.1.0")
 
-
+    compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
 }
 
 test {

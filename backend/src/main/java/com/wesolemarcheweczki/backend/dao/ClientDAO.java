@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 public class ClientDAO extends GenericDao<Client> {
 
     public Client getByEmail(String email) {
-        return getAll().stream().filter(u -> u.getEmail().equals(email)).findAny().orElse(null);
+        return getAll().stream()
+                .filter(u -> u.getEmail().equals(email))
+                .findAny()
+                .orElse(null);
     }
 
     @Override

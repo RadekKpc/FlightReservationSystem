@@ -2,11 +2,9 @@ package com.wesolemarcheweczki.backend.dao;
 
 import com.wesolemarcheweczki.backend.model.Client;
 import com.wesolemarcheweczki.backend.model.Flight;
-import com.wesolemarcheweczki.backend.model.Ticket;
 import com.wesolemarcheweczki.backend.repository.FlightRepository;
 import com.wesolemarcheweczki.backend.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,9 +18,8 @@ public class FlightDAO extends GenericDao<Flight> {
     @Override
     public List<Flight> getAll() {
         List<Flight> flights = repository.findAll();
-        for(Flight flight: flights){
-            flight.setFreePlaces(getFreePlaces(flight));
-        }
+
+        flights.forEach(f -> f.setFreePlaces(getFreePlaces(f)));
         return flights;
     }
 

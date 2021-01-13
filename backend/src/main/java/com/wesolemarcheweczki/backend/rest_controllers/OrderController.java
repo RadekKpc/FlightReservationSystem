@@ -1,7 +1,6 @@
 package com.wesolemarcheweczki.backend.rest_controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,7 +8,11 @@ import com.wesolemarcheweczki.backend.dao.ClientDAO;
 import com.wesolemarcheweczki.backend.dao.FlightDAO;
 import com.wesolemarcheweczki.backend.dao.OrderDAO;
 import com.wesolemarcheweczki.backend.dao.TicketDAO;
-import com.wesolemarcheweczki.backend.model.*;
+import com.wesolemarcheweczki.backend.mail.MailSender;
+import com.wesolemarcheweczki.backend.model.Client;
+import com.wesolemarcheweczki.backend.model.Flight;
+import com.wesolemarcheweczki.backend.model.Order;
+import com.wesolemarcheweczki.backend.model.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,25 +20,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.wesolemarcheweczki.backend.rest_controllers.helpers.Responses.*;
-import static com.wesolemarcheweczki.backend.rest_controllers.helpers.Responses.badRequest;
 
 @RestController
 @RequestMapping("/api/order")
 public class OrderController extends AbstractRestController<Order> {
 
+    private static final String MAIL_TITLE = "Order";
+    //    private static final String MAIL_BODY = "You have placed order for Flight";
     @Autowired
     ClientDAO clientDAO;
-
     @Autowired
     TicketDAO ticketDAO;
-
     @Autowired
     FlightDAO flightDAO;
+    @Autowired
+    MailSender sender;
 
     @Autowired
     public OrderController() {
@@ -43,7 +45,7 @@ public class OrderController extends AbstractRestController<Order> {
     }
 
 
-//    JSON FORMAT FOR BELOW POST
+    //    JSON FORMAT FOR BELOW POST
 //{
 //    "email": "test@test.com",
 //        "flightId": "10",
@@ -59,7 +61,8 @@ public class OrderController extends AbstractRestController<Order> {
 //    ]
 //}
 //    need to add transactiona nd check has client reserve flight at the same time
-    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) //This one always creates new instance
+    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    //This one always creates new instance
     public ResponseEntity<Void> create(@RequestBody ObjectNode emailAndTickets) {
         try {
 
@@ -71,23 +74,17 @@ public class OrderController extends AbstractRestController<Order> {
             Flight flight = flightDAO.getById(emailAndTickets.get("flightId").asInt()).orElse(null);
             List<Ticket> tickets = reader.readValue(emailAndTickets.get("tickets"));
 
-
-
             Order order = new Order();
             order.setClient(client);
             DAO.add(order);
 
-            for(Ticket t: tickets){
-                t.setOrder(order);
-                t.setFlight(flight);
-                ticketDAO.add(t);
+            addTickets(flight, tickets, order);
 
-            }
-//            if (DAO.add(order)) {
+            sendMail(flight, tickets, order);
+
+
             return ok();
 
-//            }
-//            return forbidden();
         } catch (Exception e) {
             return badRequest();
         }
@@ -133,4 +130,19 @@ public class OrderController extends AbstractRestController<Order> {
         }
     }
 
+    private void addTickets(Flight flight, List<Ticket> tickets, Order order) {
+        tickets.forEach(t -> addTicket(flight, order, t));
+    }
+
+    private void addTicket(Flight flight, Order order, Ticket t) {
+        t.setOrder(order);
+        t.setFlight(flight);
+        ticketDAO.add(t);
+    }
+
+    private void sendMail(Flight flight, List<Ticket> tickets, Order order) {
+        String passengers = tickets.stream().map(t -> t.getPassenger().display()).reduce("", (a, b) -> a + '\n' + b);
+        String body = String.format("You have placed order for\n\n%s\n\nWith following passengers: %s", flight.display(), passengers);
+        sender.sendMailAsync(order.getClient().getEmail(), MAIL_TITLE, body);
+    }
 }
