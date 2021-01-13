@@ -119,9 +119,7 @@ public class FlightsController implements Initializable {
     public void getRecommendedFlights() {
         getTickets.setOnSucceeded(event -> {
             var ticketList = getTickets.getValue();
-            List<Ticket> tickets = new LinkedList<>();
-            tickets = ticketList;
-            List<Flight> recommended = FlightRecommendations.recommendedFlights(flightsList, tickets);
+            List<Flight> recommended = FlightRecommendations.recommendedFlights(flightsList, ticketList);
             setCurrFlights(recommended);
             updateFlights();
         });
