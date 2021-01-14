@@ -1,6 +1,12 @@
 package com.wesolemarcheweczki.frontend.model;
 
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+import java.time.LocalDateTime;
+
 public class Ticket {
     private Passenger passenger;
 
@@ -11,7 +17,15 @@ public class Ticket {
     private int seat;
 
     private int cost;
-       private int id;
+
+    private int id;
+
+    private SimpleStringProperty nameProperty = new SimpleStringProperty("");
+    private SimpleStringProperty lastNameProperty = new SimpleStringProperty("");
+    private SimpleStringProperty fromProperty = new SimpleStringProperty("");
+    private SimpleStringProperty toProperty = new SimpleStringProperty("");
+    private SimpleStringProperty seatProperty = new SimpleStringProperty("");
+    private SimpleStringProperty costProperty = new SimpleStringProperty("");
 //    private boolean paid;
 
     public Ticket() {
@@ -24,6 +38,12 @@ public class Ticket {
         this.order = o;
         this.seat = seat;
         this.cost = cost;
+        nameProperty.set(passenger.getFirstName());
+        lastNameProperty.set(passenger.getLastName());
+        fromProperty.set(flight.getSource().getCity());
+        toProperty.set(flight.getDestination().getCity());
+        seatProperty.set(Integer.toString(seat));
+        costProperty.set(Integer.toString(cost));
     }
 
     public Ticket(Passenger passenger, int seat, int cost, Flight f, Order o) {
@@ -32,6 +52,12 @@ public class Ticket {
         this.order = o;
         this.seat = seat;
         this.cost = cost;
+        nameProperty.set(passenger.getFirstName());
+        lastNameProperty.set(passenger.getLastName());
+        fromProperty.set(flight.getSource().getCity());
+        toProperty.set(flight.getDestination().getCity());
+        seatProperty.set(Integer.toString(seat));
+        costProperty.set(Integer.toString(cost));
     }
 
     public Ticket(Passenger passenger, int seat, int cost) {
@@ -40,6 +66,10 @@ public class Ticket {
 //        this.order = order;s
         this.seat = seat;
         this.cost = cost;
+        nameProperty.set(passenger.getFirstName());
+        lastNameProperty.set(passenger.getLastName());
+        seatProperty.set(Integer.toString(seat));
+        costProperty.set(Integer.toString(cost));
     }
     public Passenger getPassenger() {
         return passenger;
@@ -47,6 +77,12 @@ public class Ticket {
 
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
+        nameProperty.set(passenger.getFirstName());
+        lastNameProperty.set(passenger.getLastName());
+    }
+
+    public SimpleStringProperty nameProperty() {
+        return nameProperty;
     }
 
     public Flight getFlight() {
@@ -55,6 +91,8 @@ public class Ticket {
 
     public void setFlight(Flight flight) {
         this.flight = flight;
+        fromProperty.set(flight.getSource().getCity());
+        toProperty.set(flight.getDestination().getCity());
     }
 
     public int getSeat() {
@@ -63,6 +101,7 @@ public class Ticket {
 
     public void setSeat(int seat) {
         this.seat = seat;
+        seatProperty.set(Integer.toString(seat));
     }
 
     public int getCost() {
@@ -71,6 +110,7 @@ public class Ticket {
 
     public void setCost(int cost) {
         this.cost = cost;
+        costProperty.set(Integer.toString(cost));
     }
     public void setId(int id) {
         this.id = id;
@@ -86,5 +126,36 @@ public class Ticket {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public SimpleStringProperty lastNamePropertyProperty() {
+        return lastNameProperty;
+    }
+
+    public SimpleStringProperty fromPropertyProperty() {
+        return fromProperty;
+    }
+
+    public SimpleStringProperty toPropertyProperty() {
+        return toProperty;
+    }
+
+    public ObjectProperty<LocalDateTime>  departurePropertyProperty() {
+        return flight.departureProperty();
+    }
+
+
+    public ObjectProperty<LocalDateTime> arrivalPropertyProperty() {
+        return flight.arrivalProperty();
+    }
+
+
+    public SimpleStringProperty seatPropertyProperty() {
+        return seatProperty;
+    }
+
+
+    public SimpleStringProperty costPropertyProperty() {
+        return costProperty;
     }
 }

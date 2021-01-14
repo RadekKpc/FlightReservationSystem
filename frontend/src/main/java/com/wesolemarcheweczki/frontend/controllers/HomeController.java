@@ -56,7 +56,8 @@ public class HomeController {
     }
 
     @FXML
-    public void handleTickets(ActionEvent actionEvent) {
+    public void handleTickets(ActionEvent actionEvent) throws IOException {
+        loadPane("/views/Tickets.fxml");
     }
 
     @FXML
