@@ -14,6 +14,7 @@ public interface FlightRepository extends JpaRepository<Flight,Integer> {
             "JOIN Ticket t on t.order = o " +
             "JOIN Flight f on t.flight = f " +
             "WHERE o.client = ?3 AND " +
-            " ( ?1 >= f.arrival OR f.departure < ?2)")
+            "((f.arrival >= ?1 AND f.arrival <= ?2)" +
+            "OR (f.departure >= ?1 AND f.departure <= ?2))")
     int getCollisionWithFlightForGivenClient(LocalDateTime departure, LocalDateTime arrival, Client client);
 }
