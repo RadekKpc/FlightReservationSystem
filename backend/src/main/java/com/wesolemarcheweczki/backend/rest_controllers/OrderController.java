@@ -8,6 +8,7 @@ import com.wesolemarcheweczki.backend.dao.ClientDAO;
 import com.wesolemarcheweczki.backend.dao.FlightDAO;
 import com.wesolemarcheweczki.backend.dao.OrderDAO;
 import com.wesolemarcheweczki.backend.dao.TicketDAO;
+import com.wesolemarcheweczki.backend.mail.MailHelper;
 import com.wesolemarcheweczki.backend.mail.MailSender;
 import com.wesolemarcheweczki.backend.model.Client;
 import com.wesolemarcheweczki.backend.model.Flight;
@@ -141,8 +142,7 @@ public class OrderController extends AbstractRestController<Order> {
     }
 
     private void sendMail(Flight flight, List<Ticket> tickets, Order order) {
-        String passengers = tickets.stream().map(t -> t.getPassenger().display()).reduce("", (a, b) -> a + '\n' + b);
-        String body = String.format("You have placed order for\n\n%s\n\nWith following passengers: %s", flight.display(), passengers);
+        String body = "You have placed order for: \n\n" + MailHelper.generateFLightString(flight, tickets);
         sender.sendMailAsync(order.getClient().getEmail(), MAIL_TITLE, body);
     }
 }

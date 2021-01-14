@@ -20,21 +20,23 @@ public class Ticket implements AbstractModel<Ticket> {
     private int seat;
 
     private int cost;
-//    private boolean paid;
+
+    private boolean sent = false;
 
     public Ticket() {
     }
 
-    public Ticket(Passenger passenger, Flight flight, Order order, int seat, int cost) {
+    public Ticket(Passenger passenger, Flight flight, Order order, int seat, int cost, boolean sent) {
         this.passenger = passenger;
         this.flight = flight;
         this.order = order;
         this.seat = seat;
         this.cost = cost;
+        this.sent = false;
     }
 
     public Ticket(Ticket ticket) {
-        this(ticket.passenger, ticket.flight, ticket.order, ticket.seat, ticket.cost);
+        this(ticket.passenger, ticket.flight, ticket.order, ticket.seat, ticket.cost, ticket.sent);
     }
 
     @Override
@@ -57,6 +59,7 @@ public class Ticket implements AbstractModel<Ticket> {
         order = object.order;
         seat = object.seat;
         cost = object.cost;
+        sent = object.sent;
     }
 
     public Passenger getPassenger() {
@@ -97,6 +100,14 @@ public class Ticket implements AbstractModel<Ticket> {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public boolean isSent() {
+        return sent;
+    }
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
     }
 
     @Override
