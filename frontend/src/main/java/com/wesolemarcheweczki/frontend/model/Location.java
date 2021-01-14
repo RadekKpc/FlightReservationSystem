@@ -26,6 +26,12 @@ public class Location {
         this.id = id;
     }
 
+    public Location(String airport, String city, String country) {
+        this.airportId = new SimpleStringProperty(airport);
+        this.city = new SimpleStringProperty(city);
+        this.country = new SimpleStringProperty(country);
+    }
+
     public int getId() {
         return id;
     }

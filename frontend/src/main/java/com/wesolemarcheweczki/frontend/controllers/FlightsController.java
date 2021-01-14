@@ -58,6 +58,7 @@ public class FlightsController implements Initializable {
     public Label errorLabel;
     public List<Flight> flightsList;
     public List<Flight> currFlights;
+    public Button recommendedFlights;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     @FXML
     private TableColumn<Flight, String> freeColumn;
@@ -260,6 +261,7 @@ public class FlightsController implements Initializable {
     private void setUIElementsForRole() {
         if (RestClient.getLoggedClient().isAdmin()) {
             reserveButton.setVisible(false);
+            recommendedFlights.setVisible(false);
         } else {
             setUIElementsForUser();
         }

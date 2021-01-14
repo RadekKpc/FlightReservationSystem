@@ -9,79 +9,31 @@
 <Pane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171"
       fx:controller="com.wesolemarcheweczki.frontend.controllers.add.AddLocationController">
     <children>
-        <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0"
-              style="-fx-background-color: #EBE8F9;">
+        <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="1.0"  prefHeight="600.0" prefWidth="780.0">
             <children>
-                <VBox prefHeight="201.0" prefWidth="375.0" spacing="30.0">
-                    <children>
-                        <Pane prefHeight="43.0" prefWidth="171.0">
-                            <children>
-                                <TextField fx:id="airportIdTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0"
-                                           prefWidth="187.0" promptText="airport ID" styleClass="text-form">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </TextField>
-                                <FontAwesomeIconView fill="#6b6e6f" glyphName="STAR" layoutX="6.0" layoutY="28.0" size="18.0" />
-                            </children>
-                        </Pane>
-                        <Pane prefHeight="43.0" prefWidth="175.0">
-                            <children>
-                                <TextField fx:id="cityTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="187.0" promptText="city" styleClass="text-form">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </TextField>
-                                <FontAwesomeIconView fill="#6b6e6f" glyphName="BUILDING" layoutX="6.0" layoutY="28.0" size="18.0" />
-                            </children>
-                        </Pane>
-                        <Pane prefHeight="43.0" prefWidth="155.0">
-                            <children>
-                                <TextField fx:id="countryTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="188.0" promptText="country" styleClass="text-form">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </TextField>
-                                <FontAwesomeIconView fill="#6b6e6f" glyphName="BUILDING" layoutX="6.0" layoutY="28.0" size="18.0" />
-                            </children>
-                        </Pane>
-                    </children>
-                    <padding>
-                        <Insets left="50.0" right="50.0" top="20.0" />
-                    </padding>
-                </VBox>
-                <Pane prefHeight="76.0" prefWidth="479.0">
-                    <VBox.margin>
-                        <Insets top="10.0" />
-                    </VBox.margin>
-                    <children>
-                        <Button fx:id="addLocationButton" layoutX="133.0" layoutY="-10.0" mnemonicParsing="false" onAction="#addLocation" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: white; -fx-border-color: #6B6E6F; -fx-border-radius: 5;" text="Confirm">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Button>
-                        <Text fx:id="errorText" layoutX="100.0" layoutY="80.0" style="-fx-background-color: #007dff;" text="">>
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Text>
-                    </children>
-                </Pane>
-            </children>
-        </VBox>
-        <Label layoutX="57.0" layoutY="25.0" text="Add location">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
-        <Pane layoutX="504.0" layoutY="51.0" prefHeight="484.0" prefWidth="266.0" style="-fx-background-color: #EBE8F9;">
-            <children>
-                <Label layoutX="41.0" layoutY="37.0" text="Info">
+                <HBox alignment="TOP_CENTER" >
+                    <TextField fx:id="airportID" prefWidth="222" promptText="AirportID" />
+                    <TextField fx:id="cityName" prefWidth="222" promptText="City" />
+                    <TextField fx:id="countryName" prefWidth="222" promptText="Country" />
+                    <Button fx:id="addLocationButton"  mnemonicParsing="false">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="PLUS" />
+                        </graphic>
+                    </Button>
+                </HBox>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Locations">
                     <font>
                         <Font size="24.0" />
                     </font>
-                </Label>
+                </Text>
+                <TableView fx:id="dataTable" >
+                    <columns>
+                        <TableColumn fx:id="airportNameTableColumn" prefWidth="250.0" text="AirportID" />
+                        <TableColumn fx:id="cityNameTableColumn" prefWidth="250.0" text="City" />
+                        <TableColumn fx:id="countryNameTableColumn" prefWidth="250.0" text="Country" />
+                    </columns>
+                </TableView>
             </children>
-        </Pane>
+        </VBox>
     </children>
 </Pane>

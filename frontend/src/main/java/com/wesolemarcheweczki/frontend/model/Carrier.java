@@ -3,6 +3,8 @@ package com.wesolemarcheweczki.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -47,5 +49,9 @@ public class Carrier {
 
     public void setName(String name) {
         this.name.set(name);
+    }
+
+    public ObjectProperty<Carrier> carrierProperty() {
+        return new SimpleObjectProperty<>(this);
     }
 }
