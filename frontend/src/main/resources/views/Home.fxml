@@ -86,6 +86,14 @@
                   <FontAwesomeIconView glyphName="SIGN_OUT" />
                </graphic>
             </Button>
+            <Button fx:id="btnCarrierStats" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleCarrierStats" prefHeight="42.0" prefWidth="259.0" text="Carrier stats">
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIconView glyphName="PLANE" />
+               </graphic>
+            </Button>
          </children>
       </VBox>
       <StackPane fx:id="viewContent" layoutX="258.0" prefHeight="576.0" prefWidth="793.0">
