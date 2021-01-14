@@ -71,16 +71,16 @@ We can see that the email input is wrong. If everything is okay the request to d
 ### Add Carrier
 The add carrier panel allows us to add carriers to database.
 
-![addCarrier](https://imgur.com/S5bi7Gx.png)
+![addCarrier](https://imgur.com/69yjsFT.png)
 
-As we can see above - the carrier was successfully added to database.
+We have a list with all of the carriers and adding carrier is as simple as writing carrier name and confirming it.
 
 
 ### Add location
 
-![addLocation](https://imgur.com/viY9wYh.png)
+![addLocation](https://imgur.com/HdfzULt.png)
 
-Ability to add the location to database
+Ability to add the location to database, we can also see all of the locations avalible.
 
 
 ### Flights Panel (admin)
@@ -100,6 +100,15 @@ Booked Flight panel allows us to reserve chosen flight for multiple people at on
 
 ![bookFlightsPanel](https://imgur.com/V7beJ5Q.png)
 
+### Recommended Flights
+![recommendedFlights](https://imgur.com/ZzsWVOv.png)
+
+Recommended flights can show us up to 20 recommended flights, they are based on
+- soon to departure flights
+- favorite carrier
+- most popular client destination place
+- most popular client departure place
+- some of the cheaper flights
 
 ### Search flights panel
 ![searchFlight](https://imgur.com/mA24aYv.png)
@@ -109,6 +118,27 @@ We can search flights based on departure and arrival location and time and also 
 ![exampleSearched](https://imgur.com/V1j6EFB.png)
 
 After search we can see the changes
+
+### Carrier Stats Panel (admin)
+![carrierStats](https://imgur.com/tiGONZF.png)
+
+We can select 2 dates to get carrier stats in the given time-frame. Stats include income as well as total flights that carrier made.
+
+### Your Tickets Panel (client)
+![yourTickets](https://imgur.com/w3QBkJF.png)
+
+A panel where we can see all of our tickets we have booked
+
+## Mail Confirmation
+
+We used mail confirmation to 
+- confirm purchase of tickets:
+
+![ticketsPurchased](https://imgur.com/Vr8mUzH.png)
+
+-remind about flights:
+
+![remindFlights](https://imgur.com/isFbf3a.png)
 
 ## Authentication and Authorization
 
@@ -184,9 +214,15 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **add roles field to create admins at admin view** - Radosław Kopeć
 * **split views on admin and users parts** - Radosław Kopeć
 * **add authorization (obtaining user role)** - Radosław Kopeć
+* **generify add controllers** - Paweł Miziołek
 * **fix reservation bugs(doubled flights, collision problems)** - Karol Koptyra
 * **bookFlights Panel** - Wiktor Kamiński
 * **change FlightsPanel depending on user/admin role** - Karol Koptyra
+* **create recommendedFlights panel** - Karol Koptyra
+* **create logic about recommending flights** - Karol Koptyra
+* **create carrier stats panel** - Wiktor Kamiński
+* **add table for addLocation, addCarrier panel** - Karol Koptyra
+* **add YourTickets panel for client** - Radosław Kopeć
 ### Backend
 * **start of backend project** - Paweł Miziołek
 * **data model** - Paweł Miziołek
@@ -210,6 +246,9 @@ We distributed tasks among ourselves using JIRA so that we could keep track on o
 * **Add endpoint to create Order with Flight,Tickets,User and Passengers passed into json** - Radosław Kopeć
 * **Adding count of allowed places to the flight when is taking from the REST API** - Radosław Kopeć
 * **Added GET endpoint /api/flight/collision which check collision between given flight and user's flights**  - Radosław Kopeć
+* **create mail notification about orders** - Paweł Miziołek
+* **create mail reminders about upcoming flights** - Paweł Miziołek
+* **add logic to return tickets for client** - Radosław Kopeć
 
 ### Documentation
 

@@ -1,6 +1,7 @@
 package com.wesolemarcheweczki.frontend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,6 +20,9 @@ public class Ticket {
     private int cost;
 
     private int id;
+
+    @JsonIgnore
+    boolean sent = false;
 
     private SimpleStringProperty nameProperty = new SimpleStringProperty("");
     private SimpleStringProperty lastNameProperty = new SimpleStringProperty("");
@@ -45,6 +49,7 @@ public class Ticket {
         seatProperty.set(Integer.toString(seat));
         costProperty.set(Integer.toString(cost));
     }
+
 
     public Ticket(Passenger passenger, int seat, int cost, Flight f, Order o) {
         this.passenger = passenger;
@@ -79,6 +84,14 @@ public class Ticket {
         this.passenger = passenger;
         nameProperty.set(passenger.getFirstName());
         lastNameProperty.set(passenger.getLastName());
+    }
+
+    public boolean isSent() {
+        return sent;
+    }
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
     }
 
     public SimpleStringProperty nameProperty() {
