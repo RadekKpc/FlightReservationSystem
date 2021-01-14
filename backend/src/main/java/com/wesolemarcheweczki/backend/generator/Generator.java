@@ -99,7 +99,7 @@ public class Generator implements ApplicationRunner {
         Order order = new Order(client);
         orderDAO.add(order);
 
-        Ticket ticket = new Ticket(new Passenger("Test","Collision"),main,order,33,123);
+        Ticket ticket = new Ticket(new Passenger("Test", "Collision"), main, order, 33, 123, false);
         ticketDAO.add(ticket);
     }
 
@@ -141,7 +141,7 @@ public class Generator implements ApplicationRunner {
 
     private void generateTicket(ArrayList<Ticket> singleOrderTickets, Order order) {
         var passenger = new Passenger(generateName("passenger"), "lastname");
-        var ticket = new Ticket(passenger, getRandomElement(flights), order, generateInt("seat"), 800);
+        var ticket = new Ticket(passenger, getRandomElement(flights), order, generateInt("seat"), 800, false);
         singleOrderTickets.add(ticket);
         tickets.add(ticket);
     }
