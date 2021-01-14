@@ -37,6 +37,8 @@ public class HomeController {
     public Button btnFlights;
     @FXML
     public Button btnTickets;
+    @FXML
+    public Button btnCarrierStats;
 
     @FXML
     private Pane viewContent;
@@ -120,5 +122,10 @@ public class HomeController {
         homeVBox.getChildren().remove(btnCarriers);
         homeVBox.getChildren().remove(btnLocations);
         homeVBox.getChildren().remove(btnCustomers);
+        homeVBox.getChildren().remove(btnCarrierStats);
+    }
+
+    public void handleCarrierStats(ActionEvent actionEvent) throws IOException {
+        loadPane("/views/CarrierStats.fxml");
     }
 }

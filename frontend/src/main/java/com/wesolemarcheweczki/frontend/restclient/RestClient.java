@@ -52,7 +52,7 @@ public class RestClient {
         var parsedObject = mapper.writeValueAsString(body);
         System.out.println(parsedObject);
 
-        HttpRequest request = httpRequestwithAuth(endpoint, parsedObject, "GET");
+        HttpRequest request = httpRequestWithAuth(endpoint, parsedObject, "GET");
 
         var result = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
 
@@ -121,10 +121,25 @@ public class RestClient {
         return response.statusCode() == 200;
     }
 
+    public <T> T makeRequestWithBodyAndReturn(Object obj, String endpoint, String put, boolean useAuth, Class<T> tClass) throws IOException, InterruptedException {
+        var parsedObject = mapper.writeValueAsString(obj);
+        System.out.println(parsedObject);
+
+        HttpRequest request = httpRequest(endpoint, put, useAuth, parsedObject);
+
+        HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response.statusCode());
+        TypeFactory typeFactory = mapper.getTypeFactory();
+        //Type t = typeFactory.constructType(tClass);
+        return mapper.readValue(response.body(), tClass);
+    }
+
     private HttpRequest httpRequest(String endpoint, String put, boolean useAuth, String parsedObject) {
         HttpRequest request;
         if (useAuth) {
-            request = httpRequestwithAuth(endpoint, parsedObject, put);
+            request = httpRequestWithAuth(endpoint, parsedObject, put);
         } else {
             request = httpRequestNoAuth(endpoint, parsedObject, put);
         }
@@ -160,7 +175,7 @@ public class RestClient {
                 .build();
     }
 
-    private HttpRequest httpRequestwithAuth(String endpoint, String parsedObject, String type) {
+    private HttpRequest httpRequestWithAuth(String endpoint, String parsedObject, String type) {
         String authHeader = getAuthHeader();
         return HttpRequest.newBuilder()
                 .uri(URI.create(url + endpoint))
