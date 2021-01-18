@@ -8,9 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,7 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -106,7 +103,7 @@ public class FlightsController implements Initializable {
 
     @FXML
     public void search() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/searchFlights.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SearchFlights.fxml"));
         Parent root = loader.load();
         SearchController sc = loader.getController();
         sc.setFlightsController(this);

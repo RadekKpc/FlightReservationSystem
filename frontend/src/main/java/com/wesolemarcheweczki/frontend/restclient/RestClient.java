@@ -1,5 +1,6 @@
 package com.wesolemarcheweczki.frontend.restclient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -40,6 +41,16 @@ public class RestClient {
 
     public String getString(String email, String pwd, String endpoint) throws IOException, InterruptedException {
         HttpResponse<String> response = sendGetRequest(email, pwd, endpoint);
+
+        if (response.statusCode() == 200) {
+            return response.body();
+        } else {
+            return null;
+        }
+    }
+
+    public String getStringWithBody(String email, String pwd, String endpoint, Object body) throws IOException, InterruptedException {
+        HttpResponse<String> response = sendGetRequestWithBody(email, pwd, endpoint, body);
 
         if (response.statusCode() == 200) {
             return response.body();
@@ -96,8 +107,21 @@ public class RestClient {
             protected List<T> call() throws Exception {
                 String response = getString(AuthManager.email, AuthManager.pwd, endpoint);
                 System.out.println(response);
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.registerModule(new JavaTimeModule());
+                TypeFactory typeFactory = mapper.getTypeFactory();
+                CollectionType type = typeFactory.constructCollectionType(List.class, className);
+                List<T> valueList = mapper.readValue(response, type);
+                System.out.println(valueList);
+                return valueList;
+            }
+        };
+    }
+
+    public <T> Task<List<T>> createGetTaskWithBody(String endpoint, Object body, Class<T> className) {
+        return new Task<List<T>>() {
+            @Override
+            protected List<T> call() throws Exception {
+                String response = getStringWithBody(AuthManager.email, AuthManager.pwd, endpoint, body);
+                System.out.println(response);
                 TypeFactory typeFactory = mapper.getTypeFactory();
                 CollectionType type = typeFactory.constructCollectionType(List.class, className);
                 List<T> valueList = mapper.readValue(response, type);
@@ -121,21 +145,6 @@ public class RestClient {
         return response.statusCode() == 200;
     }
 
-    public <T> T makeRequestWithBodyAndReturn(Object obj, String endpoint, String put, boolean useAuth, Class<T> tClass) throws IOException, InterruptedException {
-        var parsedObject = mapper.writeValueAsString(obj);
-        System.out.println(parsedObject);
-
-        HttpRequest request = httpRequest(endpoint, put, useAuth, parsedObject);
-
-        HttpResponse<String> response = httpClient.send(request,
-                HttpResponse.BodyHandlers.ofString());
-
-        System.out.println(response.statusCode());
-        TypeFactory typeFactory = mapper.getTypeFactory();
-        //Type t = typeFactory.constructType(tClass);
-        return mapper.readValue(response.body(), tClass);
-    }
-
     private HttpRequest httpRequest(String endpoint, String put, boolean useAuth, String parsedObject) {
         HttpRequest request;
         if (useAuth) {
@@ -147,14 +156,18 @@ public class RestClient {
     }
 
     private HttpResponse<String> sendGetRequest(String login, String pwd, String endpoint) throws IOException, InterruptedException {
-        String auth = login + ":" + pwd;
-        byte[] encodedAuth = Base64.encodeBase64(
-                auth.getBytes(StandardCharsets.ISO_8859_1));
-        String authHeader = "Basic " + new String(encodedAuth);
+        String authHeader = getAuthHeader(login, pwd);
         HttpRequest request = getRequestAuthEmail(login, endpoint, authHeader);
 
         return httpClient.send(request,
                 HttpResponse.BodyHandlers.ofString());
+    }
+
+    private HttpResponse<String> sendGetRequestWithBody(String login, String pwd, String endpoint, Object body) throws IOException, InterruptedException {
+        String authHeader = getAuthHeader(login, pwd);
+        var request = httpRequestWithAuth(endpoint, mapper.writeValueAsString(body), "GET");
+
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     private HttpRequest getRequestAuthEmail(String login, String endpoint, String authHeader) {
@@ -188,6 +201,13 @@ public class RestClient {
     private String getAuthHeader() {
         String email = RestClient.loggedClient.getEmail();
         String pwd = RestClient.loggedClient.getPassword();
+        String auth = email + ":" + pwd;
+        byte[] encodedAuth = Base64.encodeBase64(
+                auth.getBytes(StandardCharsets.ISO_8859_1));
+        return "Basic " + new String(encodedAuth);
+    }
+
+    private String getAuthHeader(String email, String pwd){
         String auth = email + ":" + pwd;
         byte[] encodedAuth = Base64.encodeBase64(
                 auth.getBytes(StandardCharsets.ISO_8859_1));

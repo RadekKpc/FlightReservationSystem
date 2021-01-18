@@ -15,9 +15,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.checkerframework.checker.units.qual.C;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CarriersStatsController implements Initializable {
+    public Label errorLabel;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     public Label carriersLabel;
     public Label costLabel;
@@ -76,6 +75,7 @@ public class CarriersStatsController implements Initializable {
         });
         fromDatePicker.valueProperty().addListener((ov, oldValue, newValue) -> {
             if(toDatePicker.valueProperty().get() != null && toDatePicker.valueProperty().get().isAfter(newValue)){
+                errorLabel.setVisible(false);
                 var toDate = LocalDate.parse(toDatePicker
                         .valueProperty()
                         .get()
@@ -84,51 +84,44 @@ public class CarriersStatsController implements Initializable {
                 var fromDate = LocalDate
                         .parse(newValue.toString())
                         .atStartOfDay();
-                carrierList.forEach(carrier -> {
-                    var map = createCarrierStatsMap(carrier.getId(), fromDate, toDate);
-                    try {
-                        CarrierStats response = restClient.makeRequestWithBodyAndReturn(map,"/carrier/stats" ,"GET", true, CarrierStats.class);
-                        carrierTotalCostMap.get(response.getCarrierId()).set((int) response.getTotalCost());
-                        carrierTotalFlightsMap.get(response.getCarrierId()).set((int) response.getFlightsAmount());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                });
+                handleDateChanged(fromDate, toDate);
             }
+            else if(toDatePicker.valueProperty().get() != null) errorLabel.setVisible(true);
         });
         toDatePicker.valueProperty().addListener((ov, oldValue, newValue) -> {
-            System.out.println(newValue.toString());
-            System.out.println(newValue);
             if(fromDatePicker.valueProperty().get() != null && fromDatePicker.valueProperty().get().isBefore(newValue)){
+                errorLabel.setVisible(false);
                 var toDate = LocalDate.parse(newValue
                         .toString())
                         .atTime(23, 59);
                 var fromDate = LocalDate
                         .parse(fromDatePicker.valueProperty().get().toString())
                         .atStartOfDay();
-                carrierList.forEach(carrier -> {
-                    var map = createCarrierStatsMap(carrier.getId(), fromDate, toDate);
-                    try {
-                        CarrierStats response = restClient.makeRequestWithBodyAndReturn(map,"/carrier/stats" ,"GET", true, CarrierStats.class);
-                        carrierTotalCostMap.get(response.getCarrierId()).set((int) response.getTotalCost());
-                        carrierTotalFlightsMap.get(response.getCarrierId()).set((int) response.getFlightsAmount());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                });
-                updateLabels();
+                handleDateChanged(fromDate, toDate);
             }
+            else if(fromDatePicker.valueProperty().get() != null) errorLabel.setVisible(true);
         });
         executorService.submit(getCarriers);
     }
 
-    private HashMap<String, Object> createCarrierStatsMap(int carrierId, LocalDateTime from, LocalDateTime to){
+    private void handleDateChanged(LocalDateTime fromDate, LocalDateTime toDate){
+        var requestBody = createCarrierStatsRequestBodyMap(fromDate, toDate);
+        var task = restClient.createGetTaskWithBody("/carrier/stats",
+                requestBody,
+                CarrierStats.class);
+        task.setOnSucceeded(e -> {
+            var listOfStats = task.getValue();
+            listOfStats.forEach(stat -> {
+                carrierTotalFlightsMap.get(stat.getCarrierId()).set((int)stat.getFlightsAmount());
+                carrierTotalCostMap.get(stat.getCarrierId()).set((int)stat.getTotalCost());
+            });
+            updateLabels();
+        });
+        executorService.submit(task);
+    }
+
+    private HashMap<String, Object> createCarrierStatsRequestBodyMap(LocalDateTime from, LocalDateTime to){
         HashMap<String, Object> map = new HashMap<>();
-        map.put("carrierId", carrierId);
         map.put("from", from);
         map.put("to", to);
         return map;

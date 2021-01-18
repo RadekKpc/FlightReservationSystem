@@ -2,34 +2,15 @@ package com.wesolemarcheweczki.frontend.controllers;
 
 import com.wesolemarcheweczki.frontend.model.*;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
-import com.wesolemarcheweczki.frontend.util.AuthManager;
-import com.wesolemarcheweczki.frontend.util.FlightRecommendations;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -85,13 +66,13 @@ public class TicketsController implements Initializable {
     private void initColumns() {
 
         nameColumn.setCellValueFactory(tick -> tick.getValue().nameProperty());
-        lastNameColumn.setCellValueFactory(tick -> tick.getValue().lastNamePropertyProperty());
-        fromColumn.setCellValueFactory(tick -> tick.getValue().fromPropertyProperty());
-        toColumn.setCellValueFactory(tick -> tick.getValue().toPropertyProperty());
-        departureColumn.setCellValueFactory(tick -> tick.getValue().departurePropertyProperty());
-        arrivalColumn.setCellValueFactory(tick -> tick.getValue().arrivalPropertyProperty());
-        seatColumn.setCellValueFactory(tick -> tick.getValue().seatPropertyProperty());
-        costColumn.setCellValueFactory(tick -> tick.getValue().costPropertyProperty());
+        lastNameColumn.setCellValueFactory(tick -> tick.getValue().lastNameProperty());
+        fromColumn.setCellValueFactory(tick -> tick.getValue().fromProperty());
+        toColumn.setCellValueFactory(tick -> tick.getValue().toProperty());
+        departureColumn.setCellValueFactory(tick -> tick.getValue().departureProperty());
+        arrivalColumn.setCellValueFactory(tick -> tick.getValue().arrivalProperty());
+        seatColumn.setCellValueFactory(tick -> tick.getValue().seatProperty());
+        costColumn.setCellValueFactory(tick -> tick.getValue().costProperty());
 
         dataTable.setItems(listOfTicket);
 

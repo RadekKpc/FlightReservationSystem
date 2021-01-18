@@ -141,34 +141,34 @@ public class Ticket {
         this.order = order;
     }
 
-    public SimpleStringProperty lastNamePropertyProperty() {
+    public SimpleStringProperty lastNameProperty() {
         return lastNameProperty;
     }
 
-    public SimpleStringProperty fromPropertyProperty() {
+    public SimpleStringProperty fromProperty() {
         return fromProperty;
     }
 
-    public SimpleStringProperty toPropertyProperty() {
+    public SimpleStringProperty toProperty() {
         return toProperty;
     }
 
-    public ObjectProperty<LocalDateTime>  departurePropertyProperty() {
+    public ObjectProperty<LocalDateTime> departureProperty() {
         return flight.departureProperty();
     }
 
 
-    public ObjectProperty<LocalDateTime> arrivalPropertyProperty() {
+    public ObjectProperty<LocalDateTime> arrivalProperty() {
         return flight.arrivalProperty();
     }
 
 
-    public SimpleStringProperty seatPropertyProperty() {
+    public SimpleStringProperty seatProperty() {
         return seatProperty;
     }
 
 
-    public SimpleStringProperty costPropertyProperty() {
+    public SimpleStringProperty costProperty() {
         return costProperty;
     }
 }

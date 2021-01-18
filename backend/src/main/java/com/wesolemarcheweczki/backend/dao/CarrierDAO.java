@@ -6,6 +6,8 @@ import com.wesolemarcheweczki.backend.repository.CarrierRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CarrierDAO extends GenericDao<Carrier> {
@@ -19,13 +21,15 @@ public class CarrierDAO extends GenericDao<Carrier> {
         return ((CarrierRepository) repository).getCarrierTotalFlightsAmount(carrierId);
     }
 
-    public CarrierStats getCarrierStatsInRange(int carrierId, LocalDateTime from, LocalDateTime to){
-        var stats = ((CarrierRepository)repository).getCarrierStatsInRange(carrierId, from, to);
+    public List<CarrierStats> getCarrierStatsInRange(LocalDateTime from, LocalDateTime to){
+        var stats = ((CarrierRepository)repository).getCarrierStatsInRange(from, to);
         if(stats == null){
-            return null;
+            return new ArrayList<>();
         }
-        stats.setFrom(from);
-        stats.setTo(to);
+        stats.forEach(stat -> {
+            stat.setFrom(from);
+            stat.setTo(to);
+        });
         return stats;
     }
 

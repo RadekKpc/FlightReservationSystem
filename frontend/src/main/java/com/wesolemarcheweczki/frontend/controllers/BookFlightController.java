@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -97,6 +98,11 @@ public class BookFlightController implements Initializable {
             if (notColliding) {
                 postOrder(event);
             } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Booking error");
+                alert.setContentText("You already have tickets for this termin!");
+                alert.showAndWait();
                 System.out.println("You already have ticket for this termin!");
             }
         } catch (Exception e) {

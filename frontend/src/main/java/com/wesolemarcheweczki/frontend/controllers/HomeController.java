@@ -4,6 +4,7 @@ import com.wesolemarcheweczki.frontend.Main;
 import com.wesolemarcheweczki.frontend.model.Client;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
 import com.wesolemarcheweczki.frontend.util.Role;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

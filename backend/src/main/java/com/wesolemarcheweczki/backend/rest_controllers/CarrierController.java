@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 import static com.wesolemarcheweczki.backend.rest_controllers.helpers.Responses.*;
 
 @RestController
@@ -23,8 +26,8 @@ public class CarrierController extends AbstractRestController<Carrier> {
     }
 
     @GetMapping(path = "/stats", consumes = "application/json")
-    public ResponseEntity<CarrierStats> getCarrierStats(@RequestBody CarrierStatsBody carrierBody){
-        CarrierStats ret = ((CarrierDAO)DAO).getCarrierStatsInRange(carrierBody.getCarrierId(), carrierBody.getFrom(), carrierBody.getTo());
+    public ResponseEntity<List<CarrierStats>> getCarrierStats(@RequestBody CarrierStatsBody carrierBody){
+        List<CarrierStats> ret = ((CarrierDAO)DAO).getCarrierStatsInRange(carrierBody.getFrom(), carrierBody.getTo());
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 }

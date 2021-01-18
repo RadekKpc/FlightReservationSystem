@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.wesolemarcheweczki.backend.model.CarrierStats;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface CarrierRepository extends JpaRepository<Carrier,Integer> {
@@ -21,10 +22,10 @@ public interface CarrierRepository extends JpaRepository<Carrier,Integer> {
 
     @Query(value = "SELECT new com.wesolemarcheweczki.backend.model.CarrierStats(c.id, COUNT(f.id), SUM(t.cost))" +
             " FROM Carrier c\n" +
-            "JOIN Flight f on f.carrier.id = c.id and f.departure >= ?2 and f.arrival <= ?3\n" +
+            "JOIN Flight f on f.carrier.id = c.id and f.departure >= ?1 and f.arrival <= ?2\n" +
             "JOIN Ticket t on t.flight = f \n" +
-            "GROUP BY c.id HAVING c.id = ?1\n")
-    CarrierStats getCarrierStatsInRange(int carrierId, LocalDateTime from, LocalDateTime to);
+            "GROUP BY c.id\n")
+    List<CarrierStats> getCarrierStatsInRange(LocalDateTime from, LocalDateTime to);
 
 
     /*@Query("SELECT f.source, f.destination FROM flight f " +

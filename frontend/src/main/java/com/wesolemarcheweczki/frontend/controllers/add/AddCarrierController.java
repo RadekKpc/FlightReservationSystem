@@ -1,4 +1,4 @@
-package com.wesolemarcheweczki.frontend.controllers;
+package com.wesolemarcheweczki.frontend.controllers.add;
 
 import com.wesolemarcheweczki.frontend.model.Carrier;
 import com.wesolemarcheweczki.frontend.restclient.RestClient;
