@@ -1,0 +1,35 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com.wesolemarcheweczki'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '14'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation("com.google.guava:guava:30.0-jre")
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
+    implementation("com.github.gwenn:sqlite-dialect:0.1.0")
+
+    compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171"
+      fx:controller="com.wesolemarcheweczki.frontend.controllers.add.AddUserController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="29.0" layoutY="199.0" prefHeight="334.0" prefWidth="375.0" spacing="20.0"
+            style="-fx-background-color: #EBE8F9;">
+         <children>
+            <VBox prefHeight="201.0" prefWidth="375.0" spacing="30.0">
+               <children>
+                  <Pane prefHeight="43.0" prefWidth="171.0">
+                     <children>
+                        <TextField fx:id="firstNameTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0"
+                                   prefWidth="187.0" promptText="First Name" styleClass="text-form">
+                           <font>
+                              <Font size="18.0"/>
+                           </font>
+                        </TextField>
+                        <FontAwesomeIconView fill="#6b6e6f" glyphName="USER" layoutX="6.0" layoutY="28.0" size="18.0" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="43.0" prefWidth="175.0">
+                     <children>
+                        <TextField fx:id="lastNameTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="187.0" promptText="Last Name" styleClass="text-form">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <FontAwesomeIconView fill="#6b6e6f" glyphName="USER" layoutX="6.0" layoutY="28.0" size="18.0" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="43.0" prefWidth="155.0">
+                     <children>
+                        <TextField fx:id="emailTextField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="188.0" promptText="Email" styleClass="text-form">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <FontAwesomeIconView fill="#6b6e6f" glyphName="ENVELOPE" layoutX="6.0" layoutY="28.0" size="18.0" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="43.0" prefWidth="155.0">
+                     <children>
+                        <PasswordField fx:id="passwordField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="188.0" promptText="Password" styleClass="text-form">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </PasswordField>
+                        <FontAwesomeIconView fill="#6b6e6f" glyphName="KEY" layoutX="6.0" layoutY="28.0" size="18.0" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="43.0" prefWidth="155.0">
+                     <children>
+                        <ComboBox fx:id="roleField" layoutX="41.0" layoutY="2.0" prefHeight="41.0" prefWidth="188.0" promptText="role" styleClass="text-form">
+                           <items>
+                              <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="USER"/>
+                                 <String fx:value="ADMIN"/>
+                              </FXCollections>
+                           </items>
+                        </ComboBox>
+                        <FontAwesomeIconView fill="#6b6e6f" glyphName="LOCK" layoutX="6.0" layoutY="28.0" size="18.0" />
+                     </children>
+                  </Pane>
+               </children>
+               <padding>
+                  <Insets left="50.0" right="50.0" top="20.0" />
+               </padding>
+            </VBox>
+            <Pane prefHeight="76.0" prefWidth="479.0">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+               <children>
+                  <Button fx:id="addUserButton" layoutX="133.0" layoutY="-10.0" mnemonicParsing="false" onAction="#addUser" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: white; -fx-border-color: #6B6E6F; -fx-border-radius: 5;" text="Confirm">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="errorText" layoutX="100.0" layoutY="80.0" style="-fx-background-color: #007dff;" text="">>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+      <Label layoutX="57.0" layoutY="25.0" text="Add account">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Pane layoutX="504.0" layoutY="51.0" prefHeight="484.0" prefWidth="266.0" style="-fx-background-color: #EBE8F9;">
+         <children>
+            <Label layoutX="41.0" layoutY="37.0" text="Info">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</Pane>
